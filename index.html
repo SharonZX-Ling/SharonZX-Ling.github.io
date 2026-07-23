@@ -3,261 +3,303 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sharon Ling · 个人作品集</title>
-  <meta name="description" content="Sharon Ling 的个人作品集网站，展示实习经历、项目作品与其他经历。" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='28' fill='%23E94560'/><text x='32' y='42' text-anchor='middle' font-size='32' font-family='Arial' fill='white' font-weight='bold'>S</text></svg>" />
+  <title>Sharon Ling · Portfolio</title>
+  <meta name="description" content="Sharon Ling 的个人作品集 — 市场营销 · 内容策划 · 品牌运营" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='28' fill='%23C9A96E'/><text x='32' y='42' text-anchor='middle' font-size='32' font-family='Arial' fill='white' font-weight='bold'>S</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- 移动端菜单按钮 -->
-  <button class="menu-toggle" aria-label="切换菜单" id="menuToggle">
-    <span></span><span></span><span></span>
-  </button>
 
-  <!-- 左侧固定导航 -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-inner">
-      <h1 class="logo">Profile</h1>
-      <nav class="nav">
-        <a href="#home" class="nav-item active" data-target="home">
-          <span class="nav-emoji">👋</span><span>About me</span>
-        </a>
-        <a href="#internship" class="nav-item" data-target="internship">
-          <span class="nav-emoji">💼</span><span>Internship</span>
-        </a>
-        <a href="#projects" class="nav-item" data-target="projects">
-          <span class="nav-emoji">🚀</span><span>Projects</span>
-        </a>
-        <a href="#others" class="nav-item" data-target="others">
-          <span class="nav-emoji">🎨</span><span>Others</span>
-        </a>
-        <a href="#contact" class="nav-item" data-target="contact">
-          <span class="nav-emoji">📬</span><span>Contact</span>
-        </a>
-      </nav>
-      <footer class="sidebar-footer">
-        <p>© 2026 Sharon Ling</p>
-      </footer>
+  <!-- ===== 浮动导航 ===== -->
+  <nav class="nav-float" id="navFloat">
+    <a href="#hero" class="nav-dot active" data-target="hero" aria-label="Home"></a>
+    <a href="#about" class="nav-dot" data-target="about" aria-label="About"></a>
+    <a href="#internship" class="nav-dot" data-target="internship" aria-label="Internship"></a>
+    <a href="#projects" class="nav-dot" data-target="projects" aria-label="Projects"></a>
+    <a href="#others" class="nav-dot" data-target="others" aria-label="Others"></a>
+    <a href="#contact" class="nav-dot" data-target="contact" aria-label="Contact"></a>
+  </nav>
+
+  <!-- ===== HERO 图片网格 ===== -->
+  <section id="hero" class="hero">
+    <div class="hero-grid" id="heroGrid">
+      <!-- 9 grid items with placeholder gradients; replace with real images later -->
+      <div class="grid-item gi-1" data-bg="gradient-1"></div>
+      <div class="grid-item gi-2" data-bg="gradient-2"></div>
+      <div class="grid-item gi-3" data-bg="gradient-3"></div>
+      <div class="grid-item gi-4" data-bg="gradient-4"></div>
+      <div class="grid-item gi-5" data-bg="gradient-5"></div>
+      <div class="grid-item gi-6" data-bg="gradient-6"></div>
+      <div class="grid-item gi-7" data-bg="gradient-7"></div>
+      <div class="grid-item gi-8" data-bg="gradient-8"></div>
+      <div class="grid-item gi-9" data-bg="gradient-9"></div>
     </div>
-  </aside>
 
-  <!-- 右侧主内容区 -->
-  <main class="content">
-    <!-- ========== Home ========== -->
-    <section id="home" class="section">
-      <header class="section-header">
-        <h2 class="section-title"><span class="title-icon">👋</span> About me</h2>
-        <p class="section-subtitle">一个热爱营销与创意的探索者。</p>
-      </header>
+    <!-- Hero overlay: name + role -->
+    <div class="hero-overlay" id="heroOverlay">
+      <p class="hero-role">Marketing · Content · Brand</p>
+      <h1 class="hero-name">Sharon<br>Ling</h1>
+      <p class="hero-tagline">Stories that move people.</p>
+      <div class="hero-scroll">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+    </div>
+  </section>
 
-      <div class="card profile-card">
-        <div class="profile-top">
-          <div class="avatar">SL</div>
-          <div class="profile-info">
-            <h3>Sharon Ling</h3>
-            <p class="profile-tag">市场营销 · 内容策划 · 品牌运营</p>
+  <!-- ===== About ===== -->
+  <section id="about" class="section">
+    <div class="section-inner">
+      <div class="section-label">01</div>
+      <h2 class="section-title">About</h2>
+      <div class="about-layout">
+        <div class="about-text">
+          <p class="about-lead">
+            欢迎来到我的个人作品集。这里记录了我的实习经历、项目作品以及其他成长轨迹。
+            喜欢用数据讲故事，也喜欢用创意打动人心。
+          </p>
+          <div class="about-tags">
+            <span>品牌策划</span>
+            <span>内容营销</span>
+            <span>短视频</span>
+            <span>用户增长</span>
+            <span>数据分析</span>
           </div>
         </div>
-        <p class="profile-bio">
-          欢迎来到我的个人作品集。这里记录了我的实习经历、项目作品以及其他成长轨迹。
-          喜欢用数据讲故事，也喜欢用创意打动人心。
-        </p>
-        <div class="tags">
-          <span class="tag">品牌策划</span>
-          <span class="tag">内容营销</span>
-          <span class="tag">短视频</span>
-          <span class="tag">用户增长</span>
-          <span class="tag">数据分析</span>
+        <div class="about-sidebar">
+          <div class="about-detail">
+            <span class="detail-key">Name</span>
+            <span class="detail-val">Sharon Ling</span>
+          </div>
+          <div class="about-detail">
+            <span class="detail-key">Focus</span>
+            <span class="detail-val">市场营销 · 内容策划 · 品牌运营</span>
+          </div>
+          <div class="about-detail">
+            <span class="detail-key">Based</span>
+            <span class="detail-val">China</span>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ========== Internship ========== -->
-    <section id="internship" class="section">
-      <header class="section-header">
-        <h2 class="section-title"><span class="title-icon">💼</span> Internship</h2>
-        <p class="section-subtitle">从校园到职场的每一次成长。</p>
-      </header>
+  <!-- ===== Internship ===== -->
+  <section id="internship" class="section">
+    <div class="section-inner">
+      <div class="section-label">02</div>
+      <h2 class="section-title">Internship</h2>
+      <p class="section-sub">从校园到职场的每一次成长。</p>
 
-      <div class="card-grid">
-        <article class="card intern-card">
-          <div class="card-meta">2025.06 - 2025.09</div>
-          <h3 class="card-title">某知名互联网公司 · 品牌营销实习生</h3>
-          <p class="card-desc">
+      <div class="intern-grid">
+        <article class="intern-entry reveal-item">
+          <div class="intern-meta">
+            <span class="intern-period">2025.06 — 2025.09</span>
+          </div>
+          <h3 class="intern-title">某知名互联网公司 · 品牌营销实习生</h3>
+          <p class="intern-desc">
             负责品牌Campaign全链路策划，主导X3端午电影混池宣发方案，沉淀出一套可复用的内容生产SOP。
           </p>
-          <div class="card-actions">
-            <a href="https://example.com/official-account" target="_blank" rel="noopener" class="btn btn-primary">
-              跳转官号 <span class="arrow">↗</span>
+          <div class="intern-links">
+            <a href="https://example.com/official-account" target="_blank" rel="noopener" class="link-accent">
+              官方账号 ↗
             </a>
-            <a href="assets/pdfs/x3-case.pdf" target="_blank" class="btn btn-ghost">查看策划案</a>
+            <a href="assets/pdfs/x3-case.pdf" target="_blank" class="link-ghost">
+              策划案 PDF
+            </a>
           </div>
         </article>
 
-        <article class="card intern-card">
-          <div class="card-meta">2024.12 - 2025.03</div>
-          <h3 class="card-title">某 MCN 机构 · 内容运营实习生</h3>
-          <p class="card-desc">
+        <article class="intern-entry reveal-item">
+          <div class="intern-meta">
+            <span class="intern-period">2024.12 — 2025.03</span>
+          </div>
+          <h3 class="intern-title">某 MCN 机构 · 内容运营实习生</h3>
+          <p class="intern-desc">
             参与头部账号的内容策划与投放优化，输出多条播放量破百万的爆款选题。
           </p>
-          <div class="card-actions">
-            <a href="https://example.com/mcn" target="_blank" rel="noopener" class="btn btn-primary">
-              跳转官号 <span class="arrow">↗</span>
+          <div class="intern-links">
+            <a href="https://example.com/mcn" target="_blank" rel="noopener" class="link-accent">
+              官方账号 ↗
             </a>
           </div>
         </article>
 
-        <article class="card intern-card">
-          <div class="card-meta">2024.07 - 2024.10</div>
-          <h3 class="card-title">某 4A 广告公司 · AE 实习生</h3>
-          <p class="card-desc">
+        <article class="intern-entry reveal-item">
+          <div class="intern-meta">
+            <span class="intern-period">2024.07 — 2024.10</span>
+          </div>
+          <h3 class="intern-title">某 4A 广告公司 · AE 实习生</h3>
+          <p class="intern-desc">
             协助客户经理跟进快消客户项目，负责Brief拆解、提案准备与结案报告。
           </p>
-          <div class="card-actions">
-            <a href="https://example.com/4a" target="_blank" rel="noopener" class="btn btn-primary">
-              跳转官号 <span class="arrow">↗</span>
+          <div class="intern-links">
+            <a href="https://example.com/4a" target="_blank" rel="noopener" class="link-accent">
+              官方账号 ↗
             </a>
           </div>
         </article>
       </div>
-    </section>
-
-    <!-- ========== Projects ========== -->
-    <section id="projects" class="section">
-      <header class="section-header">
-        <h2 class="section-title"><span class="title-icon">🚀</span> Projects</h2>
-        <p class="section-subtitle">从策略到执行，每一个项目的完整闭环。</p>
-      </header>
-
-      <div class="card-grid two-col">
-        <!-- 视频项目 -->
-        <article class="card project-card" data-type="video">
-          <div class="card-cover video-cover" data-src="https://www.bilibili.com/video/BVxxxxxxxxx">
-            <div class="play-icon">▶</div>
-            <span class="badge badge-video">视频</span>
-          </div>
-          <div class="card-body">
-            <h3 class="card-title">X3 端午电影混池宣发短片</h3>
-            <p class="card-desc">为X3项目量身打造的混池宣发创意短片，融合电影感与节日氛围。</p>
-            <button class="btn btn-ghost btn-open" data-type="video" data-src="https://www.bilibili.com/video/BVxxxxxxxxx">观看作品</button>
-          </div>
-        </article>
-
-        <!-- PDF 策划案 -->
-        <article class="card project-card" data-type="pdf">
-          <div class="card-cover pdf-cover" data-src="assets/pdfs/x3-case.pdf">
-            <div class="pdf-icon">📄</div>
-            <span class="badge badge-pdf">PDF</span>
-          </div>
-          <div class="card-body">
-            <h3 class="card-title">X3 端午电影混池宣发方案</h3>
-            <p class="card-desc">完整的营销策划案，包含洞察、策略、传播节奏与资源整合。</p>
-            <button class="btn btn-ghost btn-open" data-type="pdf" data-src="assets/pdfs/x3-case.pdf">查看PDF</button>
-          </div>
-        </article>
-
-        <!-- 图片作品 -->
-        <article class="card project-card" data-type="image">
-          <div class="card-cover image-cover" data-src="assets/images/work-1.jpg" style="background-image:url('assets/images/work-1.jpg')">
-            <span class="badge badge-image">图片</span>
-          </div>
-          <div class="card-body">
-            <h3 class="card-title">品牌视觉设计</h3>
-            <p class="card-desc">某新消费品牌从0到1的视觉体系搭建。</p>
-            <button class="btn btn-ghost btn-open" data-type="image" data-src="assets/images/work-1.jpg">查看图片</button>
-          </div>
-        </article>
-
-        <article class="card project-card" data-type="image">
-          <div class="card-cover image-cover" data-src="assets/images/work-2.jpg" style="background-image:url('assets/images/work-2.jpg')">
-            <span class="badge badge-image">图片</span>
-          </div>
-          <div class="card-body">
-            <h3 class="card-title">社媒内容矩阵</h3>
-            <p class="card-desc">小红书+公众号+视频号内容矩阵搭建与运营。</p>
-            <button class="btn btn-ghost btn-open" data-type="image" data-src="assets/images/work-2.jpg">查看图片</button>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ========== Others ========== -->
-    <section id="others" class="section">
-      <header class="section-header">
-        <h2 class="section-title"><span class="title-icon">🎨</span> Others</h2>
-        <p class="section-subtitle">比赛、社团、兴趣——那些让我成为"我"的事。</p>
-      </header>
-
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2025</div>
-            <h3>全国大学生广告艺术大赛 · 省级一等奖</h3>
-            <p>担任团队策略负责人，作品获得评委高度认可。</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2024</div>
-            <h3>校市场营销协会 · 副会长</h3>
-            <p>统筹10+场校园活动，对外联络品牌合作累计赞助金额超10万元。</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <div class="timeline-date">2023</div>
-            <h3>暑期支教 · 云南</h3>
-            <p>为山区孩子带去营销启蒙课，教会他们用镜头记录家乡的美。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== Contact ========== -->
-    <section id="contact" class="section">
-      <header class="section-header">
-        <h2 class="section-title"><span class="title-icon">📬</span> Contact</h2>
-        <p class="section-subtitle">期待和你产生一些有趣的联系。</p>
-      </header>
-
-      <div class="card contact-card">
-        <div class="contact-grid">
-          <a href="mailto:sharon@example.com" class="contact-item">
-            <span class="contact-icon">✉️</span>
-            <span class="contact-label">邮箱</span>
-            <span class="contact-value">sharon@example.com</span>
-          </a>
-          <div class="contact-item" id="copyWechat">
-            <span class="contact-icon">💬</span>
-            <span class="contact-label">微信</span>
-            <span class="contact-value">sharon_ling</span>
-            <span class="copy-tip">点击复制</span>
-          </div>
-          <a href="https://www.xiaohongshu.com" target="_blank" rel="noopener" class="contact-item">
-            <span class="contact-icon">📕</span>
-            <span class="contact-label">小红书</span>
-            <span class="contact-value">@Sharon的市场笔记</span>
-          </a>
-          <a href="https://space.bilibili.com" target="_blank" rel="noopener" class="contact-item">
-            <span class="contact-icon">📺</span>
-            <span class="contact-label">B站</span>
-            <span class="contact-value">@SharonLing</span>
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- 弹窗预览 -->
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="modal-backdrop" id="modalBackdrop"></div>
-    <div class="modal-content">
-      <button class="modal-close" id="modalClose" aria-label="关闭">×</button>
-      <div class="modal-body" id="modalBody"></div>
     </div>
+  </section>
+
+  <!-- ===== Projects ===== -->
+  <section id="projects" class="section">
+    <div class="section-inner">
+      <div class="section-label">03</div>
+      <h2 class="section-title">Projects</h2>
+      <p class="section-sub">从策略到执行，每一个项目的完整闭环。</p>
+
+      <div class="project-grid">
+        <!-- 视频 -->
+        <article class="project-item reveal-item"
+                 data-type="video"
+                 data-src="https://player.bilibili.com/player.html?bvid=BVxxxxxxxxx"
+                 data-title="X3 端午电影混池宣发短片"
+                 data-desc="为X3项目量身打造的混池宣发创意短片，融合电影感与节日氛围。">
+          <div class="project-thumb video-thumb"
+               style="background:linear-gradient(135deg,#1A1A2E 0%,#16213E 50%,#0F3460 100%)">
+            <div class="thumb-play">▶</div>
+          </div>
+          <div class="project-info">
+            <span class="project-badge">Video</span>
+            <h3>X3 端午电影混池宣发短片</h3>
+            <p>为X3项目量身打造的混池宣发创意短片，融合电影感与节日氛围。</p>
+          </div>
+        </article>
+
+        <!-- PDF -->
+        <article class="project-item reveal-item"
+                 data-type="pdf"
+                 data-src="assets/pdfs/x3-case.pdf"
+                 data-title="X3 端午电影混池宣发方案"
+                 data-desc="完整的营销策划案，包含洞察、策略、传播节奏与资源整合。">
+          <div class="project-thumb pdf-thumb"
+               style="background:linear-gradient(135deg,#2D1B0E 0%,#3E2A18 50%,#C9A96E 100%)">
+            <div class="thumb-pdf">PDF</div>
+          </div>
+          <div class="project-info">
+            <span class="project-badge">PDF</span>
+            <h3>X3 端午电影混池宣发方案</h3>
+            <p>完整的营销策划案，包含洞察、策略、传播节奏与资源整合。</p>
+          </div>
+        </article>
+
+        <!-- 图片1 -->
+        <article class="project-item reveal-item"
+                 data-type="image"
+                 data-src="assets/images/work-1.jpg"
+                 data-title="品牌视觉设计"
+                 data-desc="某新消费品牌从0到1的视觉体系搭建。">
+          <div class="project-thumb image-thumb"
+               style="background:linear-gradient(135deg,#0A2E36 0%,#134E5E 50%,#1A6B5A 100%)">
+          </div>
+          <div class="project-info">
+            <span class="project-badge">Image</span>
+            <h3>品牌视觉设计</h3>
+            <p>某新消费品牌从0到1的视觉体系搭建。</p>
+          </div>
+        </article>
+
+        <!-- 图片2 -->
+        <article class="project-item reveal-item"
+                 data-type="image"
+                 data-src="assets/images/work-2.jpg"
+                 data-title="社媒内容矩阵"
+                 data-desc="小红书+公众号+视频号内容矩阵搭建与运营。">
+          <div class="project-thumb image-thumb"
+               style="background:linear-gradient(135deg,#1A0A2E 0%,#2D1858 50%,#3D2070 100%)">
+          </div>
+          <div class="project-info">
+            <span class="project-badge">Image</span>
+            <h3>社媒内容矩阵</h3>
+            <p>小红书+公众号+视频号内容矩阵搭建与运营。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Others ===== -->
+  <section id="others" class="section">
+    <div class="section-inner">
+      <div class="section-label">04</div>
+      <h2 class="section-title">Others</h2>
+      <p class="section-sub">比赛、社团、兴趣——那些让我成为"我"的事。</p>
+
+      <div class="timeline editorial-timeline">
+        <div class="tl-entry reveal-item">
+          <span class="tl-year">2025</span>
+          <h3 class="tl-title">全国大学生广告艺术大赛 · 省级一等奖</h3>
+          <p class="tl-desc">担任团队策略负责人，作品获得评委高度认可。</p>
+        </div>
+        <div class="tl-entry reveal-item">
+          <span class="tl-year">2024</span>
+          <h3 class="tl-title">校市场营销协会 · 副会长</h3>
+          <p class="tl-desc">统筹10+场校园活动，对外联络品牌合作累计赞助金额超10万元。</p>
+        </div>
+        <div class="tl-entry reveal-item">
+          <span class="tl-year">2023</span>
+          <h3 class="tl-title">暑期支教 · 云南</h3>
+          <p class="tl-desc">为山区孩子带去营销启蒙课，教会他们用镜头记录家乡的美。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Contact ===== -->
+  <section id="contact" class="section section-contact">
+    <div class="section-inner">
+      <div class="section-label">05</div>
+      <h2 class="section-title">Contact</h2>
+      <p class="section-sub">期待和你产生一些有趣的联系。</p>
+
+      <div class="contact-list">
+        <a href="mailto:sharon@example.com" class="contact-row reveal-item">
+          <span class="contact-icon">✉</span>
+          <span class="contact-label">Email</span>
+          <span class="contact-value">sharon@example.com</span>
+          <span class="contact-arrow">↗</span>
+        </a>
+        <div class="contact-row reveal-item" id="copyWechat">
+          <span class="contact-icon">W</span>
+          <span class="contact-label">WeChat</span>
+          <span class="contact-value">sharon_ling</span>
+          <span class="contact-copy-tip">Click to copy</span>
+        </div>
+        <a href="https://www.xiaohongshu.com" target="_blank" rel="noopener" class="contact-row reveal-item">
+          <span class="contact-icon">R</span>
+          <span class="contact-label">小红书</span>
+          <span class="contact-value">@Sharon的市场笔记</span>
+          <span class="contact-arrow">↗</span>
+        </a>
+        <a href="https://space.bilibili.com" target="_blank" rel="noopener" class="contact-row reveal-item">
+          <span class="contact-icon">B</span>
+          <span class="contact-label">Bilibili</span>
+          <span class="contact-value">@SharonLing</span>
+          <span class="contact-arrow">↗</span>
+        </a>
+      </div>
+
+      <footer class="site-footer">
+        <p>© 2026 Sharon Ling · Portfolio</p>
+      </footer>
+    </div>
+  </section>
+
+  <!-- ===== 项目详情 Overlay ===== -->
+  <div class="detail-overlay" id="detailOverlay" aria-hidden="true">
+    <button class="detail-close" id="detailClose" aria-label="Close">← Back</button>
+    <div class="detail-body" id="detailBody"></div>
+  </div>
+
+  <!-- ===== 加载遮罩 ===== -->
+  <div class="loader" id="loader">
+    <div class="loader-text">Sharon Ling</div>
+    <div class="loader-bar"><div class="loader-progress" id="loaderProgress"></div></div>
   </div>
 
   <script src="js/main.js"></script>

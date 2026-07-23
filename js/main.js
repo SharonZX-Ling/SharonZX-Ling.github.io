@@ -1,71 +1,131 @@
 /* ============================================
-   Sharon Ling · 个人作品集 · 交互脚本
+   Sharon Ling · Portfolio · Cinematic Edition
+   Hero Grid Animation · Scroll Reveal · Detail Overlay
 ============================================ */
 
 (function () {
   'use strict';
 
-  // ============= 元素 =============
-  const navItems = document.querySelectorAll('.nav-item');
-  const sections = document.querySelectorAll('.section');
-  const sidebar = document.getElementById('sidebar');
-  const menuToggle = document.getElementById('menuToggle');
-  const modal = document.getElementById('modal');
-  const modalBody = document.getElementById('modalBody');
-  const modalClose = document.getElementById('modalClose');
-  const modalBackdrop = document.getElementById('modalBackdrop');
-  const copyWechat = document.getElementById('copyWechat');
-  const opens = document.querySelectorAll('.btn-open, .card-cover');
+  // ── Elements ──
+  const loader       = document.getElementById('loader');
+  const loaderProg   = document.getElementById('loaderProgress');
+  const heroGrid     = document.getElementById('heroGrid');
+  const heroOverlay  = document.getElementById('heroOverlay');
+  const gridItems    = heroGrid ? heroGrid.querySelectorAll('.grid-item') : [];
+  const navDots      = document.querySelectorAll('.nav-dot');
+  const sections     = document.querySelectorAll('.section');
+  const revealItems  = document.querySelectorAll('.reveal-item');
+  const projectItems = document.querySelectorAll('.project-item');
+  const detailOverlay = document.getElementById('detailOverlay');
+  const detailBody    = document.getElementById('detailBody');
+  const detailClose   = document.getElementById('detailClose');
+  const copyWechat    = document.getElementById('copyWechat');
+  const heroScroll    = document.querySelector('.hero-scroll');
 
-  // ============= 导航点击 → 平滑滚动 + 关闭移动端菜单 =============
-  navItems.forEach((item) => {
-    item.addEventListener('click', (e) => {
+  // ── Loader & Hero Grid Entrance ──
+  let progress = 0;
+  const loaderInterval = setInterval(() => {
+    progress += Math.random() * 15;
+    if (progress > 100) progress = 100;
+    loaderProg.style.width = progress + '%';
+    if (progress >= 100) {
+      clearInterval(loaderInterval);
+      setTimeout(() => {
+        loader.classList.add('done');
+        revealGrid();
+      }, 300);
+    }
+  }, 80);
+
+  function revealGrid() {
+    // Staggered grid reveal
+    const staggerBase = 80; // ms between each item
+    gridItems.forEach((item, i) => {
+      setTimeout(() => {
+        item.classList.add('revealed');
+      }, staggerBase * i);
+    });
+
+    // Overlay text reveal after grid is mostly in
+    const overlayDelay = staggerBase * gridItems.length * 0.5 + 200;
+    setTimeout(() => {
+      heroOverlay.classList.add('revealed');
+    }, overlayDelay);
+  }
+
+  // ── Scroll Down from Hero ──
+  if (heroScroll) {
+    heroScroll.addEventListener('click', () => {
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+
+  // ── Navigation Dots: scroll + highlight ──
+  navDots.forEach((dot) => {
+    dot.addEventListener('click', (e) => {
       e.preventDefault();
-      const target = document.getElementById(item.dataset.target);
+      const target = document.getElementById(dot.dataset.target);
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-      // 移动端关闭菜单
-      sidebar.classList.remove('open');
-      menuToggle.classList.remove('open');
     });
   });
 
-  // ============= 移动端汉堡菜单 =============
-  menuToggle.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
-    menuToggle.classList.toggle('open');
-  });
-
-  // ============= 滚动监听：高亮当前板块 =============
-  const observer = new IntersectionObserver(
+  // Highlight current section
+  const allSections = document.querySelectorAll('.section, .hero');
+  const sectionObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const id = entry.target.id;
-          navItems.forEach((n) => {
-            n.classList.toggle('active', n.dataset.target === id);
+          navDots.forEach((d) => {
+            d.classList.toggle('active', d.dataset.target === id);
           });
         }
       });
     },
-    { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
   );
-  sections.forEach((s) => observer.observe(s));
+  allSections.forEach((s) => sectionObserver.observe(s));
 
-  // ============= 弹窗预览 =============
-  function openModal(type, src) {
-    modalBody.innerHTML = '';
+  // ── Scroll Reveal for items ──
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Stagger within group
+          const parent = entry.target.parentElement;
+          const siblings = parent ? parent.querySelectorAll('.reveal-item') : [];
+          const idx = Array.from(siblings).indexOf(entry.target);
+
+          setTimeout(() => {
+            entry.target.classList.add('revealed');
+          }, idx * 120);
+
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+  );
+  revealItems.forEach((item) => revealObserver.observe(item));
+
+  // ── Project Detail Overlay ──
+  function openDetail(type, src) {
+    detailBody.innerHTML = '';
     let el;
 
     if (type === 'video') {
-      // 优先用 video 标签；如果 src 是 B站/YT 链接则用 iframe
       if (/\.(mp4|webm|ogg)$/i.test(src)) {
         el = document.createElement('video');
         el.src = src;
         el.controls = true;
         el.autoplay = true;
       } else {
+        // B站 / YouTube iframe
         el = document.createElement('iframe');
         el.src = src;
         el.allow = 'autoplay; encrypted-media';
@@ -77,82 +137,71 @@
     } else if (type === 'image') {
       el = document.createElement('img');
       el.src = src;
-      el.alt = '作品预览';
+      el.alt = 'Project preview';
     }
 
     if (el) {
-      modalBody.appendChild(el);
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
+      detailBody.appendChild(el);
+      detailOverlay.classList.add('open');
+      detailOverlay.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
     }
   }
 
-  function closeModal() {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    modalBody.innerHTML = '';
+  function closeDetail() {
+    detailOverlay.classList.remove('open');
+    detailOverlay.setAttribute('aria-hidden', 'true');
+    detailBody.innerHTML = '';
     document.body.style.overflow = '';
   }
 
-  // 绑定"打开"按钮
-  opens.forEach((el) => {
-    el.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const type = el.dataset.type;
-      const src = el.dataset.src;
-      if (type && src) openModal(type, src);
+  projectItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const type = item.dataset.type;
+      const src  = item.dataset.src;
+      if (type && src) openDetail(type, src);
     });
   });
 
-  modalClose.addEventListener('click', closeModal);
-  modalBackdrop.addEventListener('click', closeModal);
+  if (detailClose) detailClose.addEventListener('click', closeDetail);
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    if (e.key === 'Escape' && detailOverlay.classList.contains('open')) closeDetail();
   });
 
-  // ============= 复制微信号 =============
+  // ── WeChat Copy ──
   if (copyWechat) {
     copyWechat.addEventListener('click', () => {
       const text = copyWechat.querySelector('.contact-value').textContent.trim();
-      navigator.clipboard?.writeText(text).then(
-        () => {
-          const tip = copyWechat.querySelector('.copy-tip');
-          const old = tip.textContent;
-          tip.textContent = '✓ 已复制';
-          setTimeout(() => (tip.textContent = old), 1800);
-        },
-        () => {
-          // 兜底：旧浏览器
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          document.body.appendChild(ta);
-          ta.select();
-          try { document.execCommand('copy'); } catch (_) {}
-          document.body.removeChild(ta);
-        }
-      );
+      navigator.clipboard?.writeText(text).then(() => {
+        const tip = copyWechat.querySelector('.contact-copy-tip');
+        tip.textContent = '✓ Copied';
+        tip.classList.add('copied');
+        setTimeout(() => {
+          tip.textContent = 'Click to copy';
+          tip.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        document.body.removeChild(ta);
+      });
     });
   }
 
-  // ============= 卡片进入动画 =============
-  const cards = document.querySelectorAll('.card, .timeline-item');
-  const fadeObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          fadeObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1 }
-  );
-  cards.forEach((c) => {
-    c.style.opacity = '0';
-    c.style.transform = 'translateY(20px)';
-    c.style.transition = 'opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s ease, border-color 0.25s ease';
-    fadeObserver.observe(c);
+  // ── Hero Grid Hover Motion (subtle 3D tilt) ──
+  gridItems.forEach((item) => {
+    item.addEventListener('mousemove', (e) => {
+      const rect = item.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      item.style.transform = `scale(1.02) perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+    });
+    item.addEventListener('mouseleave', () => {
+      item.style.transform = '';
+    });
   });
+
 })();

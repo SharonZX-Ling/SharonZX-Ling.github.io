@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>网站修改教程 · Sharon Ling 个人作品集</title>
+  <style>
+    :root {
+      --bg: #FAFAF8;
+      --card: #FFFFFF;
+      --text: #1A1A1A;
+      --text-sub: #6B6B6B;
+      --text-mute: #9B9B9B;
+      --accent: #E94560;
+      --accent-light: #FFF0F2;
+      --border: #ECECEC;
+      --code-bg: #1E1E2E;
+      --code-text: #CDD6F4;
+      --code-comment: #6C7086;
+      --code-key: #F38BA8;
+      --code-str: #A6E3A1;
+      --code-tag: #89B4FA;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 32px 120px;
+    }
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+    h1 .emoji { font-size: 32px; }
+    .subtitle {
+      color: var(--text-sub);
+      font-size: 16px;
+      margin-bottom: 48px;
+    }
+    h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-top: 64px;
+      margin-bottom: 8px;
+      padding-top: 32px;
+      border-top: 2px solid var(--border);
+      letter-spacing: -0.5px;
+    }
+    h2 .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 16px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    h3 {
+      font-size: 19px;
+      font-weight: 700;
+      margin-top: 36px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    p { margin-bottom: 14px; color: var(--text); }
+    .note {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    .note strong { color: var(--accent); }
+    .tip {
+      background: #F0F9EB;
+      border-left: 4px solid #67C23A;
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    .warn {
+      background: #FDF6EC;
+      border-left: 4px solid #E6A23C;
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    ul, ol {
+      margin: 12px 0 16px 20px;
+    }
+    li { margin-bottom: 6px; }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+      background: #F4F3F0;
+      color: var(--accent);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .code-block {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 16px 0;
+      overflow-x: auto;
+      font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+      font-size: 13.5px;
+      line-height: 1.7;
+      position: relative;
+    }
+    .code-block .label {
+      position: absolute;
+      top: 8px;
+      right: 14px;
+      font-size: 11px;
+      color: var(--code-comment);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .code-block .c { color: var(--code-comment); }
+    .code-block .k { color: var(--code-key); }
+    .code-block .s { color: var(--code-str); }
+    .code-block .t { color: var(--code-tag); }
+    .code-block .h { color: #FAB387; }
+    .highlight {
+      background: #FFF3CD;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    .file-path {
+      display: inline-block;
+      background: #EDECE8;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 48px;
+    }
+    .toc h4 {
+      font-size: 14px;
+      color: var(--text-mute);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .toc ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .toc li {
+      margin-bottom: 8px;
+    }
+    .toc a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .toc a:hover { text-decoration: underline; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    th {
+      background: #F4F3F0;
+      font-weight: 700;
+    }
+    .footer {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 2px solid var(--border);
+      text-align: center;
+      color: var(--text-mute);
+      font-size: 14px;
+    }
+    .arrow-down {
+      text-align: center;
+      font-size: 28px;
+      color: var(--text-mute);
+      margin: 12px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <h1><span class="emoji">📖</span> 网站内容修改教程</h1>
+    <p class="subtitle">Sharon Ling 个人作品集 · 从零开始手把手教你改内容</p>
+
+    <div class="toc">
+      <h4>📑 目录</h4>
+      <ol>
+        <li><a href="#prep">修改前的准备</a></li>
+        <li><a href="#structure">认识文件结构</a></li>
+        <li><a href="#text">修改文字内容</a>（姓名、简介、实习经历、项目描述、联系方式）</li>
+        <li><a href="#images">替换 / 添加图片</a></li>
+        <li><a href="#videos">添加视频作品</a>（B站 / YouTube / 本地视频）</li>
+        <li><a href="#pdfs">添加策划案 PDF</a></li>
+        <li><a href="#internship">管理实习经历卡片</a>（增 / 删 / 改 + 官号跳转链接）</li>
+        <li><a href="#projects">管理项目作品卡片</a>（视频 / PDF / 图片 三种类型）</li>
+        <li><a href="#others">管理其他经历</a>（时间线条目）</li>
+        <li><a href="#contact">修改联系方式</a></li>
+        <li><a href="#preview">本地预览</a></li>
+        <li><a href="#push">推送到 GitHub 上线</a></li>
+        <li><a href="#faq">常见问题</a></li>
+      </ol>
+    </div>
+
+    <!-- ==================== 1. 准备 ==================== -->
+    <h2 id="prep"><span class="num">1</span>修改前的准备</h2>
+    <p>你需要一个<strong>代码编辑器</strong>来打开和编辑文件。推荐：</p>
+    <ul>
+      <li><strong>VS Code</strong>（免费，最推荐）→ <a href="https://code.visualstudio.com/">下载地址</a></li>
+      <li>或者直接用<strong>记事本 / Notepad</strong>也能改（但不推荐，没有代码高亮）</li>
+    </ul>
+    <p>安装好编辑器后，用 VS Code 打开整个项目文件夹 <code>D:\Project\SharonZX-Ling.github.io</code></p>
+    <div class="tip">
+      💡 <strong>快捷方式</strong>：在项目文件夹空白处右键 →「Open with Code」即可用 VS Code 打开整个文件夹。
+    </div>
+
+    <!-- ==================== 2. 文件结构 ==================== -->
+    <h2 id="structure"><span class="num">2</span>认识文件结构</h2>
+    <p>你只需要关心以下几个文件：</p>
+    <table>
+      <thead>
+        <tr><th>文件 / 文件夹</th><th>作用</th><th>你需要改吗？</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>index.html</code></td><td>所有文字内容都在这里</td><td>✅ 主要改这个</td></tr>
+        <tr><td><code>css/style.css</code></td><td>样式（颜色、大小、间距）</td><td>一般不用改</td></tr>
+        <tr><td><code>js/main.js</code></td><td>交互逻辑（弹窗、滚动）</td><td>不用改</td></tr>
+        <tr><td><code>assets/images/</code></td><td>存放图片文件</td><td>✅ 放图片到这里</td></tr>
+        <tr><td><code>assets/pdfs/</code></td><td>存放 PDF 文件</td><td>✅ 放 PDF 到这里</td></tr>
+        <tr><td><code>assets/videos/</code></td><td>存放本地视频文件</td><td>可选</td></tr>
+      </tbody>
+    </table>
+    <div class="note">
+      <strong>核心原则：</strong>90% 的修改只需要动 <code>index.html</code> 这一个文件。图片和 PDF 是放到 <code>assets/</code> 文件夹里，然后在 HTML 里引用路径。
+    </div>
+
+    <!-- ==================== 3. 文字 ==================== -->
+    <h2 id="text"><span class="num">3</span>修改文字内容</h2>
+
+    <h3>3.1 修改网站标题</h3>
+    <p>浏览器标签页上显示的文字，在 <code>index.html</code> 第 6 行：</p>
+    <div class="code-block">
+      <span class="label">index.html · 第6行</span>
+<span class="t">&lt;title&gt;</span><span class="s">Sharon Ling · 个人作品集</span><span class="t">&lt;/title&gt;</span>
+    </div>
+    <p>把 <code>Sharon Ling · 个人作品集</code> 改成你想要的标题即可。</p>
+
+    <h3>3.2 修改「About me」个人介绍</h3>
+    <p>在 <code>index.html</code> 中搜索（<code>Ctrl+F</code>）<code>About me</code>，找到大约第 47-73 行：</p>
+    <div class="code-block">
+      <span class="label">index.html · 第47-73行</span>
+<span class="c">&lt;!-- ========== Home ========== --&gt;</span>
+<span class="t">&lt;section</span> <span class="k">id</span>=<span class="s">"home"</span> <span class="k">class</span>=<span class="s">"section"</span><span class="t">&gt;</span>
+  <span class="t">&lt;header</span> <span class="k">class</span>=<span class="s">"section-header"</span><span class="t">&gt;</span>
+    <span class="t">&lt;h2</span> <span class="k">class</span>=<span class="s">"section-title"</span><span class="t">&gt;</span><span class="h">👋 About me</span><span class="t">&lt;/h2&gt;</span>
+    <span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"section-subtitle"</span><span class="t">&gt;</span><span class="h">一个热爱营销与创意的探索者。</span><span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;/header&gt;</span>
+
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card profile-card"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"profile-top"</span><span class="t">&gt;</span>
+      <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"avatar"</span><span class="t">&gt;</span><span class="h">SL</span><span class="t">&lt;/div&gt;</span>  <span class="c">&lt;!-- 头像里的缩写字母 --&gt;</span>
+      <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"profile-info"</span><span class="t">&gt;</span>
+        <span class="t">&lt;h3&gt;</span><span class="h">Sharon Ling</span><span class="t">&lt;/h3&gt;</span>  <span class="c">&lt;!-- 你的名字 --&gt;</span>
+        <span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"profile-tag"</span><span class="t">&gt;</span><span class="h">市场营销 · 内容策划 · 品牌运营</span><span class="t">&lt;/p&gt;</span>  <span class="c">&lt;!-- 职务标签 --&gt;</span>
+      <span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"profile-bio"</span><span class="t">&gt;</span>
+      <span class="h">欢迎来到我的个人作品集。这里记录了我的实习经历、项目作品以及其他成长轨迹。</span>  <span class="c">&lt;!-- 个人简介 --&gt;</span>
+      <span class="h">喜欢用数据讲故事，也喜欢用创意打动人心。</span>
+    <span class="t">&lt;/p&gt;</span>
+    <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"tags"</span><span class="t">&gt;</span>
+      <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"tag"</span><span class="t">&gt;</span><span class="h">品牌策划</span><span class="t">&lt;/span&gt;</span>  <span class="c">&lt;!-- 技能标签，可增减 --&gt;</span>
+      <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"tag"</span><span class="t">&gt;</span><span class="h">内容营销</span><span class="t">&lt;/span&gt;</span>
+      <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"tag"</span><span class="t">&gt;</span><span class="h">短视频</span><span class="t">&lt;/span&gt;</span>
+      <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"tag"</span><span class="t">&gt;</span><span class="h">用户增长</span><span class="t">&lt;/span&gt;</span>
+      <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"tag"</span><span class="t">&gt;</span><span class="h">数据分析</span><span class="t">&lt;/span&gt;</span>
+    <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/section&gt;</span>
+    </div>
+    <div class="tip">
+      <strong>改什么：</strong>把上面标注 <span class="highlight">黄色高亮</span> 的文字部分替换成你自己的内容。HTML 标签（<code>&lt;h3&gt;</code>、<code>&lt;p&gt;</code> 等）不要动。
+    </div>
+
+    <h3>3.3 修改各板块的副标题</h3>
+    <p>每个板块都有一个副标题，例如：</p>
+    <div class="code-block">
+<span class="c">&lt;!-- 实习板块副标题 --&gt;</span>
+<span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"section-subtitle"</span><span class="t">&gt;</span><span class="h">从校园到职场的每一次成长。</span><span class="t">&lt;/p&gt;</span>
+
+<span class="c">&lt;!-- 项目板块副标题 --&gt;</span>
+<span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"section-subtitle"</span><span class="t">&gt;</span><span class="h">从策略到执行，每一个项目的完整闭环。</span><span class="t">&lt;/p&gt;</span>
+    </div>
+
+    <h3>3.4 修改左侧导航栏名称</h3>
+    <p>如果你想把 "About me" 改成中文"主页"，或者换其他名字：</p>
+    <div class="code-block">
+      <span class="label">index.html · 第22-36行</span>
+<span class="t">&lt;a</span> <span class="k">href</span>=<span class="s">"#home"</span> <span class="k">class</span>=<span class="s">"nav-item active"</span> <span class="k">data-target</span>=<span class="s">"home"</span><span class="t">&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"nav-emoji"</span><span class="t">&gt;</span>👋<span class="t">&lt;/span&gt;</span><span class="t">&lt;span&gt;</span><span class="h">About me</span><span class="t">&lt;/span&gt;</span>  <span class="c">&lt;!-- 改这里 --&gt;</span>
+<span class="t">&lt;/a&gt;</span>
+    </div>
+
+    <!-- ==================== 4. 图片 ==================== -->
+    <h2 id="images"><span class="num">4</span>替换 / 添加图片</h2>
+
+    <h3>4.1 把图片放到项目中</h3>
+    <p>把你的图片文件复制到 <code>assets/images/</code> 文件夹里。支持的格式：jpg、png、webp、svg。</p>
+    <div class="warn">
+      ⚠️ <strong>文件名不要用中文</strong>，建议用英文+数字，如 <code>brand-design.jpg</code>、<code>social-media-1.png</code>
+    </div>
+
+    <h3>4.2 替换项目卡片中的图片</h3>
+    <p>在 <code>index.html</code> 中搜索 <code>image-cover</code>，找到项目图片卡片：</p>
+    <div class="code-block">
+      <span class="label">index.html · Projects 板块</span>
+<span class="t">&lt;article</span> <span class="k">class</span>=<span class="s">"card project-card"</span> <span class="k">data-type</span>=<span class="s">"image"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-cover image-cover"</span>
+       <span class="k">data-src</span>=<span class="s">"assets/images/work-1.jpg"</span>
+       <span class="k">style</span>=<span class="s">"background-image:url('assets/images/<span class="h">work-1.jpg</span>')"</span><span class="t">&gt;</span>
+    <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"badge badge-image"</span><span class="t">&gt;</span>图片<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-body"</span><span class="t">&gt;</span>
+    <span class="t">&lt;h3</span> <span class="k">class</span>=<span class="s">"card-title"</span><span class="t">&gt;</span><span class="h">品牌视觉设计</span><span class="t">&lt;/h3&gt;</span>
+    <span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"card-desc"</span><span class="t">&gt;</span><span class="h">某新消费品牌从0到1的视觉体系搭建。</span><span class="t">&lt;/p&gt;</span>
+    <span class="t">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-ghost btn-open"</span>
+            <span class="k">data-type</span>=<span class="s">"image"</span>
+            <span class="k">data-src</span>=<span class="s">"assets/images/<span class="h">work-1.jpg</span>"</span><span class="t">&gt;</span>查看图片<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/article&gt;</span>
+    </div>
+    <p>需要改 <strong>3 个地方</strong>（上图中高亮的部分）：</p>
+    <ol>
+      <li><code>data-src="assets/images/<span class="highlight">work-1.jpg</span>"</code> → 你的图片文件名</li>
+      <li><code>style="background-image:url('assets/images/<span class="highlight">work-1.jpg</span>')"</code> → 同一个图片文件名</li>
+      <li><code>data-src="assets/images/<span class="highlight">work-1.jpg</span>"</code>（按钮上的） → 同一个图片文件名</li>
+    </ol>
+    <div class="note">
+      <strong>三处路径必须一致！</strong>第一处是点击卡片封面打开弹窗用的，第二处是显示缩略图用的，第三处是点击"查看图片"按钮打开弹窗用的。
+    </div>
+
+    <h3>4.3 添加一张新的图片作品</h3>
+    <p>复制一个现有的图片卡片，粘贴在后面，修改内容即可：</p>
+    <div class="code-block">
+      <span class="label">复制这段，改3处路径 + 标题 + 描述</span>
+<span class="t">&lt;article</span> <span class="k">class</span>=<span class="s">"card project-card"</span> <span class="k">data-type</span>=<span class="s">"image"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-cover image-cover"</span>
+       <span class="k">data-src</span>=<span class="s">"assets/images/<span class="h">你的图片名.jpg</span>"</span>
+       <span class="k">style</span>=<span class="s">"background-image:url('assets/images/<span class="h">你的图片名.jpg</span>')"</span><span class="t">&gt;</span>
+    <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"badge badge-image"</span><span class="t">&gt;</span>图片<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-body"</span><span class="t">&gt;</span>
+    <span class="t">&lt;h3</span> <span class="k">class</span>=<span class="s">"card-title"</span><span class="t">&gt;</span><span class="h">作品标题</span><span class="t">&lt;/h3&gt;</span>
+    <span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"card-desc"</span><span class="t">&gt;</span><span class="h">作品描述文字。</span><span class="t">&lt;/p&gt;</span>
+    <span class="t">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-ghost btn-open"</span>
+            <span class="k">data-type</span>=<span class="s">"image"</span>
+            <span class="k">data-src</span>=<span class="s">"assets/images/<span class="h">你的图片名.jpg</span>"</span><span class="t">&gt;</span>查看图片<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/article&gt;</span>
+    </div>
+
+    <!-- ==================== 5. 视频 ==================== -->
+    <h2 id="videos"><span class="num">5</span>添加视频作品</h2>
+
+    <h3>5.1 方式一：B站视频（推荐）</h3>
+    <p>你的视频上传到 B 站后，获取嵌入链接。步骤：</p>
+    <ol>
+      <li>打开你的 B 站视频播放页</li>
+      <li>点击视频下方「分享」→「嵌入代码」</li>
+      <li>复制 <code>src="..."</code> 里面的链接，类似：<code>//player.bilibili.com/player.html?bvid=BV1xx411c7mD</code></li>
+      <li>在前面加上 <code>https:</code>，变成完整链接</li>
+    </ol>
+    <div class="code-block">
+      <span class="label">index.html · 视频项目卡片</span>
+<span class="t">&lt;article</span> <span class="k">class</span>=<span class="s">"card project-card"</span> <span class="k">data-type</span>=<span class="s">"video"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-cover video-cover"</span>
+       <span class="k">data-src</span>=<span class="s">"<span class="h">https://player.bilibili.com/player.html?bvid=BV1xx411c7mD</span>"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"play-icon"</span><span class="t">&gt;</span>▶<span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"badge badge-video"</span><span class="t">&gt;</span>视频<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-body"</span><span class="t">&gt;</span>
+    <span class="t">&lt;h3</span> <span class="k">class</span>=<span class="s">"card-title"</span><span class="t">&gt;</span><span class="h">视频标题</span><span class="t">&lt;/h3&gt;</span>
+    <span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"card-desc"</span><span class="t">&gt;</span><span class="h">视频描述。</span><span class="t">&lt;/p&gt;</span>
+    <span class="t">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-ghost btn-open"</span>
+            <span class="k">data-type</span>=<span class="s">"video"</span>
+            <span class="k">data-src</span>=<span class="s">"<span class="h">https://player.bilibili.com/player.html?bvid=BV1xx411c7mD</span>"</span><span class="t">&gt;</span>观看作品<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/article&gt;</span>
+    </div>
+    <div class="note">
+      <strong>注意：</strong><code>data-src</code> 出现 <strong>2 次</strong>，封面一次、按钮一次，两处链接<strong>必须相同</strong>。
+    </div>
+
+    <h3>5.2 方式二：本地视频文件</h3>
+    <p>把视频放到 <code>assets/videos/</code> 文件夹，然后链接写相对路径：</p>
+    <div class="code-block">
+      <span class="c">&lt;!-- 只需把 data-src 改成本地路径 --&gt;</span>
+<span class="k">data-src</span>=<span class="s">"assets/videos/<span class="h">my-video.mp4</span>"</span>
+    </div>
+    <div class="warn">
+      ⚠️ GitHub Pages 单文件限制 25MB。如果你的视频超过 25MB，建议上传 B 站 / YouTube 用外链方式。
+    </div>
+
+    <h3>5.3 方式三：YouTube 视频</h3>
+    <p>YouTube 嵌入链接格式：</p>
+    <div class="code-block">
+<span class="k">data-src</span>=<span class="s">"https://www.youtube.com/embed/<span class="h">视频ID</span>"</span>
+<span class="c">&lt;!-- 视频ID 在 YouTube 视频地址 v= 后面那串字符 --&gt;</span>
+    </div>
+
+    <!-- ==================== 6. PDF ==================== -->
+    <h2 id="pdfs"><span class="num">6</span>添加策划案 PDF</h2>
+
+    <h3>6.1 放入 PDF 文件</h3>
+    <p>把 PDF 文件复制到 <code>assets/pdfs/</code> 文件夹。同样<strong>不要用中文文件名</strong>。</p>
+
+    <h3>6.2 修改 PDF 项目卡片</h3>
+    <div class="code-block">
+      <span class="label">index.html · PDF 项目卡片</span>
+<span class="t">&lt;article</span> <span class="k">class</span>=<span class="s">"card project-card"</span> <span class="k">data-type</span>=<span class="s">"pdf"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-cover pdf-cover"</span>
+       <span class="k">data-src</span>=<span class="s">"assets/pdfs/<span class="h">x3-case.pdf</span>"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"pdf-icon"</span><span class="t">&gt;</span>📄<span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"badge badge-pdf"</span><span class="t">&gt;</span>PDF<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-body"</span><span class="t">&gt;</span>
+    <span class="t">&lt;h3</span> <span class="k">class</span>=<span class="s">"card-title"</span><span class="t">&gt;</span><span class="h">策划案标题</span><span class="t">&lt;/h3&gt;</span>
+    <span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"card-desc"</span><span class="t">&gt;</span><span class="h">策划案描述。</span><span class="t">&lt;/p&gt;</span>
+    <span class="t">&lt;button</span> <span class="k">class</span>=<span class="s">"btn btn-ghost btn-open"</span>
+            <span class="k">data-type</span>=<span class="s">"pdf"</span>
+            <span class="k">data-src</span>=<span class="s">"assets/pdfs/<span class="h">x3-case.pdf</span>"</span><span class="t">&gt;</span>查看PDF<span class="t">&lt;/button&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/article&gt;</span>
+    </div>
+    <p>把 <code>x3-case.pdf</code> 替换为你的 PDF 文件名（<strong>2 处都要改</strong>）。</p>
+
+    <!-- ==================== 7. 实习 ==================== -->
+    <h2 id="internship"><span class="num">7</span>管理实习经历卡片</h2>
+
+    <h3>7.1 修改现有实习卡片</h3>
+    <p>搜索 <code>intern-card</code>，每一段实习长这样：</p>
+    <div class="code-block">
+      <span class="label">index.html · Internship 板块</span>
+<span class="t">&lt;article</span> <span class="k">class</span>=<span class="s">"card intern-card"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-meta"</span><span class="t">&gt;</span><span class="h">2025.06 - 2025.09</span><span class="t">&lt;/div&gt;</span>  <span class="c">&lt;!-- ① 时间 --&gt;</span>
+  <span class="t">&lt;h3</span> <span class="k">class</span>=<span class="s">"card-title"</span><span class="t">&gt;</span><span class="h">某知名互联网公司 · 品牌营销实习生</span><span class="t">&lt;/h3&gt;</span>  <span class="c">&lt;!-- ② 公司+岗位 --&gt;</span>
+  <span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"card-desc"</span><span class="t">&gt;</span><span class="h">负责品牌Campaign全链路策划……</span><span class="t">&lt;/p&gt;</span>  <span class="c">&lt;!-- ③ 描述 --&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-actions"</span><span class="t">&gt;</span>
+    <span class="c">&lt;!-- ④ 官号跳转链接：把 href 里的网址换成公司官号地址 --&gt;</span>
+    <span class="t">&lt;a</span> <span class="k">href</span>=<span class="s">"<span class="h">https://example.com/official-account</span>"</span>
+       <span class="k">target</span>=<span class="s">"_blank"</span> <span class="k">rel</span>=<span class="s">"noopener"</span>
+       <span class="k">class</span>=<span class="s">"btn btn-primary"</span><span class="t">&gt;</span>
+      跳转官号 <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"arrow"</span><span class="t">&gt;</span>↗<span class="t">&lt;/span&gt;</span>
+    <span class="t">&lt;/a&gt;</span>
+
+    <span class="c">&lt;!-- ⑤ 可选：策划案 PDF 按钮。不需要就删掉这个 &lt;a&gt; 标签 --&gt;</span>
+    <span class="t">&lt;a</span> <span class="k">href</span>=<span class="s">"assets/pdfs/<span class="h">x3-case.pdf</span>"</span>
+       <span class="k">target</span>=<span class="s">"_blank"</span>
+       <span class="k">class</span>=<span class="s">"btn btn-ghost"</span><span class="t">&gt;</span>查看策划案<span class="t">&lt;/a&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/article&gt;</span>
+    </div>
+    <p><strong>需要修改 5 个部分：</strong></p>
+    <table>
+      <thead><tr><th>编号</th><th>内容</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>①</td><td>时间</td><td>格式随意，如 <code>2025.06 - 2025.09</code></td></tr>
+        <tr><td>②</td><td>公司 + 岗位</td><td>如 <code>腾讯 · 品牌营销实习生</code></td></tr>
+        <tr><td>③</td><td>工作描述</td><td>写你做了什么</td></tr>
+        <tr><td>④</td><td>官号跳转链接</td><td>把 <code>href</code> 里的网址换成公司官号（微信公众号文章链接 / 官网 / 微博等）</td></tr>
+        <tr><td>⑤</td><td>策划案 PDF</td><td>可选。不需要就删掉整个 <code>&lt;a&gt;...&lt;/a&gt;</code> 标签</td></tr>
+      </tbody>
+    </table>
+
+    <h3>7.2 添加一段新的实习经历</h3>
+    <p>找到 <code>card-grid</code>（Internship 板块的那个），在最后一个 <code>&lt;/article&gt;</code> 后面粘贴：</p>
+    <div class="code-block">
+      <span class="label">复制此模板，粘贴在上一张卡片后面</span>
+<span class="t">&lt;article</span> <span class="k">class</span>=<span class="s">"card intern-card"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-meta"</span><span class="t">&gt;</span>时间<span class="t">&lt;/div&gt;</span>
+  <span class="t">&lt;h3</span> <span class="k">class</span>=<span class="s">"card-title"</span><span class="t">&gt;</span>公司名 · 岗位<span class="t">&lt;/h3&gt;</span>
+  <span class="t">&lt;p</span> <span class="k">class</span>=<span class="s">"card-desc"</span><span class="t">&gt;</span>工作描述。<span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"card-actions"</span><span class="t">&gt;</span>
+    <span class="t">&lt;a</span> <span class="k">href</span>=<span class="s">"官号链接"</span> <span class="k">target</span>=<span class="s">"_blank"</span> <span class="k">rel</span>=<span class="s">"noopener"</span> <span class="k">class</span>=<span class="s">"btn btn-primary"</span><span class="t">&gt;</span>
+      跳转官号 <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"arrow"</span><span class="t">&gt;</span>↗<span class="t">&lt;/span&gt;</span>
+    <span class="t">&lt;/a&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/article&gt;</span>
+    </div>
+
+    <h3>7.3 删除一段实习经历</h3>
+    <p>删掉对应的整个 <code>&lt;article class="card intern-card"&gt;...&lt;/article&gt;</code> 即可。</p>
+
+    <!-- ==================== 8. 项目 ==================== -->
+    <h2 id="projects"><span class="num">8</span>管理项目作品卡片</h2>
+    <p>项目卡片有 <strong>3 种类型</strong>，区别在于 <code>data-type</code> 的值：</p>
+    <table>
+      <thead><tr><th>类型</th><th>data-type</th><th>弹窗行为</th></tr></thead>
+      <tbody>
+        <tr><td>视频</td><td><code>video</code></td><td>弹窗用 iframe 播放（B站/YT）或 video 标签（mp4）</td></tr>
+        <tr><td>PDF</td><td><code>pdf</code></td><td>弹窗用 iframe 预览 PDF</td></tr>
+        <tr><td>图片</td><td><code>image</code></td><td>弹窗显示大图</td></tr>
+      </tbody>
+    </table>
+    <p>添加新项目的方法：从上面 4-6 节找到对应类型的模板，复制粘贴到 <code>&lt;div class="card-grid two-col"&gt;</code> 里面即可。</p>
+    <div class="tip">
+      💡 项目区域是 <strong>两列布局</strong>，卡片会自动从左到右、从上到下排列，不需要手动控制位置。
+    </div>
+
+    <!-- ==================== 9. 其他经历 ==================== -->
+    <h2 id="others"><span class="num">9</span>管理其他经历（时间线）</h2>
+
+    <h3>9.1 修改现有条目</h3>
+    <p>搜索 <code>timeline-item</code>，每一条长这样：</p>
+    <div class="code-block">
+      <span class="label">index.html · Others 板块</span>
+<span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"timeline-item"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"timeline-dot"</span><span class="t">&gt;&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"timeline-content"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"timeline-date"</span><span class="t">&gt;</span><span class="h">2025</span><span class="t">&lt;/div&gt;</span>  <span class="c">&lt;!-- 年份 --&gt;</span>
+    <span class="t">&lt;h3&gt;</span><span class="h">全国大学生广告艺术大赛 · 省级一等奖</span><span class="t">&lt;/h3&gt;</span>  <span class="c">&lt;!-- 标题 --&gt;</span>
+    <span class="t">&lt;p&gt;</span><span class="h">担任团队策略负责人，作品获得评委高度认可。</span><span class="t">&lt;/p&gt;</span>  <span class="c">&lt;!-- 描述 --&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+    </div>
+
+    <h3>9.2 添加新条目</h3>
+    <div class="code-block">
+      <span class="label">复制此模板，粘贴在最后一个 timeline-item 后面</span>
+<span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"timeline-item"</span><span class="t">&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"timeline-dot"</span><span class="t">&gt;&lt;/div&gt;</span>
+  <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"timeline-content"</span><span class="t">&gt;</span>
+    <span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"timeline-date"</span><span class="t">&gt;</span>年份<span class="t">&lt;/div&gt;</span>
+    <span class="t">&lt;h3&gt;</span>标题<span class="t">&lt;/h3&gt;</span>
+    <span class="t">&lt;p&gt;</span>描述。<span class="t">&lt;/p&gt;</span>
+  <span class="t">&lt;/div&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+    </div>
+
+    <!-- ==================== 10. 联系方式 ==================== -->
+    <h2 id="contact"><span class="num">10</span>修改联系方式</h2>
+    <p>搜索 <code>contact-grid</code>，找到联系板块：</p>
+    <div class="code-block">
+      <span class="label">index.html · Contact 板块</span>
+<span class="c">&lt;!-- 邮箱 --&gt;</span>
+<span class="t">&lt;a</span> <span class="k">href</span>=<span class="s">"mailto:<span class="h">sharon@example.com</span>"</span> <span class="k">class</span>=<span class="s">"contact-item"</span><span class="t">&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-icon"</span><span class="t">&gt;</span>✉️<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-label"</span><span class="t">&gt;</span>邮箱<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-value"</span><span class="t">&gt;</span><span class="h">sharon@example.com</span><span class="t">&lt;/span&gt;</span>
+<span class="t">&lt;/a&gt;</span>
+
+<span class="c">&lt;!-- 微信（点击复制） --&gt;</span>
+<span class="t">&lt;div</span> <span class="k">class</span>=<span class="s">"contact-item"</span> <span class="k">id</span>=<span class="s">"copyWechat"</span><span class="t">&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-icon"</span><span class="t">&gt;</span>💬<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-label"</span><span class="t">&gt;</span>微信<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-value"</span><span class="t">&gt;</span><span class="h">sharon_ling</span><span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"copy-tip"</span><span class="t">&gt;</span>点击复制<span class="t">&lt;/span&gt;</span>
+<span class="t">&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- 小红书 --&gt;</span>
+<span class="t">&lt;a</span> <span class="k">href</span>=<span class="s">"<span class="h">https://www.xiaohongshu.com</span>"</span> <span class="k">target</span>=<span class="s">"_blank"</span> <span class="k">rel</span>=<span class="s">"noopener"</span> <span class="k">class</span>=<span class="s">"contact-item"</span><span class="t">&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-icon"</span><span class="t">&gt;</span>📕<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-label"</span><span class="t">&gt;</span>小红书<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-value"</span><span class="t">&gt;</span><span class="h">@Sharon的市场笔记</span><span class="t">&lt;/span&gt;</span>
+<span class="t">&lt;/a&gt;</span>
+
+<span class="c">&lt;!-- B站 --&gt;</span>
+<span class="t">&lt;a</span> <span class="k">href</span>=<span class="s">"<span class="h">https://space.bilibili.com</span>"</span> <span class="k">target</span>=<span class="s">"_blank"</span> <span class="k">rel</span>=<span class="s">"noopener"</span> <span class="k">class</span>=<span class="s">"contact-item"</span><span class="t">&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-icon"</span><span class="t">&gt;</span>📺<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-label"</span><span class="t">&gt;</span>B站<span class="t">&lt;/span&gt;</span>
+  <span class="t">&lt;span</span> <span class="k">class</span>=<span class="s">"contact-value"</span><span class="t">&gt;</span><span class="h">@SharonLing</span><span class="t">&lt;/span&gt;</span>
+<span class="t">&lt;/a&gt;</span>
+    </div>
+    <p>修改要点：</p>
+    <ul>
+      <li><strong>邮箱：</strong>改 <code>mailto:</code> 后面的地址 + 显示文字（2 处）</li>
+      <li><strong>微信：</strong>只改 <code>contact-value</code> 里的微信号即可，点击复制功能自动生效</li>
+      <li><strong>小红书 / B站：</strong>改 <code>href</code> 链接 + 显示名称</li>
+      <li><strong>删除某个联系方式：</strong>删掉对应的 <code>&lt;a&gt;...&lt;/a&gt;</code> 或 <code>&lt;div&gt;...&lt;/div&gt;</code></li>
+    </ul>
+
+    <!-- ==================== 11. 本地预览 ==================== -->
+    <h2 id="preview"><span class="num">11</span>本地预览（改完先看效果再上线）</h2>
+    <p>修改完文件后，在浏览器里先预览确认效果：</p>
+    <h3>方法一：直接打开</h3>
+    <p>双击 <code>index.html</code> 文件，它会用默认浏览器打开。但<strong>部分功能（PDF 预览）可能无法显示</strong>，因为浏览器安全策略限制了本地文件访问。</p>
+    <h3>方法二：启动本地服务器（推荐）</h3>
+    <p>在项目文件夹打开终端（VS Code 菜单 → Terminal → New Terminal），运行：</p>
+    <div class="code-block">
+      <span class="label">终端命令</span>
+<span class="k">python</span> -m http.server <span class="s">8080</span>
+    </div>
+    <p>然后浏览器访问 <code>http://localhost:8080</code> 即可。所有功能（包括 PDF 预览）都能正常工作。</p>
+    <div class="tip">
+      💡 按 <code>Ctrl+C</code> 可以停止服务器。修改文件后刷新浏览器即可看到更新。
+    </div>
+
+    <!-- ==================== 12. Push ==================== -->
+    <h2 id="push"><span class="num">12</span>推送到 GitHub 上线</h2>
+    <p>改完确认没问题后，推送到 GitHub：</p>
+    <h3>方法一：让我帮你 push</h3>
+    <p>直接在对话里说"帮我 push"，我会帮你提交并推送到 GitHub。</p>
+
+    <h3>方法二：自己用命令行 push</h3>
+    <div class="code-block">
+      <span class="label">在项目文件夹打开终端，依次运行</span>
+<span class="c"># 1. 添加所有改动</span>
+<span class="k">git</span> add .
+
+<span class="c"># 2. 提交，引号里写这次改了什么</span>
+<span class="k">git</span> commit -m <span class="s">"update: 更新实习经历和项目内容"</span>
+
+<span class="c"># 3. 推送到 GitHub</span>
+<span class="k">git</span> push origin main
+    </div>
+    <div class="note">
+      <strong>推送后多久上线？</strong>通常 1-2 分钟后 GitHub Pages 会自动构建完成。访问 <code>https://SharonZX-Ling.github.io/</code> 刷新查看。如果没变化，按 <code>Ctrl+Shift+R</code> 强制刷新清缓存。
+    </div>
+
+    <!-- ==================== 13. FAQ ==================== -->
+    <h2 id="faq"><span class="num">13</span>常见问题</h2>
+
+    <h3>Q: 图片显示不出来 / 显示空白？</h3>
+    <p>检查 3 点：</p>
+    <ol>
+      <li>图片确实放在 <code>assets/images/</code> 文件夹里了</li>
+      <li>HTML 里的文件名和实际文件名<strong>完全一致</strong>（包括大小写、后缀名）</li>
+      <li>文件名没有中文、没有空格</li>
+    </ol>
+
+    <h3>Q: B站视频弹窗打不开 / 白屏？</h3>
+    <p>B站的嵌入链接需要以 <code>https://player.bilibili.com/player.html?bvid=</code> 开头。确认你复制的链接格式正确。另外部分浏览器可能拦截 iframe，检查是否有弹窗拦截提示。</p>
+
+    <h3>Q: PDF 预览打不开？</h3>
+    <p>本地直接打开 HTML 时 PDF 可能无法预览（浏览器安全限制）。用本地服务器方式预览即可（见第 11 节）。线上 GitHub Pages 不受此限制。</p>
+
+    <h3>Q: 改完之后网站没变化？</h3>
+    <ol>
+      <li>确认你已经 <code>git push</code> 了</li>
+      <li>等 1-2 分钟让 GitHub Pages 构建完成</li>
+      <li>浏览器 <code>Ctrl+Shift+R</code> 强制刷新</li>
+      <li>还不行就去 <a href="https://github.com/SharonZX-Ling/SharonZX-Ling.github.io/actions">GitHub Actions</a> 看有没有构建报错</li>
+    </ol>
+
+    <h3>Q: 我改错了，想撤销怎么办？</h3>
+    <p>在 VS Code 里按 <code>Ctrl+Z</code> 撤销编辑。如果已经 push 了，告诉我"帮我回退到之前的版本"，我可以帮你用 git 回退。</p>
+
+    <h3>Q: 想改颜色 / 字体 / 布局怎么办？</h3>
+    <p>这些在 <code>css/style.css</code> 里。比如改主题色，搜索 <code>--accent</code>：</p>
+    <div class="code-block">
+      <span class="label">css/style.css · 第18行</span>
+<span class="k">--accent</span>: <span class="s">#E94560</span>;  <span class="c">/* 改成你喜欢的颜色，如蓝色 #3B82F6 */</span>
+    </div>
+
+    <div class="footer">
+      <p>📖 以上就是完整的修改教程。有不清楚的地方随时问我。</p>
+      <p>Sharon Ling · 个人作品集网站</p>
+    </div>
+
+  </div>
+</body>
+</html>
