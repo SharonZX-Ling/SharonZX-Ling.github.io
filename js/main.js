@@ -38,9 +38,9 @@
   }, 80);
 
   function revealGrid() {
-    // Staggered grid reveal — center-out rhythm for cinematic feel
-    const order = [0, 3, 1, 5, 2, 7, 4, 6, 8]; // asymmetric reveal order
-    const staggerBase = 90; // ms between each item
+    // Staggered grid reveal — center-out rhythm for cinematic feel (8 items)
+    const order = [0, 3, 1, 6, 2, 5, 4, 7]; // asymmetric reveal order
+    const staggerBase = 100; // ms between each item
     order.forEach((gridIndex, sequencePos) => {
       const item = gridItems[gridIndex];
       if (item) {
