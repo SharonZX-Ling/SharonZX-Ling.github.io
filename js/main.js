@@ -1,5 +1,5 @@
 /* ============================================
-   Sharon Ling · Portfolio · Cinematic Edition
+   ZiXun Ling · Portfolio · Cinematic Edition
    Hero Grid Animation · Scroll Reveal · Detail Overlay
 ============================================ */
 
@@ -38,16 +38,20 @@
   }, 80);
 
   function revealGrid() {
-    // Staggered grid reveal
-    const staggerBase = 80; // ms between each item
-    gridItems.forEach((item, i) => {
-      setTimeout(() => {
-        item.classList.add('revealed');
-      }, staggerBase * i);
+    // Staggered grid reveal — center-out rhythm for cinematic feel
+    const order = [0, 3, 1, 5, 2, 7, 4, 6, 8]; // asymmetric reveal order
+    const staggerBase = 90; // ms between each item
+    order.forEach((gridIndex, sequencePos) => {
+      const item = gridItems[gridIndex];
+      if (item) {
+        setTimeout(() => {
+          item.classList.add('revealed');
+        }, staggerBase * sequencePos);
+      }
     });
 
     // Overlay text reveal after grid is mostly in
-    const overlayDelay = staggerBase * gridItems.length * 0.5 + 200;
+    const overlayDelay = staggerBase * order.length * 0.6 + 200;
     setTimeout(() => {
       heroOverlay.classList.add('revealed');
     }, overlayDelay);
