@@ -228,19 +228,19 @@
       ]
     },
     {
-      date: '2024.12 — 2025.03',
-      company: '某 MCN 机构 · 内容运营实习生',
-      brief: '参与头部账号的内容策划与投放优化，输出多条播放量破百万的爆款选题。',
+      date: '2026.03 — 2026.05',
+      company: 'OPPO · 营销策划实习生',
+      brief: '在OPPO Find X9s Pro与Find X9 Ultra新品首销期，围绕新品传播需求，参与UGC内容营销项目全周期运营，通过用户共创内容强化产品认知与社区传播。',
       overview: {
-        background: '服务多个千万级粉丝达人账号，覆盖生活方式与泛知识赛道。',
-        role: '内容运营实习生，负责选题策划、脚本撰写与投放数据追踪。',
-        goal: '提升账号互动率与粉丝增长，建立可复制的内容方法论。'
+        background: '新品上市阶段，需要通过真实用户内容激发用户参与，构建以用户体验为核心的内容传播生态。',
+        role: '作为营销策划实习生，参与【晒新机】与【O游世界】线上活动策划与运营，负责活动选题策划、Brief撰写、内容模板设计及数据复盘，推动UGC内容生产与传播落地。',
+        goal: '围绕产品核心卖点挖掘用户表达场景，将"产品功能"转化为"用户体验"，提升新品口碑与社区影响力。'
       },
       media: [
         // { type: 'image', src: 'assets/images/hero_2.jpg', label: '内容矩阵' },
       ],
       links: [
-        { label: '官方账号 ↗', url: 'https://example.com/mcn', type: 'accent' },
+        { label: '官方账号 ↗', url: 'https://www.xiaohongshu.com/discovery/item/69e84fd5000000001a037842?source=webshare&xhsshare=pc_web&xsec_token=ABtwUOJTrvVvkuKqMH0kI9HIU44zgfMoq1mAPdSb9Ryc4=&xsec_source=pc_share', type: 'accent' },
       ]
     },
     {
