@@ -95,9 +95,10 @@
     "items": [
       {
         "title": "《摆针》",
-        "subtitle": "微电影",
+        "type": "Micro Film Production",
         "role": "副导演 / 后期",
         "duration": "2025.03 — 2025.06",
+        "cover": "assets/images/projects/baizhen/cover.jpg",
         "intro": "参与微电影《摆针》从前期筹备到后期制作的完整流程，负责团队组建、现场统筹及后期剪辑包装，推动影片从创意构想到最终成片落地。",
         "contributions": [
           "前期剧本讨论与创作准备",
@@ -122,9 +123,10 @@
       },
       {
         "title": "《香魂》",
-        "subtitle": "纪录片",
+        "type": "Documentary Production",
         "role": "中方制片人",
         "duration": "2025.04",
+        "cover": "assets/images/projects/xianghun/cover.jpg",
         "intro": "参与\u201c看中国\u00b7外国青年影像计划\u201d，与海外青年导演合作完成非遗主题纪录片制作，负责跨文化沟通、拍摄协调及后期协作，推动纪录片完成从创作到传播的全过程。",
         "contributions": [
           "中外团队沟通协调",

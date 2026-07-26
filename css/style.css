@@ -749,158 +749,226 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 /* ============================================
-   PROJECTS — Film Portfolio
+   PROJECTS — Film Portfolio Accordion
 ============================================ */
 .film-portfolio {
   display: flex;
   flex-direction: column;
-  gap: 100px;
 }
 
-/* ── Project Case ── */
+/* ── Film Case Card ── */
 .film-case {
+  border-bottom: 1px solid var(--border);
   position: relative;
+  overflow: hidden;
+  transition: border-color 0.4s var(--ease-out-expo);
 }
 
-/* ── Project Hero ── */
-.film-hero {
+.film-case:first-child { border-top: 1px solid var(--border); }
+.film-case:last-child { border-bottom: 1px solid var(--border); }
+
+/* ── Header (always visible, clickable) ── */
+.film-case-header {
   position: relative;
   width: 100%;
-  aspect-ratio: 21 / 9;
+  height: 320px;
   background-size: cover;
   background-position: center;
   border-radius: var(--radius-lg);
+  cursor: pointer;
   overflow: hidden;
-  margin-bottom: 48px;
-  display: flex;
-  align-items: flex-end;
-  min-height: 380px;
+  transition: height 0.6s var(--ease-out-expo), border-radius 0.4s ease;
+  margin: 36px 0;
 }
 
-/* Placeholder gradient when no hero image */
-.film-hero.film-hero-placeholder {
-  background: linear-gradient(135deg,
-    #0A0A14 0%, #121020 30%, #1A1625 60%, #0E0A18 100%);
+/* Placeholder gradient when no cover image */
+.film-case-header-placeholder {
+  background: linear-gradient(135deg, #0A0A14 0%, #121020 30%, #1A1625 60%, #0E0A18 100%);
 }
 
-.film-hero-mask {
+.film-case-header-mask {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(0,0,0,0.85) 0%,
-    rgba(0,0,0,0.4) 45%,
-    rgba(0,0,0,0.15) 100%
+    rgba(0,0,0,0.88) 0%,
+    rgba(0,0,0,0.45) 50%,
+    rgba(0,0,0,0.2) 100%
   );
   pointer-events: none;
+  transition: background 0.5s ease;
 }
 
-.film-hero-content {
-  position: relative;
+.film-case-header:hover .film-case-header-mask {
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.8) 0%,
+    rgba(0,0,0,0.35) 50%,
+    rgba(0,0,0,0.15) 100%
+  );
+}
+
+.film-case.active .film-case-header {
+  height: 380px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* ── Header Content ── */
+.film-case-header-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 36px 40px;
   z-index: 2;
-  padding: 48px;
-  width: 100%;
 }
 
-.film-hero-type {
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 12px;
-  font-weight: 600;
-}
-
-.film-hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 5vw, 64px);
-  font-weight: 900;
-  letter-spacing: -1px;
-  line-height: 1.1;
-  margin-bottom: 20px;
-}
-
-.film-hero-meta {
-  display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
-}
-
-.film-hero-detail {
-  font-size: 13px;
-  color: var(--text-sub);
-  display: flex;
-  gap: 8px;
-}
-
-.film-hero-detail span:first-child {
-  color: var(--text-muted);
-  letter-spacing: 1px;
-}
-
-.film-hero-detail span:last-child {
-  color: var(--text);
-  font-weight: 500;
-}
-
-/* ── Project Body ── */
-.film-body {
-  max-width: 720px;
-}
-
-.film-section {
-  margin-bottom: 52px;
-}
-
-.film-section:last-child { margin-bottom: 0; }
-
-.film-section-label {
+.film-case .film-case-type {
   font-size: 11px;
   letter-spacing: 2.5px;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   font-weight: 600;
 }
 
-.film-section p {
-  color: var(--text-sub);
-  font-size: 15px;
-  line-height: 1.8;
+.film-case .film-case-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin-bottom: 14px;
+  transition: color 0.3s ease;
 }
 
-/* ── Contributions ── */
-.film-contributions {
+.film-case-header:hover .film-case-title { color: var(--accent); }
+.film-case.active .film-case-title { color: var(--accent); }
+
+.film-case-meta {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.film-case-meta-item {
+  font-size: 12px;
+  color: var(--text-sub);
+  letter-spacing: 0.5px;
+}
+
+.film-case-meta-item span:first-child {
+  color: var(--text-muted);
+  margin-right: 6px;
+}
+
+.film-case-meta-item span:last-child {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ── Toggle Button ── */
+.film-case-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.5s var(--ease-out-expo), background 0.3s ease, border-color 0.3s ease;
+}
+
+.film-case-header:hover .film-case-toggle {
+  background: rgba(0,0,0,0.65);
+  border-color: rgba(255,255,255,0.25);
+}
+
+.film-case.active .film-case-toggle {
+  transform: rotate(45deg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Expandable Body ── */
+.film-case-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.6s var(--ease-out-expo),
+              opacity 0.45s ease 0.1s;
+}
+
+.film-case.active .film-case-body {
+  max-height: 3200px;
+  opacity: 1;
+}
+
+.film-case-body-inner {
+  padding: 0 40px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+/* ── 1. Overview ── */
+.film-ov-label {
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.film-ov-intro {
+  color: var(--text-sub);
+  font-size: 15px;
+  line-height: 1.75;
+  max-width: 640px;
+}
+
+/* ── 2. My Contribution ── */
+.film-contrib-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
+  margin-top: 14px;
 }
 
-.film-contrib-item {
-  padding: 14px 18px;
+.film-contrib-card {
+  padding: 16px 20px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font-size: 13px;
   color: var(--text-sub);
   line-height: 1.5;
-  transition: border-color 0.3s ease, color 0.3s ease;
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
 }
 
-.film-contrib-item:hover {
+.film-contrib-card:hover {
   border-color: var(--accent-dim);
   color: var(--text);
+  background: var(--surface);
 }
 
-/* ── Visual Gallery ── */
-.film-gallery {
-  max-width: 100%;
-  margin-left: 0;
-}
+/* ── 3. Visual Gallery ── */
+.film-gallery-section { }
 
 .film-gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
+  margin-top: 14px;
 }
 
 .film-gallery-item {
@@ -910,11 +978,11 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   overflow: hidden;
   cursor: pointer;
   background: var(--surface);
-  transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s ease;
+  transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s ease;
 }
 
 .film-gallery-item:hover {
-  transform: scale(1.02);
+  transform: scale(1.025);
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 
@@ -928,13 +996,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .film-gallery-item img.loaded { opacity: 1; }
 
-/* Placeholder gradient */
 .film-gallery-placeholder {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: flex-end;
-  padding: 16px;
+  padding: 14px 16px;
 }
 
 .film-gallery-caption {
@@ -943,17 +1010,16 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   line-height: 1.4;
 }
 
-/* ── Achievements ── */
-.film-achievements {
+/* ── 4. Achievements ── */
+.film-achieve-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  max-width: 100%;
-  margin-left: 0;
+  margin-top: 14px;
 }
 
 .film-achieve-card {
-  padding: 20px 24px;
+  padding: 18px 22px;
   background: var(--surface);
   border-radius: var(--radius);
   border-left: 3px solid var(--accent);
@@ -964,7 +1030,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 /* ============================================
-   IMAGE LIGHTBOX (gallery clicking)
+   IMAGE LIGHTBOX
 ============================================ */
 .lightbox {
   position: fixed;
@@ -1058,16 +1124,17 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .film-portfolio { gap: 64px; }
-  .film-hero { aspect-ratio: 16 / 9; min-height: 240px; }
-  .film-hero-content { padding: 28px; }
-  .film-hero-title { font-size: 28px; }
-  .film-hero-meta { gap: 16px; }
+  .film-case-header { height: 240px; }
+  .film-case.active .film-case-header { height: 280px; }
+  .film-case-header-content { padding: 24px; }
+  .film-case .film-case-title { font-size: 24px; }
+  .film-case-body-inner { padding: 0 20px 40px; }
   .film-gallery-grid { grid-template-columns: repeat(2, 1fr); }
-  .film-achievements { grid-template-columns: 1fr; }
-  .film-contributions { grid-template-columns: repeat(2, 1fr); }
+  .film-achieve-grid { grid-template-columns: 1fr; }
+  .film-contrib-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ============================================
 /* ============================================
    TIMELINE (Others)
 ============================================ */

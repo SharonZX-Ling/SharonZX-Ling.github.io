@@ -326,87 +326,94 @@
 
     const container = document.querySelector('#projects .project-grid');
     if (!container) return;
-    // Change to film-portfolio container
     container.className = 'film-portfolio';
     container.innerHTML = '';
 
     // Gallery color palettes for placeholders
     const palettes = [
-      ['#1A1A2E', '#2D1B4E', '#16213E'],
-      ['#1A2E1A', '#2E1A1A', '#1A1A2E'],
-      ['#2E2A1A', '#1A2E2A', '#1E1A2E'],
-      ['#1E1A1A', '#2A1E2A', '#1A2A3E'],
-      ['#1A2A3E', '#2D1B2E', '#1A1A2E'],
+      ['#1A1A2E', '#2D1B4E'],
+      ['#1A2E1A', '#2E1A1A'],
+      ['#2E2A1A', '#1A2E2A'],
+      ['#1E1A1A', '#2A1E2A'],
+      ['#1A2A3E', '#2D1B2E'],
     ];
 
-    projects.items.forEach((item) => {
+    projects.items.forEach((item, index) => {
       const filmCase = document.createElement('div');
       filmCase.className = 'film-case reveal-item';
 
-      // ── Hero ──
-      const hero = document.createElement('div');
-      if (item.heroImage) {
-        hero.className = 'film-hero';
-        hero.style.backgroundImage = `url('${item.heroImage}')`;
+      // ── Header (clickable cover card) ──
+      const header = document.createElement('div');
+      if (item.cover) {
+        header.className = 'film-case-header';
+        header.style.backgroundImage = `url('${item.cover}')`;
       } else {
-        hero.className = 'film-hero film-hero-placeholder';
+        header.className = 'film-case-header film-case-header-placeholder';
       }
 
       const mask = document.createElement('div');
-      mask.className = 'film-hero-mask';
+      mask.className = 'film-case-header-mask';
 
-      const heroContent = document.createElement('div');
-      heroContent.className = 'film-hero-content';
-      heroContent.innerHTML = `
-        <div class="film-hero-type">${item.subtitle || ''}</div>
-        <h3 class="film-hero-title">${item.title}</h3>
-        <div class="film-hero-meta">
-          <div class="film-hero-detail"><span>Role</span><span>${item.role || ''}</span></div>
-          <div class="film-hero-detail"><span>Duration</span><span>${item.duration || ''}</span></div>
+      const content = document.createElement('div');
+      content.className = 'film-case-header-content';
+      content.innerHTML = `
+        <div class="film-case-type">${item.type || ''}</div>
+        <h3 class="film-case-title">${item.title}</h3>
+        <div class="film-case-meta">
+          <div class="film-case-meta-item"><span>Role</span><span>${item.role || ''}</span></div>
+          <div class="film-case-meta-item"><span>Duration</span><span>${item.duration || ''}</span></div>
         </div>
       `;
 
-      hero.appendChild(mask);
-      hero.appendChild(heroContent);
-      filmCase.appendChild(hero);
+      // Toggle button
+      const toggle = document.createElement('div');
+      toggle.className = 'film-case-toggle';
+      toggle.textContent = '+';
 
-      // ── Body ──
+      header.appendChild(mask);
+      header.appendChild(content);
+      header.appendChild(toggle);
+
+      // ── Expandable Body ──
       const body = document.createElement('div');
-      body.className = 'film-body';
+      body.className = 'film-case-body';
 
-      // Overview
+      const bodyInner = document.createElement('div');
+      bodyInner.className = 'film-case-body-inner';
+
+      // 1. Overview
       if (item.intro) {
         const ov = document.createElement('div');
-        ov.className = 'film-section';
+        ov.className = 'film-ov-section';
         ov.innerHTML = `
-          <div class="film-section-label">Overview</div>
-          <p>${item.intro}</p>
+          <div class="film-ov-label">Project Overview</div>
+          <p class="film-ov-intro">${item.intro}</p>
         `;
-        body.appendChild(ov);
+        bodyInner.appendChild(ov);
       }
 
-      // My Contribution
+      // 2. My Contribution
       if (item.contributions && item.contributions.length > 0) {
         const contrib = document.createElement('div');
-        contrib.className = 'film-section';
+        contrib.className = 'film-contrib-section';
         const contribGrid = document.createElement('div');
-        contribGrid.className = 'film-contributions';
+        contribGrid.className = 'film-contrib-grid';
         item.contributions.forEach((c) => {
           const div = document.createElement('div');
-          div.className = 'film-contrib-item';
+          div.className = 'film-contrib-card';
           div.textContent = c;
           contribGrid.appendChild(div);
         });
-        contrib.innerHTML = '<div class="film-section-label">My Contribution</div>';
+        contrib.innerHTML = '<div class="film-ov-label">My Contribution</div>';
         contrib.appendChild(contribGrid);
-        body.appendChild(contrib);
+        bodyInner.appendChild(contrib);
       }
 
-      // Visual Gallery
+      // 3. Visual Gallery
       if (item.gallery && item.gallery.length > 0) {
         const gallerySection = document.createElement('div');
-        gallerySection.className = 'film-section film-gallery';
-        gallerySection.innerHTML = '<div class="film-section-label">Visual Gallery</div>';
+        gallerySection.className = 'film-gallery-section';
+        gallerySection.innerHTML = '<div class="film-ov-label">Visual Gallery</div>';
 
         const galleryGrid = document.createElement('div');
         galleryGrid.className = 'film-gallery-grid';
@@ -414,8 +421,6 @@
         item.gallery.forEach((g, gIdx) => {
           const gItem = document.createElement('div');
           gItem.className = 'film-gallery-item';
-
-          // Placeholder gradient
           const palette = palettes[gIdx % palettes.length];
           gItem.style.background = `linear-gradient(135deg, ${palette[0]} 0%, ${palette[1]} 100%)`;
 
@@ -432,27 +437,39 @@
         });
 
         gallerySection.appendChild(galleryGrid);
-        body.appendChild(gallerySection);
+        bodyInner.appendChild(gallerySection);
       }
 
-      // Achievements
+      // 4. Achievements
       if (item.achievements && item.achievements.length > 0) {
         const achieveSection = document.createElement('div');
-        achieveSection.className = 'film-section';
+        achieveSection.className = 'film-achieve-section';
         const achieveGrid = document.createElement('div');
-        achieveGrid.className = 'film-achievements';
+        achieveGrid.className = 'film-achieve-grid';
         item.achievements.forEach((a) => {
           const card = document.createElement('div');
           card.className = 'film-achieve-card';
           card.textContent = a;
           achieveGrid.appendChild(card);
         });
-        achieveSection.innerHTML = '<div class="film-section-label">Achievements</div>';
+        achieveSection.innerHTML = '<div class="film-ov-label">Achievements</div>';
         achieveSection.appendChild(achieveGrid);
-        body.appendChild(achieveSection);
+        bodyInner.appendChild(achieveSection);
       }
 
+      body.appendChild(bodyInner);
+      filmCase.appendChild(header);
       filmCase.appendChild(body);
+
+      // ── Click to toggle ──
+      header.addEventListener('click', () => {
+        const isActive = filmCase.classList.contains('active');
+        // Close all others
+        container.querySelectorAll('.film-case').forEach((c) => c.classList.remove('active'));
+        // Open this one if it was closed
+        if (!isActive) filmCase.classList.add('active');
+      });
+
       container.appendChild(filmCase);
     });
   }
@@ -740,7 +757,7 @@
       { rootMargin: '200px' }
     );
     document.querySelectorAll('.film-gallery-item').forEach((item) => lazyObserver.observe(item));
-    document.querySelectorAll('.film-hero').forEach((item) => {
+    document.querySelectorAll('.film-case-header').forEach((item) => {
       if (item.style.backgroundImage) lazyObserver.observe(item);
     });
 
