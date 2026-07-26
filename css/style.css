@@ -641,8 +641,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 /* ── D. Feature Showcase (product demo — vertical phone ratio) ── */
 .case-features {
   display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
+  gap: 24px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .case-feature {
@@ -741,6 +742,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
     gap: 20px;
   }
   .case-features {
+    flex-wrap: wrap;
     justify-content: center;
     gap: 24px;
   }
