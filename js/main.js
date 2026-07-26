@@ -244,20 +244,18 @@
       ]
     },
     {
-      date: '2024.07 — 2024.10',
-      company: '某 4A 广告公司 · AE 实习生',
-      brief: '协助客户经理跟进快消客户项目，负责Brief拆解、提案准备与结案报告。',
+      date: '2026.01 — 2026.02',
+      company: '芒果TV · 海外内容运营实习生',
+      brief: '参与海外内容运营与AIGC视频生产全流程，探索AI工具赋能视频创作，并参与纪录片制作与海外传播。',
       overview: {
-        background: '服务国际快消品牌的中国区市场传播项目，涉及多渠道整合营销。',
-        role: 'AE实习生，协助需求拆解、创意brief撰写、提案物料准备与项目协调。',
-        goal: '确保项目按时高质量交付，建立客户对团队的信任。'
+        background: '探索AIGC技术在内容生产中的应用，提升视频包装效率，助力优质内容海外传播。',
+        role: '参与纪录片《狮子山下的年轻人》制作及AI视频包装工作，负责素材协作、内容包装、海外传播文案撰写与工具优化反馈。',
+        goal: '通过技术赋能与内容运营，提升内容生产效率，推动优质内容触达海外用户。'
       },
       media: [
-        // { type: 'image', src: 'assets/images/hero_3.jpg', label: '提案现场' },
+        { type: 'youtube', src: 'https://www.youtube.com/embed/88ToBh2m-Eg?si=nvfqxoNlpD8XZPDp', label: '纪录片《狮子山下的年轻人》' },
       ],
-      links: [
-        { label: '官方账号 ↗', url: 'https://example.com/4a', type: 'accent' },
-      ]
+      links: []
     },
   ];
 
