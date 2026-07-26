@@ -1,0 +1,150 @@
+{
+  "hero": {
+    "name": "凌子洵",
+    "nameEn": "ZiXun Ling",
+    "role": "Marketing · Content · Brand",
+    "tagline": "探索品牌与用户之间的连接"
+  },
+
+  "about": {
+    "bio": [
+      "我始终对人的故事保持好奇。",
+      "影视创作与心理学学习，让我不断探索人与情感、人与内容之间的连接。",
+      "如今，我将这种对人的理解延伸至商业领域，通过内容策略与用户洞察，让品牌故事被更多人看见。"
+    ],
+    "tags": ["品牌策划", "内容营销", "市场调研", "营销策划", "数据分析"],
+    "sidebar": {
+      "Name": "凌子洵 ZiXun Ling",
+      "Focus": "市场 · 品牌 · 内容",
+      "Based": "China"
+    }
+  },
+
+  "internship": {
+    "subtitle": "从校园到职场的每一次成长。",
+    "items": [
+      {
+        "date": "2026.06 — 2026.09",
+        "company": "叠纸 · 恋与深空 · 品牌营销策划实习生",
+        "brief": "参与6月17日恋与深空【电影卡】版本的品牌营销，协助品牌联动、线下快闪、内容生态营销等多类型营销活动的创意策划与执行。",
+        "overview": {
+          "background": "该版本主打浪漫与高雅的品牌调性，借助经典电影赋魅男主，面向泛三次元受众，在端午节点打造破圈声量。",
+          "role": "品牌营销策划实习生，负责内容策划、Campaign执行与落地。",
+          "goal": "提升品牌在目标人群中的认知度，塑造恋与深空\"浪漫\"的品牌调性。"
+        },
+        "media": [
+          { "type": "bilibili", "src": "//player.bilibili.com/player.html?isOutside=true&aid=116752058944791&bvid=BV1T8JM6WEuh&cid=39127416968&p=1", "label": "品牌宣传片" }
+        ],
+        "features": [],
+        "links": [
+          { "label": "联动详情 ↗", "url": "https://www.xiaohongshu.com/discovery/item/6a2d4d9c000000001702d479?source=webshare&xhsshare=pc_web&xsec_token=AByDKNVDo2xEK_SgW9qQoWaFVXTVqNVkBwfMXWoeBFNEg=&xsec_source=pc_share", "type": "accent" }
+        ]
+      },
+      {
+        "date": "2026.03 — 2026.05",
+        "company": "OPPO · 营销策划实习生",
+        "brief": "在OPPO Find X9s Pro与Find X9 Ultra新品首销期，围绕新品传播需求，参与UGC内容营销项目全周期运营，通过用户共创内容强化产品认知与社区传播。",
+        "overview": {
+          "background": "新品上市阶段，需要通过真实用户内容激发用户参与，构建以用户体验为核心的内容传播生态。",
+          "role": "作为营销策划实习生，参与【晒新机】与【O游世界】线上活动策划与运营，负责活动选题策划、Brief撰写、内容模板设计及数据复盘，推动UGC内容生产与传播落地。",
+          "goal": "围绕产品核心卖点挖掘用户表达场景，将\"产品功能\"转化为\"用户体验\"，提升新品口碑与社区影响力。"
+        },
+        "media": [],
+        "features": [],
+        "links": [
+          { "label": "官方账号 ↗", "url": "https://www.xiaohongshu.com/discovery/item/69e84fd5000000001a037842?source=webshare&xhsshare=pc_web&xsec_token=ABtwUOJTrvVvkuKqMH0kI9HIU44zgfMoq1mAPdSb9Ryc4=&xsec_source=pc_share", "type": "accent" }
+        ]
+      },
+      {
+        "date": "2026.01 — 2026.02",
+        "company": "芒果TV · 海外内容运营实习生",
+        "brief": "参与海外内容运营与AIGC视频生产全流程，探索AI工具赋能视频创作，并参与纪录片制作与海外传播。",
+        "overview": {
+          "background": "探索AIGC技术在内容生产中的应用，提升视频包装效率，助力优质内容海外传播。",
+          "role": "参与纪录片《狮子山下的年轻人》制作及AI视频包装工作，负责素材协作、内容包装、海外传播文案撰写与工具优化反馈。",
+          "goal": "通过技术赋能与内容运营，提升内容生产效率，推动优质内容触达海外用户。"
+        },
+        "media": [
+          { "type": "youtube", "src": "https://www.youtube.com/embed/88ToBh2m-Eg?si=nvfqxoNlpD8XZPDp", "label": "纪录片《狮子山下的年轻人》" }
+        ],
+        "features": [],
+        "links": []
+      },
+      {
+        "date": "2025.09 — 2025.12",
+        "company": "重庆代码效应有限公司 · 产品经理实习生",
+        "brief": "参与游戏产品种子期用户增长与体验优化，围绕新用户转化、社交互动及内容体验等方向，独立推动7项核心需求从0到1落地。",
+        "overview": {
+          "background": "针对新产品早期用户增长缓慢、内容生态不足等问题，通过产品体验优化与用户需求洞察，提升用户转化与留存。",
+          "role": "负责新用户引导、社交玩法及互动内容设计，完成需求调研、方案设计、跨部门协作与上线复盘；参与用户增长策略制定，挖掘产品传播卖点。",
+          "goal": "从0到1搭建\"好友问答\"社交玩法，注册用户使用率达69.7%；策划宠物互动内容，用户模块使用率达92.71%。"
+        },
+        "media": [],
+        "features": [
+          { "title": "好友问答功能实机展示", "src": "assets/videos/friend-quiz-demo.mp4" },
+          { "title": "宠物互动功能实机展示", "src": "assets/videos/pet-interaction-demo.mp4" },
+          { "title": "新用户链路实机展示", "src": "assets/videos/new-user-demo.mp4" }
+        ],
+        "links": []
+      }
+    ]
+  },
+
+  "projects": {
+    "subtitle": "从策略到执行，每一个项目的完整闭环。",
+    "items": [
+      {
+        "type": "video",
+        "src": "https://player.bilibili.com/player.html?bvid=BVxxxxxxxxx",
+        "title": "X3 端午电影混池宣发短片",
+        "desc": "为X3项目量身打造的混池宣发创意短片，融合电影感与节日氛围。",
+        "badge": "Video",
+        "thumbGradient": "linear-gradient(135deg,#1A1A2E 0%,#16213E 50%,#0F3460 100%)"
+      },
+      {
+        "type": "pdf",
+        "src": "assets/pdfs/x3-case.pdf",
+        "title": "X3 端午电影混池宣发方案",
+        "desc": "完整的营销策划案，包含洞察、策略、传播节奏与资源整合。",
+        "badge": "PDF",
+        "thumbGradient": "linear-gradient(135deg,#2D1B0E 0%,#3E2A18 50%,#C9A96E 100%)"
+      },
+      {
+        "type": "image",
+        "src": "assets/images/work-1.jpg",
+        "title": "品牌视觉设计",
+        "desc": "某新消费品牌从0到1的视觉体系搭建。",
+        "badge": "Image",
+        "thumbGradient": "linear-gradient(135deg,#0A2E36 0%,#134E5E 50%,#1A6B5A 100%)"
+      },
+      {
+        "type": "image",
+        "src": "assets/images/work-2.jpg",
+        "title": "社媒内容矩阵",
+        "desc": "小红书+公众号+视频号内容矩阵搭建与运营。",
+        "badge": "Image",
+        "thumbGradient": "linear-gradient(135deg,#1A0A2E 0%,#2D1858 50%,#3D2070 100%)"
+      }
+    ]
+  },
+
+  "others": {
+    "subtitle": "比赛、社团、兴趣——那些让我成为\"我\"的事。",
+    "items": [
+      { "year": "2025", "title": "全国大学生广告艺术大赛 · 省级一等奖", "desc": "担任团队策略负责人，作品获得评委高度认可。" },
+      { "year": "2024", "title": "校市场营销协会 · 副会长", "desc": "统筹10+场校园活动，对外联络品牌合作累计赞助金额超10万元。" },
+      { "year": "2023", "title": "暑期支教 · 云南", "desc": "为山区孩子带去营销启蒙课，教会他们用镜头记录家乡的美。" }
+    ]
+  },
+
+  "contact": {
+    "subtitle": "期待和你产生一些有趣的联系。",
+    "items": [
+      { "icon": "✉", "label": "Email", "value": "sharon@example.com", "url": "mailto:sharon@example.com", "copy": false },
+      { "icon": "W", "label": "WeChat", "value": "sharon_ling", "url": "", "copy": true },
+      { "icon": "R", "label": "小红书", "value": "@Sharon的市场笔记", "url": "https://www.xiaohongshu.com", "copy": false },
+      { "icon": "B", "label": "Bilibili", "value": "@SharonLing", "url": "https://space.bilibili.com", "copy": false }
+    ],
+    "footer": "© 2026 ZiXun Ling · Portfolio"
+  }
+}

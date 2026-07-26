@@ -1,285 +1,84 @@
 /* ============================================
    ZiXun Ling · Portfolio · Cinematic Edition
+   Content-Driven: loads content.json for all text
    Hero Grid Animation · Scroll Reveal · Detail Overlay
 ============================================ */
 
 (function () {
   'use strict';
 
-  // ── Elements ──
-  const loader       = document.getElementById('loader');
-  const loaderProg   = document.getElementById('loaderProgress');
-  const heroGrid     = document.getElementById('heroGrid');
-  const heroOverlay  = document.getElementById('heroOverlay');
-  const gridItems    = heroGrid ? heroGrid.querySelectorAll('.grid-item') : [];
-  const navDots      = document.querySelectorAll('.nav-dot');
-  const sections     = document.querySelectorAll('.section');
-  const revealItems  = document.querySelectorAll('.reveal-item');
-  const projectItems = document.querySelectorAll('.project-item');
-  const detailOverlay = document.getElementById('detailOverlay');
-  const detailBody    = document.getElementById('detailBody');
-  const detailClose   = document.getElementById('detailClose');
-  const copyWechat    = document.getElementById('copyWechat');
-  const heroScroll    = document.querySelector('.hero-scroll');
-
-  // ── Loader & Hero Grid Entrance ──
-  let progress = 0;
-  const loaderInterval = setInterval(() => {
-    progress += Math.random() * 15;
-    if (progress > 100) progress = 100;
-    loaderProg.style.width = progress + '%';
-    if (progress >= 100) {
-      clearInterval(loaderInterval);
-      setTimeout(() => {
-        loader.classList.add('done');
-        revealGrid();
-      }, 300);
-    }
-  }, 80);
-
-  function revealGrid() {
-    // Staggered grid reveal — center-out rhythm for cinematic feel (8 items)
-    const order = [0, 3, 1, 6, 2, 5, 4, 7]; // asymmetric reveal order
-    const staggerBase = 100; // ms between each item
-    order.forEach((gridIndex, sequencePos) => {
-      const item = gridItems[gridIndex];
-      if (item) {
-        setTimeout(() => {
-          item.classList.add('revealed');
-        }, staggerBase * sequencePos);
-      }
+  // ── Load content ──
+  fetch('content.json')
+    .then((r) => r.json())
+    .then((content) => {
+      initHeroText(content.hero);
+      initAbout(content.about);
+      initInternship(content.internship);
+      initProjects(content.projects);
+      initOthers(content.others);
+      initContact(content.contact);
+      initInteractions(content);
+    })
+    .catch((err) => {
+      console.error('Failed to load content.json:', err);
+      // Fallback: still init interactions for any pre-rendered HTML
+      initInteractions(null);
     });
 
-    // Overlay text reveal after grid is mostly in
-    const overlayDelay = staggerBase * order.length * 0.6 + 200;
-    setTimeout(() => {
-      heroOverlay.classList.add('revealed');
-    }, overlayDelay);
+  // ── Hero text ──
+  function initHeroText(hero) {
+    if (!hero) return;
+    const nameEl = document.querySelector('.hero-name');
+    const nameEnEl = document.querySelector('.hero-name-en');
+    const roleEl = document.querySelector('.hero-role');
+    const taglineEl = document.querySelector('.hero-tagline');
+    if (nameEl) nameEl.textContent = hero.name;
+    if (nameEnEl) nameEnEl.textContent = hero.nameEn;
+    if (roleEl) roleEl.textContent = hero.role;
+    if (taglineEl) taglineEl.textContent = hero.tagline;
   }
 
-  // ── Scroll Down from Hero ──
-  if (heroScroll) {
-    heroScroll.addEventListener('click', () => {
-      const aboutSection = document.getElementById('about');
-      if (aboutSection) {
-        aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  }
+  // ── About ──
+  function initAbout(about) {
+    if (!about) return;
+    // Bio lines → <p> with <br>
+    const leadEl = document.querySelector('.about-lead');
+    if (leadEl) leadEl.innerHTML = about.bio.join('<br>');
 
-  // ── Navigation Dots: scroll + highlight ──
-  navDots.forEach((dot) => {
-    dot.addEventListener('click', (e) => {
-      e.preventDefault();
-      const target = document.getElementById(dot.dataset.target);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-
-  // Highlight current section
-  const allSections = document.querySelectorAll('.section, .hero');
-  const sectionObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          navDots.forEach((d) => {
-            d.classList.toggle('active', d.dataset.target === id);
-          });
-        }
+    // Tags
+    const tagsWrap = document.querySelector('.about-tags');
+    if (tagsWrap) {
+      tagsWrap.innerHTML = '';
+      about.tags.forEach((tag) => {
+        const span = document.createElement('span');
+        span.textContent = tag;
+        tagsWrap.appendChild(span);
       });
-    },
-    { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
-  );
-  allSections.forEach((s) => sectionObserver.observe(s));
-
-  // ── Scroll Reveal for items ──
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Stagger within group
-          const parent = entry.target.parentElement;
-          const siblings = parent ? parent.querySelectorAll('.reveal-item') : [];
-          const idx = Array.from(siblings).indexOf(entry.target);
-
-          setTimeout(() => {
-            entry.target.classList.add('revealed');
-          }, idx * 120);
-
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
-  );
-  revealItems.forEach((item) => revealObserver.observe(item));
-
-  // ── Project Detail Overlay ──
-  function openDetail(type, src) {
-    detailBody.innerHTML = '';
-    let el;
-
-    if (type === 'video') {
-      if (/\.(mp4|webm|ogg)$/i.test(src)) {
-        el = document.createElement('video');
-        el.src = src;
-        el.controls = true;
-        el.autoplay = true;
-      } else {
-        // B站 / YouTube iframe
-        el = document.createElement('iframe');
-        el.src = src;
-        el.allow = 'autoplay; encrypted-media';
-        el.allowFullscreen = true;
-      }
-    } else if (type === 'pdf') {
-      el = document.createElement('iframe');
-      el.src = src;
-    } else if (type === 'image') {
-      el = document.createElement('img');
-      el.src = src;
-      el.alt = 'Project preview';
     }
 
-    if (el) {
-      detailBody.appendChild(el);
-      detailOverlay.classList.add('open');
-      detailOverlay.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
+    // Sidebar
+    const sidebar = document.querySelector('.about-sidebar');
+    if (sidebar) {
+      sidebar.innerHTML = '';
+      Object.entries(about.sidebar).forEach(([key, val]) => {
+        const detail = document.createElement('div');
+        detail.className = 'about-detail';
+        detail.innerHTML = `<span class="detail-key">${key}</span><span class="detail-val">${val}</span>`;
+        sidebar.appendChild(detail);
+      });
     }
   }
 
-  function closeDetail() {
-    detailOverlay.classList.remove('open');
-    detailOverlay.setAttribute('aria-hidden', 'true');
-    detailBody.innerHTML = '';
-    document.body.style.overflow = '';
-  }
+  // ── Internship Case Gallery ──
+  function initInternship(internship) {
+    if (!internship) return;
+    const sectionSub = document.querySelector('#internship .section-sub');
+    if (sectionSub && internship.subtitle) sectionSub.textContent = internship.subtitle;
 
-  projectItems.forEach((item) => {
-    item.addEventListener('click', () => {
-      const type = item.dataset.type;
-      const src  = item.dataset.src;
-      if (type && src) openDetail(type, src);
-    });
-  });
+    const caseGallery = document.getElementById('caseGallery');
+    if (!caseGallery) return;
 
-  if (detailClose) detailClose.addEventListener('click', closeDetail);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && detailOverlay.classList.contains('open')) closeDetail();
-  });
-
-  // ── WeChat Copy ──
-  if (copyWechat) {
-    copyWechat.addEventListener('click', () => {
-      const text = copyWechat.querySelector('.contact-value').textContent.trim();
-      navigator.clipboard?.writeText(text).then(() => {
-        const tip = copyWechat.querySelector('.contact-copy-tip');
-        tip.textContent = '✓ Copied';
-        tip.classList.add('copied');
-        setTimeout(() => {
-          tip.textContent = 'Click to copy';
-          tip.classList.remove('copied');
-        }, 2000);
-      }).catch(() => {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand('copy'); } catch (_) {}
-        document.body.removeChild(ta);
-      });
-    });
-  }
-
-  // ── Hero Grid Hover Motion (subtle 3D tilt) ──
-  gridItems.forEach((item) => {
-    item.addEventListener('mousemove', (e) => {
-      const rect = item.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      item.style.transform = `scale(1.02) perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
-    });
-    item.addEventListener('mouseleave', () => {
-      item.style.transform = '';
-    });
-  });
-
-  // ── Internship Case Gallery (accordion expansion) ──
-  // ── Data: add new items here ──
-  const internshipData = [
-    {
-      date: '2026.06 — 2026.09',
-      company: '叠纸 · 恋与深空 · 品牌营销策划实习生',
-      brief: '参与6月17日恋与深空【电影卡】版本的品牌营销，协助品牌联动、线下快闪、内容生态营销等多类型营销活动的创意策划与执行。',
-      overview: {
-        background: '该版本主打浪漫与高雅的品牌调性，借助经典电影赋魅男主，面向泛三次元受众，在端午节点打造破圈声量。',
-        role: '品牌营销策划实习生，负责内容策划、Campaign执行与落地。',
-        goal: '提升品牌在目标人群中的认知度，塑造恋与深空"浪漫"的品牌调性。'
-      },
-      media: [
-        { type: 'bilibili', src: '//player.bilibili.com/player.html?isOutside=true&aid=116752058944791&bvid=BV1T8JM6WEuh&cid=39127416968&p=1', label: '品牌宣传片' },
-      ],
-      links: [
-        { label: '联动详情 ↗', url: 'https://www.xiaohongshu.com/discovery/item/6a2d4d9c000000001702d479?source=webshare&xhsshare=pc_web&xsec_token=AByDKNVDo2xEK_SgW9qQoWaFVXTVqNVkBwfMXWoeBFNEg=&xsec_source=pc_share', type: 'accent' },
-      ]
-    },
-    {
-      date: '2026.03 — 2026.05',
-      company: 'OPPO · 营销策划实习生',
-      brief: '在OPPO Find X9s Pro与Find X9 Ultra新品首销期，围绕新品传播需求，参与UGC内容营销项目全周期运营，通过用户共创内容强化产品认知与社区传播。',
-      overview: {
-        background: '新品上市阶段，需要通过真实用户内容激发用户参与，构建以用户体验为核心的内容传播生态。',
-        role: '作为营销策划实习生，参与【晒新机】与【O游世界】线上活动策划与运营，负责活动选题策划、Brief撰写、内容模板设计及数据复盘，推动UGC内容生产与传播落地。',
-        goal: '围绕产品核心卖点挖掘用户表达场景，将"产品功能"转化为"用户体验"，提升新品口碑与社区影响力。'
-      },
-      media: [
-        // { type: 'image', src: 'assets/images/hero_2.jpg', label: '内容矩阵' },
-      ],
-      links: [
-        { label: '官方账号 ↗', url: 'https://www.xiaohongshu.com/discovery/item/69e84fd5000000001a037842?source=webshare&xhsshare=pc_web&xsec_token=ABtwUOJTrvVvkuKqMH0kI9HIU44zgfMoq1mAPdSb9Ryc4=&xsec_source=pc_share', type: 'accent' },
-      ]
-    },
-    {
-      date: '2026.01 — 2026.02',
-      company: '芒果TV · 海外内容运营实习生',
-      brief: '参与海外内容运营与AIGC视频生产全流程，探索AI工具赋能视频创作，并参与纪录片制作与海外传播。',
-      overview: {
-        background: '探索AIGC技术在内容生产中的应用，提升视频包装效率，助力优质内容海外传播。',
-        role: '参与纪录片《狮子山下的年轻人》制作及AI视频包装工作，负责素材协作、内容包装、海外传播文案撰写与工具优化反馈。',
-        goal: '通过技术赋能与内容运营，提升内容生产效率，推动优质内容触达海外用户。'
-      },
-      media: [
-        { type: 'youtube', src: 'https://www.youtube.com/embed/88ToBh2m-Eg?si=nvfqxoNlpD8XZPDp', label: '纪录片《狮子山下的年轻人》' },
-      ],
-      links: []
-    },
-    {
-      date: '2025.09 — 2025.12',
-      company: '重庆代码效应有限公司 · 产品经理实习生',
-      brief: '参与游戏产品种子期用户增长与体验优化，围绕新用户转化、社交互动及内容体验等方向，独立推动7项核心需求从0到1落地。',
-      overview: {
-        background: '针对新产品早期用户增长缓慢、内容生态不足等问题，通过产品体验优化与用户需求洞察，提升用户转化与留存。',
-        role: '负责新用户引导、社交玩法及互动内容设计，完成需求调研、方案设计、跨部门协作与上线复盘；参与用户增长策略制定，挖掘产品传播卖点。',
-        goal: '从0到1搭建"好友问答"社交玩法，注册用户使用率达69.7%；策划宠物互动内容，用户模块使用率达92.71%。'
-      },
-      features: [
-        { title: '好友问答功能实机展示', src: 'assets/videos/friend-quiz-demo.mp4' },
-        { title: '宠物互动功能实机展示', src: 'assets/videos/pet-interaction-demo.mp4' },
-        { title: '新用户链路实机展示', src: 'assets/videos/new-user-demo.mp4' },
-      ],
-      media: [],
-      links: []
-    },
-  ];
-
-  // ── Render gallery ──
-  const caseGallery = document.getElementById('caseGallery');
-  if (caseGallery) {
-    internshipData.forEach((item, index) => {
+    internship.items.forEach((item, index) => {
       const article = document.createElement('article');
       article.className = 'case-item reveal-item';
       article.dataset.index = index;
@@ -355,7 +154,6 @@
         const main = document.createElement('div');
         main.className = 'case-media-main';
 
-        // Render first media item by default
         function renderMedia(mediaItem) {
           main.innerHTML = '';
           if (!mediaItem) return;
@@ -385,10 +183,9 @@
         }
 
         renderMedia(item.media[0]);
-
         mediaWrap.appendChild(main);
 
-        // Thumbnails (if more than 1 media item)
+        // Thumbnails (if more than 1)
         if (item.media.length > 1) {
           const thumbs = document.createElement('div');
           thumbs.className = 'case-media-thumbs';
@@ -401,7 +198,6 @@
             }
             if (mIdx === 0) thumb.classList.add('active');
 
-            // Thumbnail preview: use image if available, otherwise gradient placeholder
             if (m.thumb) {
               const img = document.createElement('img');
               img.src = m.thumb;
@@ -413,7 +209,6 @@
               img.alt = m.label || '';
               thumb.appendChild(img);
             } else {
-              // Placeholder for video embeds without thumbnail
               thumb.style.background = 'linear-gradient(135deg, #1A1A2E, #16213E)';
             }
 
@@ -433,7 +228,7 @@
         bodyInner.appendChild(mediaWrap);
       }
 
-      // C. Feature Showcase (product demo — vertical phone videos)
+      // C. Feature Showcase
       if (item.features && item.features.length > 0) {
         const featuresWrap = document.createElement('div');
         featuresWrap.className = 'case-features';
@@ -442,7 +237,6 @@
           const featureEl = document.createElement('div');
           featureEl.className = 'case-feature';
 
-          // Device frame
           const device = document.createElement('div');
           device.className = 'case-feature-device';
 
@@ -453,7 +247,6 @@
           video.muted = false;
           video.loop = true;
 
-          // Overlay with play icon
           const overlay = document.createElement('div');
           overlay.className = 'case-feature-overlay';
 
@@ -465,10 +258,8 @@
           device.appendChild(video);
           device.appendChild(overlay);
 
-          // Click to play/pause
           device.addEventListener('click', () => {
             if (video.paused) {
-              // Pause all other feature videos
               featuresWrap.querySelectorAll('.case-feature-device video').forEach((v) => {
                 if (v !== video) { v.pause(); v.parentElement.classList.remove('playing'); }
               });
@@ -480,15 +271,9 @@
             }
           });
 
-          // Show overlay again when video ends
-          video.addEventListener('pause', () => {
-            device.classList.remove('playing');
-          });
-          video.addEventListener('play', () => {
-            device.classList.add('playing');
-          });
+          video.addEventListener('pause', () => device.classList.remove('playing'));
+          video.addEventListener('play', () => device.classList.add('playing'));
 
-          // Title
           const title = document.createElement('div');
           title.className = 'case-feature-title';
           title.textContent = feat.title;
@@ -525,19 +310,330 @@
       // ── Click to toggle ──
       header.addEventListener('click', () => {
         const isActive = article.classList.contains('active');
-        // Close all
         caseGallery.querySelectorAll('.case-item').forEach((c) => c.classList.remove('active'));
-        // Open this one if it was closed
-        if (!isActive) {
-          article.classList.add('active');
-        }
+        if (!isActive) article.classList.add('active');
       });
 
       caseGallery.appendChild(article);
     });
+  }
 
-    // Re-observe newly created reveal items
-    caseGallery.querySelectorAll('.reveal-item').forEach((item) => revealObserver.observe(item));
+  // ── Projects ──
+  function initProjects(projects) {
+    if (!projects) return;
+    const sectionSub = document.querySelector('#projects .section-sub');
+    if (sectionSub && projects.subtitle) sectionSub.textContent = projects.subtitle;
+
+    const grid = document.querySelector('.project-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    projects.items.forEach((item) => {
+      const article = document.createElement('article');
+      article.className = 'project-item reveal-item';
+      article.dataset.type = item.type;
+      article.dataset.src = item.src;
+      article.dataset.title = item.title;
+      article.dataset.desc = item.desc;
+
+      const thumb = document.createElement('div');
+      const thumbClass = item.type === 'video' ? 'project-thumb video-thumb'
+        : item.type === 'pdf' ? 'project-thumb pdf-thumb'
+        : 'project-thumb image-thumb';
+      thumb.className = thumbClass;
+      thumb.style.background = item.thumbGradient;
+
+      if (item.type === 'video') {
+        const playDiv = document.createElement('div');
+        playDiv.className = 'thumb-play';
+        playDiv.textContent = '▶';
+        thumb.appendChild(playDiv);
+      } else if (item.type === 'pdf') {
+        const pdfDiv = document.createElement('div');
+        pdfDiv.className = 'thumb-pdf';
+        pdfDiv.textContent = 'PDF';
+        thumb.appendChild(pdfDiv);
+      }
+
+      const info = document.createElement('div');
+      info.className = 'project-info';
+      info.innerHTML = `
+        <span class="project-badge">${item.badge}</span>
+        <h3>${item.title}</h3>
+        <p>${item.desc}</p>
+      `;
+
+      article.appendChild(thumb);
+      article.appendChild(info);
+      grid.appendChild(article);
+    });
+  }
+
+  // ── Others (Timeline) ──
+  function initOthers(others) {
+    if (!others) return;
+    const sectionSub = document.querySelector('#others .section-sub');
+    if (sectionSub && others.subtitle) sectionSub.textContent = others.subtitle;
+
+    const timeline = document.querySelector('.editorial-timeline');
+    if (!timeline) return;
+    timeline.innerHTML = '';
+
+    others.items.forEach((item) => {
+      const entry = document.createElement('div');
+      entry.className = 'tl-entry reveal-item';
+      entry.innerHTML = `
+        <span class="tl-year">${item.year}</span>
+        <h3 class="tl-title">${item.title}</h3>
+        <p class="tl-desc">${item.desc}</p>
+      `;
+      timeline.appendChild(entry);
+    });
+  }
+
+  // ── Contact ──
+  function initContact(contact) {
+    if (!contact) return;
+    const sectionSub = document.querySelector('#contact .section-sub');
+    if (sectionSub && contact.subtitle) sectionSub.textContent = contact.subtitle;
+
+    const list = document.querySelector('.contact-list');
+    if (!list) return;
+    list.innerHTML = '';
+
+    contact.items.forEach((item) => {
+      if (item.copy) {
+        // WeChat copy row
+        const row = document.createElement('div');
+        row.className = 'contact-row reveal-item';
+        row.id = 'copyWechat';
+        row.innerHTML = `
+          <span class="contact-icon">${item.icon}</span>
+          <span class="contact-label">${item.label}</span>
+          <span class="contact-value">${item.value}</span>
+          <span class="contact-copy-tip">Click to copy</span>
+        `;
+        list.appendChild(row);
+      } else {
+        const row = document.createElement('a');
+        row.className = 'contact-row reveal-item';
+        row.href = item.url;
+        row.target = '_blank';
+        row.rel = 'noopener';
+        row.innerHTML = `
+          <span class="contact-icon">${item.icon}</span>
+          <span class="contact-label">${item.label}</span>
+          <span class="contact-value">${item.value}</span>
+          <span class="contact-arrow">↗</span>
+        `;
+        list.appendChild(row);
+      }
+    });
+
+    // Footer
+    const footer = document.querySelector('.site-footer p');
+    if (footer && contact.footer) footer.textContent = contact.footer;
+  }
+
+  // ── Interactions (runs after content is rendered) ──
+  function initInteractions(content) {
+    const loader       = document.getElementById('loader');
+    const loaderProg   = document.getElementById('loaderProgress');
+    const heroGrid     = document.getElementById('heroGrid');
+    const heroOverlay  = document.getElementById('heroOverlay');
+    const gridItems    = heroGrid ? heroGrid.querySelectorAll('.grid-item') : [];
+    const navDots      = document.querySelectorAll('.nav-dot');
+    const detailOverlay = document.getElementById('detailOverlay');
+    const detailBody    = document.getElementById('detailBody');
+    const detailClose   = document.getElementById('detailClose');
+    const heroScroll    = document.querySelector('.hero-scroll');
+
+    // ── Loader & Hero Grid Entrance ──
+    let progress = 0;
+    const loaderInterval = setInterval(() => {
+      progress += Math.random() * 15;
+      if (progress > 100) progress = 100;
+      loaderProg.style.width = progress + '%';
+      if (progress >= 100) {
+        clearInterval(loaderInterval);
+        setTimeout(() => {
+          loader.classList.add('done');
+          revealGrid();
+        }, 300);
+      }
+    }, 80);
+
+    function revealGrid() {
+      const order = [0, 3, 1, 6, 2, 5, 4, 7];
+      const staggerBase = 100;
+      order.forEach((gridIndex, sequencePos) => {
+        const item = gridItems[gridIndex];
+        if (item) {
+          setTimeout(() => {
+            item.classList.add('revealed');
+          }, staggerBase * sequencePos);
+        }
+      });
+
+      const overlayDelay = staggerBase * order.length * 0.6 + 200;
+      setTimeout(() => {
+        heroOverlay.classList.add('revealed');
+      }, overlayDelay);
+    }
+
+    // ── Scroll Down from Hero ──
+    if (heroScroll) {
+      heroScroll.addEventListener('click', () => {
+        const aboutSection = document.getElementById('about');
+        if (aboutSection) {
+          aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    // ── Navigation Dots ──
+    navDots.forEach((dot) => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById(dot.dataset.target);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    const allSections = document.querySelectorAll('.section, .hero');
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            navDots.forEach((d) => {
+              d.classList.toggle('active', d.dataset.target === id);
+            });
+          }
+        });
+      },
+      { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
+    );
+    allSections.forEach((s) => sectionObserver.observe(s));
+
+    // ── Scroll Reveal ──
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const parent = entry.target.parentElement;
+            const siblings = parent ? parent.querySelectorAll('.reveal-item') : [];
+            const idx = Array.from(siblings).indexOf(entry.target);
+
+            setTimeout(() => {
+              entry.target.classList.add('revealed');
+            }, idx * 120);
+
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+    );
+
+    // Observe ALL reveal-items (both pre-rendered and JS-generated)
+    const allRevealItems = document.querySelectorAll('.reveal-item');
+    allRevealItems.forEach((item) => revealObserver.observe(item));
+
+    // ── Project Detail Overlay ──
+    function openDetail(type, src) {
+      detailBody.innerHTML = '';
+      let el;
+
+      if (type === 'video') {
+        if (/\.(mp4|webm|ogg)$/i.test(src)) {
+          el = document.createElement('video');
+          el.src = src;
+          el.controls = true;
+          el.autoplay = true;
+        } else {
+          el = document.createElement('iframe');
+          el.src = src;
+          el.allow = 'autoplay; encrypted-media';
+          el.allowFullscreen = true;
+        }
+      } else if (type === 'pdf') {
+        el = document.createElement('iframe');
+        el.src = src;
+      } else if (type === 'image') {
+        el = document.createElement('img');
+        el.src = src;
+        el.alt = 'Project preview';
+      }
+
+      if (el) {
+        detailBody.appendChild(el);
+        detailOverlay.classList.add('open');
+        detailOverlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeDetail() {
+      detailOverlay.classList.remove('open');
+      detailOverlay.setAttribute('aria-hidden', 'true');
+      detailBody.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    // Bind click to project items (after they're rendered)
+    const projectItems = document.querySelectorAll('.project-item');
+    projectItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const type = item.dataset.type;
+        const src  = item.dataset.src;
+        if (type && src) openDetail(type, src);
+      });
+    });
+
+    if (detailClose) detailClose.addEventListener('click', closeDetail);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && detailOverlay.classList.contains('open')) closeDetail();
+    });
+
+    // ── WeChat Copy ──
+    const copyWechat = document.getElementById('copyWechat');
+    if (copyWechat) {
+      copyWechat.addEventListener('click', () => {
+        const text = copyWechat.querySelector('.contact-value').textContent.trim();
+        navigator.clipboard?.writeText(text).then(() => {
+          const tip = copyWechat.querySelector('.contact-copy-tip');
+          tip.textContent = '✓ Copied';
+          tip.classList.add('copied');
+          setTimeout(() => {
+            tip.textContent = 'Click to copy';
+            tip.classList.remove('copied');
+          }, 2000);
+        }).catch(() => {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (_) {}
+          document.body.removeChild(ta);
+        });
+      });
+    }
+
+    // ── Hero Grid Hover Motion ──
+    gridItems.forEach((item) => {
+      item.addEventListener('mousemove', (e) => {
+        const rect = item.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        item.style.transform = `scale(1.02) perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+      });
+      item.addEventListener('mouseleave', () => {
+        item.style.transform = '';
+      });
+    });
   }
 
 })();
