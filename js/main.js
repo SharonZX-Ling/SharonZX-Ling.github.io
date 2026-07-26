@@ -257,6 +257,22 @@
       ],
       links: []
     },
+    {
+      date: '2025.09 — 2025.12',
+      company: '重庆代码效应有限公司 · 产品经理实习生',
+      brief: '参与游戏产品种子期用户增长与体验优化，围绕新用户转化、社交互动及内容体验等方向，独立推动7项核心需求从0到1落地。',
+      overview: {
+        background: '针对新产品早期用户增长缓慢、内容生态不足等问题，通过产品体验优化与用户需求洞察，提升用户转化与留存。',
+        role: '负责新用户引导、社交玩法及互动内容设计，完成需求调研、方案设计、跨部门协作与上线复盘；参与用户增长策略制定，挖掘产品传播卖点。',
+        goal: '从0到1搭建"好友问答"社交玩法，注册用户使用率达69.7%；策划宠物互动内容，用户模块使用率达92.71%。'
+      },
+      features: [
+        { title: '好友问答功能实机展示', src: 'assets/videos/friend-quiz-demo.mp4' },
+        { title: '宠物互动功能实机展示', src: 'assets/videos/pet-interaction-demo.mp4' },
+      ],
+      media: [],
+      links: []
+    },
   ];
 
   // ── Render gallery ──
@@ -416,7 +432,75 @@
         bodyInner.appendChild(mediaWrap);
       }
 
-      // C. External links
+      // C. Feature Showcase (product demo — vertical phone videos)
+      if (item.features && item.features.length > 0) {
+        const featuresWrap = document.createElement('div');
+        featuresWrap.className = 'case-features';
+
+        item.features.forEach((feat) => {
+          const featureEl = document.createElement('div');
+          featureEl.className = 'case-feature';
+
+          // Device frame
+          const device = document.createElement('div');
+          device.className = 'case-feature-device';
+
+          const video = document.createElement('video');
+          video.src = feat.src;
+          video.preload = 'metadata';
+          video.playsInline = true;
+          video.muted = false;
+          video.loop = true;
+
+          // Overlay with play icon
+          const overlay = document.createElement('div');
+          overlay.className = 'case-feature-overlay';
+
+          const playIcon = document.createElement('div');
+          playIcon.className = 'case-feature-play-icon';
+          playIcon.textContent = '▶';
+
+          overlay.appendChild(playIcon);
+          device.appendChild(video);
+          device.appendChild(overlay);
+
+          // Click to play/pause
+          device.addEventListener('click', () => {
+            if (video.paused) {
+              // Pause all other feature videos
+              featuresWrap.querySelectorAll('.case-feature-device video').forEach((v) => {
+                if (v !== video) { v.pause(); v.parentElement.classList.remove('playing'); }
+              });
+              video.play();
+              device.classList.add('playing');
+            } else {
+              video.pause();
+              device.classList.remove('playing');
+            }
+          });
+
+          // Show overlay again when video ends
+          video.addEventListener('pause', () => {
+            device.classList.remove('playing');
+          });
+          video.addEventListener('play', () => {
+            device.classList.add('playing');
+          });
+
+          // Title
+          const title = document.createElement('div');
+          title.className = 'case-feature-title';
+          title.textContent = feat.title;
+
+          featureEl.appendChild(device);
+          featureEl.appendChild(title);
+          featuresWrap.appendChild(featureEl);
+        });
+
+        bodyInner.appendChild(featuresWrap);
+      }
+
+      // D. External links
       if (item.links && item.links.length > 0) {
         const linksWrap = document.createElement('div');
         linksWrap.className = 'case-links';
