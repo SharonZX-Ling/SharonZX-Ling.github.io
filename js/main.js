@@ -269,6 +269,7 @@
       features: [
         { title: '好友问答功能实机展示', src: 'assets/videos/friend-quiz-demo.mp4' },
         { title: '宠物互动功能实机展示', src: 'assets/videos/pet-interaction-demo.mp4' },
+        { title: '新用户链路实机展示', src: 'assets/videos/new-user-demo.mp4' },
       ],
       media: [],
       links: []
