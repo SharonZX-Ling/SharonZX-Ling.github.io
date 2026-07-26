@@ -414,70 +414,247 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 /* ============================================
-   INTERNSHIP
+   INTERNSHIP — Case Gallery (accordion expansion)
 ============================================ */
-.intern-grid {
+.case-gallery {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
-.intern-entry {
-  padding: 48px 0;
+.case-item {
   border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.4s var(--ease-out-expo);
+}
+
+.case-item:first-child { border-top: 1px solid var(--border); }
+.case-item:last-child { border-bottom: 1px solid var(--border); }
+
+/* ── Header (always visible) ── */
+.case-header {
+  display: grid;
+  grid-template-columns: 180px 1fr auto;
+  align-items: baseline;
+  gap: 32px;
+  padding: 36px 0;
+  cursor: pointer;
+  transition: padding 0.5s var(--ease-out-expo), background 0.4s ease;
   position: relative;
 }
 
-.intern-entry:first-child { padding-top: 0; }
-.intern-entry:last-child { border-bottom: none; }
-
-.intern-meta {
-  margin-bottom: 12px;
+.case-item:hover .case-header {
+  background: rgba(201, 169, 110, 0.03);
 }
 
-.intern-period {
+.case-item.active .case-header {
+  padding-bottom: 0;
+}
+
+.case-date {
   font-size: 12px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent);
+  white-space: nowrap;
 }
 
-.intern-title {
+.case-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.case-company {
   font-family: var(--font-display);
   font-size: clamp(22px, 3vw, 28px);
   font-weight: 700;
-  margin-bottom: 12px;
   letter-spacing: -0.5px;
+  line-height: 1.3;
+  transition: color 0.3s ease;
 }
 
-.intern-desc {
+.case-item:hover .case-company { color: var(--accent); }
+.case-item.active .case-company { color: var(--accent); }
+
+.case-brief {
   color: var(--text-sub);
-  max-width: 600px;
-  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+.case-toggle {
+  font-size: 20px;
+  color: var(--text-muted);
+  transition: transform 0.5s var(--ease-out-expo), color 0.3s ease;
+  align-self: center;
+}
+
+.case-item.active .case-toggle {
+  transform: rotate(45deg);
+  color: var(--accent);
+}
+
+/* ── Expandable Body ── */
+.case-body {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.6s var(--ease-out-expo),
+              opacity 0.5s ease 0.1s;
+}
+
+.case-item.active .case-body {
+  max-height: 2400px;
+  opacity: 1;
+}
+
+.case-body-inner {
+  padding: 32px 0 52px 212px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* ── A. Project Overview ── */
+.case-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+}
+
+.case-overview-block h4 {
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.case-overview-block p {
+  color: var(--text-sub);
+  font-size: 14px;
   line-height: 1.7;
 }
 
-.intern-links {
+/* ── B. Media Showcase ── */
+.case-media {
+  position: relative;
+}
+
+.case-media-main {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  position: relative;
+}
+
+.case-media-main iframe,
+.case-media-main video {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.case-media-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Media Gallery (thumbnails) ── */
+.case-media-thumbs {
   display: flex;
-  gap: 20px;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
 }
 
-.link-accent {
-  color: var(--accent);
+.case-thumb {
+  width: 120px;
+  height: 72px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, opacity 0.3s ease;
+  opacity: 0.5;
+  position: relative;
+}
+
+.case-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.case-thumb:hover { opacity: 0.85; }
+
+.case-thumb.active {
+  border-color: var(--accent);
+  opacity: 1;
+}
+
+.case-thumb-video::after {
+  content: '▶';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 14px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+
+/* ── C. External Links ── */
+.case-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.case-link {
+  font-size: 13px;
   font-weight: 600;
-  font-size: 14px;
-  transition: color 0.3s;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 0;
+  transition: color 0.3s ease, gap 0.3s ease;
 }
 
-.link-accent:hover { color: var(--accent-hover); }
+.case-link-accent { color: var(--accent); }
+.case-link-accent:hover { color: var(--accent-hover); gap: 10px; }
 
-.link-ghost {
-  color: var(--text-muted);
-  font-size: 14px;
-  transition: color 0.3s;
+.case-link-ghost { color: var(--text-muted); }
+.case-link-ghost:hover { color: var(--text); gap: 10px; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .case-header {
+    grid-template-columns: 1fr auto;
+    gap: 8px 16px;
+    padding: 28px 0;
+  }
+  .case-date { grid-column: 1 / -1; }
+  .case-company { font-size: 20px; }
+  .case-body-inner {
+    padding: 24px 0 40px 0;
+  }
+  .case-overview {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
-
-.link-ghost:hover { color: var(--text); }
 
 /* ============================================
    PROJECTS

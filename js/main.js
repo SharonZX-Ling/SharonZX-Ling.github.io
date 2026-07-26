@@ -208,4 +208,254 @@
     });
   });
 
+  // ── Internship Case Gallery (accordion expansion) ──
+  // ── Data: add new items here ──
+  const internshipData = [
+    {
+      date: '2025.06 — 2025.09',
+      company: '某知名互联网公司 · 品牌营销实习生',
+      brief: '负责品牌Campaign全链路策划，主导X3端午电影混池宣发方案，沉淀出一套可复用的内容生产SOP。',
+      overview: {
+        background: '面向年轻消费群体的品牌焕新项目，需要在端午节点打造破圈声量。',
+        role: '品牌营销实习生，负责内容策划、Campaign执行与数据复盘。',
+        goal: '提升品牌在目标人群中的认知度与好感度，实现内容资产沉淀。'
+      },
+      media: [
+        // Supported types: 'youtube', 'bilibili', 'video', 'image'
+        // For youtube/bilibili: provide embed URL
+        // For video/image: provide local file path
+        // { type: 'bilibili', src: 'https://player.bilibili.com/player.html?bvid=BVxxxxxxxxx', label: '宣发短片' },
+        // { type: 'image', src: 'assets/images/hero_1.jpg', label: 'Campaign主视觉' },
+        // { type: 'video', src: 'assets/videos/demo.mp4', label: '花絮' },
+        // { type: 'youtube', src: 'https://www.youtube.com/embed/xxxxxxxx', label: 'YouTube' },
+      ],
+      links: [
+        { label: '官方账号 ↗', url: 'https://example.com/official-account', type: 'accent' },
+        { label: '策划案 PDF', url: 'assets/pdfs/x3-case.pdf', type: 'ghost' },
+      ]
+    },
+    {
+      date: '2024.12 — 2025.03',
+      company: '某 MCN 机构 · 内容运营实习生',
+      brief: '参与头部账号的内容策划与投放优化，输出多条播放量破百万的爆款选题。',
+      overview: {
+        background: '服务多个千万级粉丝达人账号，覆盖生活方式与泛知识赛道。',
+        role: '内容运营实习生，负责选题策划、脚本撰写与投放数据追踪。',
+        goal: '提升账号互动率与粉丝增长，建立可复制的内容方法论。'
+      },
+      media: [
+        // { type: 'image', src: 'assets/images/hero_2.jpg', label: '内容矩阵' },
+      ],
+      links: [
+        { label: '官方账号 ↗', url: 'https://example.com/mcn', type: 'accent' },
+      ]
+    },
+    {
+      date: '2024.07 — 2024.10',
+      company: '某 4A 广告公司 · AE 实习生',
+      brief: '协助客户经理跟进快消客户项目，负责Brief拆解、提案准备与结案报告。',
+      overview: {
+        background: '服务国际快消品牌的中国区市场传播项目，涉及多渠道整合营销。',
+        role: 'AE实习生，协助需求拆解、创意brief撰写、提案物料准备与项目协调。',
+        goal: '确保项目按时高质量交付，建立客户对团队的信任。'
+      },
+      media: [
+        // { type: 'image', src: 'assets/images/hero_3.jpg', label: '提案现场' },
+      ],
+      links: [
+        { label: '官方账号 ↗', url: 'https://example.com/4a', type: 'accent' },
+      ]
+    },
+  ];
+
+  // ── Render gallery ──
+  const caseGallery = document.getElementById('caseGallery');
+  if (caseGallery) {
+    internshipData.forEach((item, index) => {
+      const article = document.createElement('article');
+      article.className = 'case-item reveal-item';
+      article.dataset.index = index;
+
+      // ── Header ──
+      const header = document.createElement('div');
+      header.className = 'case-header';
+
+      const dateEl = document.createElement('div');
+      dateEl.className = 'case-date';
+      dateEl.textContent = item.date;
+
+      const summary = document.createElement('div');
+      summary.className = 'case-summary';
+
+      const company = document.createElement('h3');
+      company.className = 'case-company';
+      company.textContent = item.company;
+
+      const brief = document.createElement('p');
+      brief.className = 'case-brief';
+      brief.textContent = item.brief;
+
+      summary.appendChild(company);
+      summary.appendChild(brief);
+
+      const toggle = document.createElement('div');
+      toggle.className = 'case-toggle';
+      toggle.textContent = '+';
+
+      header.appendChild(dateEl);
+      header.appendChild(summary);
+      header.appendChild(toggle);
+      article.appendChild(header);
+
+      // ── Expandable body ──
+      const body = document.createElement('div');
+      body.className = 'case-body';
+
+      const bodyInner = document.createElement('div');
+      bodyInner.className = 'case-body-inner';
+
+      // A. Overview
+      if (item.overview) {
+        const ov = document.createElement('div');
+        ov.className = 'case-overview';
+
+        const blocks = [
+          { label: '项目背景', text: item.overview.background },
+          { label: '我的职责', text: item.overview.role },
+          { label: '项目目标', text: item.overview.goal },
+        ];
+        blocks.forEach((b) => {
+          const blk = document.createElement('div');
+          blk.className = 'case-overview-block';
+          const h4 = document.createElement('h4');
+          h4.textContent = b.label;
+          const p = document.createElement('p');
+          p.textContent = b.text || '';
+          blk.appendChild(h4);
+          blk.appendChild(p);
+          ov.appendChild(blk);
+        });
+
+        bodyInner.appendChild(ov);
+      }
+
+      // B. Media showcase
+      if (item.media && item.media.length > 0) {
+        const mediaWrap = document.createElement('div');
+        mediaWrap.className = 'case-media';
+
+        const main = document.createElement('div');
+        main.className = 'case-media-main';
+
+        // Render first media item by default
+        function renderMedia(mediaItem) {
+          main.innerHTML = '';
+          if (!mediaItem) return;
+          if (mediaItem.type === 'youtube' || mediaItem.type === 'bilibili') {
+            const iframe = document.createElement('iframe');
+            iframe.src = mediaItem.src;
+            iframe.allow = 'autoplay; encrypted-media; fullscreen';
+            iframe.allowFullscreen = true;
+            main.appendChild(iframe);
+          } else if (mediaItem.type === 'video') {
+            const video = document.createElement('video');
+            video.src = mediaItem.src;
+            video.controls = true;
+            main.appendChild(video);
+          } else if (mediaItem.type === 'image') {
+            const img = document.createElement('img');
+            img.src = mediaItem.src;
+            img.alt = mediaItem.label || '';
+            main.appendChild(img);
+          }
+        }
+
+        renderMedia(item.media[0]);
+
+        mediaWrap.appendChild(main);
+
+        // Thumbnails (if more than 1 media item)
+        if (item.media.length > 1) {
+          const thumbs = document.createElement('div');
+          thumbs.className = 'case-media-thumbs';
+
+          item.media.forEach((m, mIdx) => {
+            const thumb = document.createElement('div');
+            thumb.className = 'case-thumb';
+            if (m.type === 'video' || m.type === 'youtube' || m.type === 'bilibili') {
+              thumb.classList.add('case-thumb-video');
+            }
+            if (mIdx === 0) thumb.classList.add('active');
+
+            // Thumbnail preview: use image if available, otherwise gradient placeholder
+            if (m.thumb) {
+              const img = document.createElement('img');
+              img.src = m.thumb;
+              img.alt = m.label || '';
+              thumb.appendChild(img);
+            } else if (m.type === 'image') {
+              const img = document.createElement('img');
+              img.src = m.src;
+              img.alt = m.label || '';
+              thumb.appendChild(img);
+            } else {
+              // Placeholder for video embeds without thumbnail
+              thumb.style.background = 'linear-gradient(135deg, #1A1A2E, #16213E)';
+            }
+
+            thumb.addEventListener('click', (e) => {
+              e.stopPropagation();
+              thumbs.querySelectorAll('.case-thumb').forEach((t) => t.classList.remove('active'));
+              thumb.classList.add('active');
+              renderMedia(m);
+            });
+
+            thumbs.appendChild(thumb);
+          });
+
+          mediaWrap.appendChild(thumbs);
+        }
+
+        bodyInner.appendChild(mediaWrap);
+      }
+
+      // C. External links
+      if (item.links && item.links.length > 0) {
+        const linksWrap = document.createElement('div');
+        linksWrap.className = 'case-links';
+
+        item.links.forEach((link) => {
+          const a = document.createElement('a');
+          a.href = link.url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.className = link.type === 'accent' ? 'case-link case-link-accent' : 'case-link case-link-ghost';
+          a.textContent = link.label;
+          linksWrap.appendChild(a);
+        });
+
+        bodyInner.appendChild(linksWrap);
+      }
+
+      body.appendChild(bodyInner);
+      article.appendChild(body);
+
+      // ── Click to toggle ──
+      header.addEventListener('click', () => {
+        const isActive = article.classList.contains('active');
+        // Close all
+        caseGallery.querySelectorAll('.case-item').forEach((c) => c.classList.remove('active'));
+        // Open this one if it was closed
+        if (!isActive) {
+          article.classList.add('active');
+        }
+      });
+
+      caseGallery.appendChild(article);
+    });
+
+    // Re-observe newly created reveal items
+    caseGallery.querySelectorAll('.reveal-item').forEach((item) => revealObserver.observe(item));
+  }
+
 })();
