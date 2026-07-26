@@ -780,6 +780,22 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   display: block;
 }
 
+.case-feature-device iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.case-feature-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1A1A2E, #16213E);
+}
+
 /* Play/pause overlay */
 .case-feature-overlay {
   position: absolute;

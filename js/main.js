@@ -255,49 +255,15 @@
           var device = document.createElement('div');
           device.className = 'case-feature-device';
 
-          // Lazy: create video element but don't set src until expanded
-          var video = document.createElement('video');
-          video.preload = 'none';
-          video.playsInline = true;
-          video.muted = true; // Muted by default — prevents mobile auto-play issues
-          video.loop = true;
-          video.controls = false;
-
-          var overlay = document.createElement('div');
-          overlay.className = 'case-feature-overlay';
-
+          // Lazy: create a placeholder div, iframe added on expand
+          var placeholder = document.createElement('div');
+          placeholder.className = 'case-feature-placeholder';
           var playIcon = document.createElement('div');
           playIcon.className = 'case-feature-play-icon';
           playIcon.textContent = '▶';
+          placeholder.appendChild(playIcon);
 
-          overlay.appendChild(playIcon);
-          device.appendChild(video);
-          device.appendChild(overlay);
-
-          var videoLoaded = false;
-          device.addEventListener('click', function() {
-            if (!videoLoaded) {
-              video.src = feat.src;
-              videoLoaded = true;
-            }
-            if (video.paused) {
-              featuresWrap.querySelectorAll('.case-feature-device video').forEach(function(v) {
-                if (v !== video) { v.pause(); v.parentElement.classList.remove('playing'); }
-              });
-              video.play().then(function() {
-                video.muted = false; // Unmute when user explicitly plays
-              }).catch(function() {
-                // If unmute fails (mobile autoplay policy), keep muted
-              });
-              device.classList.add('playing');
-            } else {
-              video.pause();
-              device.classList.remove('playing');
-            }
-          });
-
-          video.addEventListener('pause', function() { device.classList.remove('playing'); });
-          video.addEventListener('play', function() { device.classList.add('playing'); });
+          device.appendChild(placeholder);
 
           var title = document.createElement('div');
           title.className = 'case-feature-title';
@@ -310,13 +276,56 @@
 
         bodyInner.appendChild(featuresWrap);
 
-        // Expose clear for accordion toggle
+        // Lazy render: create iframes only when accordion expands
+        article._renderFeatures = function() {
+          featuresWrap.querySelectorAll('.case-feature').forEach(function(el, idx) {
+            var feat = item.features[idx];
+            var device = el.querySelector('.case-feature-device');
+            // Skip if already rendered
+            if (device.querySelector('iframe')) return;
+            device.innerHTML = '';
+            if (feat.type === 'bilibili') {
+              var iframe = document.createElement('iframe');
+              var src = feat.src;
+              src += (src.indexOf('?') !== -1 ? '&' : '?') + 'autoplay=0&high_quality=1';
+              iframe.src = src;
+              iframe.setAttribute('scrolling', 'no');
+              iframe.setAttribute('frameborder', 'no');
+              iframe.setAttribute('framespacing', '0');
+              iframe.setAttribute('border', '0');
+              iframe.setAttribute('allowfullscreen', 'true');
+              iframe.allow = 'encrypted-media; fullscreen';
+              device.appendChild(iframe);
+            } else if (feat.type === 'youtube') {
+              var ytIframe = document.createElement('iframe');
+              ytIframe.src = feat.src;
+              ytIframe.allow = 'encrypted-media; fullscreen';
+              ytIframe.setAttribute('allowfullscreen', 'true');
+              device.appendChild(ytIframe);
+            } else {
+              // Fallback: local video
+              var video = document.createElement('video');
+              video.src = feat.src;
+              video.controls = true;
+              video.preload = 'none';
+              video.playsInline = true;
+              device.appendChild(video);
+            }
+          });
+        };
+
+        // Clear: remove iframes when accordion collapses
         article._clearFeatures = function() {
-          featuresWrap.querySelectorAll('.case-feature-device video').forEach(function(v) {
-            v.pause();
-            v.removeAttribute('src');
-            v.load();
-            v.parentElement.classList.remove('playing');
+          featuresWrap.querySelectorAll('.case-feature').forEach(function(el) {
+            var device = el.querySelector('.case-feature-device');
+            device.innerHTML = '';
+            var placeholder = document.createElement('div');
+            placeholder.className = 'case-feature-placeholder';
+            var playIcon = document.createElement('div');
+            playIcon.className = 'case-feature-play-icon';
+            playIcon.textContent = '▶';
+            placeholder.appendChild(playIcon);
+            device.appendChild(placeholder);
           });
         };
       }
@@ -355,6 +364,7 @@
           article.classList.add('active');
           // Lazy render media on first expand
           if (article._renderMedia) article._renderMedia();
+          if (article._renderFeatures) article._renderFeatures();
         }
       });
 

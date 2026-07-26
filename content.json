@@ -81,9 +81,9 @@
         },
         "media": [],
         "features": [
-          { "title": "好友问答功能实机展示", "src": "assets/videos/friend-quiz-demo.mp4" },
-          { "title": "宠物互动功能实机展示", "src": "assets/videos/pet-interaction-demo.mp4" },
-          { "title": "新用户链路实机展示", "src": "assets/videos/new-user-demo.mp4" }
+          { "title": "好友问答功能实机展示", "type": "bilibili", "src": "//player.bilibili.com/player.html?bvid=BV15HgX6NEpy&page=1" },
+          { "title": "宠物互动功能实机展示", "type": "bilibili", "src": "//player.bilibili.com/player.html?bvid=BV1VHgX6NED8&page=1" },
+          { "title": "新用户链路实机展示", "type": "bilibili", "src": "//player.bilibili.com/player.html?bvid=BV15HgX6NEEo&page=1" }
         ],
         "links": []
       }
