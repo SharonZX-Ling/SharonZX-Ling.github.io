@@ -147,20 +147,27 @@
       }
 
       // B. Media showcase
+      var mediaRendered = false; // Track whether media has been rendered (lazy load)
       if (item.media && item.media.length > 0) {
-        const mediaWrap = document.createElement('div');
+        var mediaWrap = document.createElement('div');
         mediaWrap.className = 'case-media';
 
-        const main = document.createElement('div');
+        var main = document.createElement('div');
         main.className = 'case-media-main';
 
         function renderMedia(mediaItem) {
           main.innerHTML = '';
           if (!mediaItem) return;
           if (mediaItem.type === 'youtube' || mediaItem.type === 'bilibili') {
-            const iframe = document.createElement('iframe');
-            iframe.src = mediaItem.src;
-            iframe.allow = 'autoplay; encrypted-media; fullscreen';
+            var iframe = document.createElement('iframe');
+            // Build URL with autoplay=0 to prevent auto-play
+            var src = mediaItem.src;
+            if (mediaItem.type === 'bilibili') {
+              src += (src.indexOf('?') !== -1 ? '&' : '?') + 'autoplay=0';
+            }
+            iframe.src = src;
+            // Do NOT include 'autoplay' in allow — prevents mobile auto-play
+            iframe.allow = 'encrypted-media; fullscreen';
             iframe.allowFullscreen = true;
             if (mediaItem.type === 'bilibili') {
               iframe.setAttribute('scrolling', 'no');
@@ -170,28 +177,31 @@
             }
             main.appendChild(iframe);
           } else if (mediaItem.type === 'video') {
-            const video = document.createElement('video');
+            var video = document.createElement('video');
             video.src = mediaItem.src;
             video.controls = true;
+            video.preload = 'none';
             main.appendChild(video);
           } else if (mediaItem.type === 'image') {
-            const img = document.createElement('img');
+            var img = document.createElement('img');
             img.src = mediaItem.src;
             img.alt = mediaItem.label || '';
             main.appendChild(img);
           }
         }
 
-        renderMedia(item.media[0]);
+        // Lazy: don't render media yet — store reference for later
+        var currentMedia = item.media[0];
+        // Placeholder will be filled when accordion opens
         mediaWrap.appendChild(main);
 
         // Thumbnails (if more than 1)
         if (item.media.length > 1) {
-          const thumbs = document.createElement('div');
+          var thumbs = document.createElement('div');
           thumbs.className = 'case-media-thumbs';
 
-          item.media.forEach((m, mIdx) => {
-            const thumb = document.createElement('div');
+          item.media.forEach(function(m, mIdx) {
+            var thumb = document.createElement('div');
             thumb.className = 'case-thumb';
             if (m.type === 'video' || m.type === 'youtube' || m.type === 'bilibili') {
               thumb.classList.add('case-thumb-video');
@@ -199,23 +209,24 @@
             if (mIdx === 0) thumb.classList.add('active');
 
             if (m.thumb) {
-              const img = document.createElement('img');
-              img.src = m.thumb;
-              img.alt = m.label || '';
-              thumb.appendChild(img);
+              var timg = document.createElement('img');
+              timg.src = m.thumb;
+              timg.alt = m.label || '';
+              thumb.appendChild(timg);
             } else if (m.type === 'image') {
-              const img = document.createElement('img');
-              img.src = m.src;
-              img.alt = m.label || '';
-              thumb.appendChild(img);
+              var timg2 = document.createElement('img');
+              timg2.src = m.src;
+              timg2.alt = m.label || '';
+              thumb.appendChild(timg2);
             } else {
               thumb.style.background = 'linear-gradient(135deg, #1A1A2E, #16213E)';
             }
 
-            thumb.addEventListener('click', (e) => {
+            thumb.addEventListener('click', function(e) {
               e.stopPropagation();
-              thumbs.querySelectorAll('.case-thumb').forEach((t) => t.classList.remove('active'));
+              thumbs.querySelectorAll('.case-thumb').forEach(function(t) { t.classList.remove('active'); });
               thumb.classList.add('active');
+              currentMedia = m;
               renderMedia(m);
             });
 
@@ -226,31 +237,36 @@
         }
 
         bodyInner.appendChild(mediaWrap);
+
+        // Expose render/clear for accordion toggle
+        article._renderMedia = function() { renderMedia(currentMedia); };
+        article._clearMedia = function() { main.innerHTML = ''; };
       }
 
       // C. Feature Showcase
       if (item.features && item.features.length > 0) {
-        const featuresWrap = document.createElement('div');
+        var featuresWrap = document.createElement('div');
         featuresWrap.className = 'case-features';
 
-        item.features.forEach((feat) => {
-          const featureEl = document.createElement('div');
+        item.features.forEach(function(feat) {
+          var featureEl = document.createElement('div');
           featureEl.className = 'case-feature';
 
-          const device = document.createElement('div');
+          var device = document.createElement('div');
           device.className = 'case-feature-device';
 
-          const video = document.createElement('video');
-          video.src = feat.src;
-          video.preload = 'metadata';
+          // Lazy: create video element but don't set src until expanded
+          var video = document.createElement('video');
+          video.preload = 'none';
           video.playsInline = true;
-          video.muted = false;
+          video.muted = true; // Muted by default — prevents mobile auto-play issues
           video.loop = true;
+          video.controls = false;
 
-          const overlay = document.createElement('div');
+          var overlay = document.createElement('div');
           overlay.className = 'case-feature-overlay';
 
-          const playIcon = document.createElement('div');
+          var playIcon = document.createElement('div');
           playIcon.className = 'case-feature-play-icon';
           playIcon.textContent = '▶';
 
@@ -258,12 +274,21 @@
           device.appendChild(video);
           device.appendChild(overlay);
 
-          device.addEventListener('click', () => {
+          var videoLoaded = false;
+          device.addEventListener('click', function() {
+            if (!videoLoaded) {
+              video.src = feat.src;
+              videoLoaded = true;
+            }
             if (video.paused) {
-              featuresWrap.querySelectorAll('.case-feature-device video').forEach((v) => {
+              featuresWrap.querySelectorAll('.case-feature-device video').forEach(function(v) {
                 if (v !== video) { v.pause(); v.parentElement.classList.remove('playing'); }
               });
-              video.play();
+              video.play().then(function() {
+                video.muted = false; // Unmute when user explicitly plays
+              }).catch(function() {
+                // If unmute fails (mobile autoplay policy), keep muted
+              });
               device.classList.add('playing');
             } else {
               video.pause();
@@ -271,10 +296,10 @@
             }
           });
 
-          video.addEventListener('pause', () => device.classList.remove('playing'));
-          video.addEventListener('play', () => device.classList.add('playing'));
+          video.addEventListener('pause', function() { device.classList.remove('playing'); });
+          video.addEventListener('play', function() { device.classList.add('playing'); });
 
-          const title = document.createElement('div');
+          var title = document.createElement('div');
           title.className = 'case-feature-title';
           title.textContent = feat.title;
 
@@ -284,6 +309,16 @@
         });
 
         bodyInner.appendChild(featuresWrap);
+
+        // Expose clear for accordion toggle
+        article._clearFeatures = function() {
+          featuresWrap.querySelectorAll('.case-feature-device video').forEach(function(v) {
+            v.pause();
+            v.removeAttribute('src');
+            v.load();
+            v.parentElement.classList.remove('playing');
+          });
+        };
       }
 
       // D. External links
@@ -308,10 +343,19 @@
       article.appendChild(body);
 
       // ── Click to toggle ──
-      header.addEventListener('click', () => {
-        const isActive = article.classList.contains('active');
-        caseGallery.querySelectorAll('.case-item').forEach((c) => c.classList.remove('active'));
-        if (!isActive) article.classList.add('active');
+      header.addEventListener('click', function() {
+        var isActive = article.classList.contains('active');
+        // Close all others — and clear their media to stop playback
+        caseGallery.querySelectorAll('.case-item').forEach(function(c) {
+          c.classList.remove('active');
+          if (c._clearMedia) c._clearMedia();
+          if (c._clearFeatures) c._clearFeatures();
+        });
+        if (!isActive) {
+          article.classList.add('active');
+          // Lazy render media on first expand
+          if (article._renderMedia) article._renderMedia();
+        }
       });
 
       caseGallery.appendChild(article);
