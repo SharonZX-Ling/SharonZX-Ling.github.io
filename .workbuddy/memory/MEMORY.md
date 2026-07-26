@@ -30,6 +30,14 @@
 - Google Fonts CDN (Playfair Display + Inter)
 - GitHub token: 见 ~/.workbuddy/MEMORY.md（push 用，勿写入本仓库文件）
 
+## 响应式设计
+- 三断点：1024px (tablet) / 768px (mobile) / 375px (small mobile)
+- 桌面端：右侧浮动导航点；移动端：顶部 hamburger menu
+- Hero 网格：桌面 4×3 (8图) → 移动 3×3 (5图可见)
+- 触摸设备：禁用所有 hover 效果 + Hero 3D tilt + Lightbox 支持滑动切换
+- @media (hover: none) 处理触摸设备 hover 回退
+- @media (prefers-reduced-motion) 降低动画
+
 ## 用户偏好
 - 不喜欢红色信封版 Hero，偏好卡片式或网格式
 - 希望未来自行添加内容，不喜欢写死的假数据

@@ -550,6 +550,33 @@
     const navDots      = document.querySelectorAll('.nav-dot');
     const heroScroll    = document.querySelector('.hero-scroll');
 
+    // ── Mobile Nav Toggle ──
+    const navMobile = document.getElementById('navMobile');
+    const navMobileToggle = document.getElementById('navMobileToggle');
+    const navMobileLinks = document.querySelectorAll('.nav-mobile-menu a, .nav-mobile-logo');
+
+    if (navMobileToggle && navMobile) {
+      navMobileToggle.addEventListener('click', () => {
+        navMobile.classList.toggle('open');
+      });
+
+      // Close menu when a link is clicked
+      navMobileLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
+          navMobile.classList.remove('open');
+          // Smooth scroll to target
+          const targetId = link.dataset.target;
+          if (targetId) {
+            const target = document.getElementById(targetId);
+            if (target) {
+              e.preventDefault();
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        });
+      });
+    }
+
     // ── Loader & Hero Grid Entrance ──
     let progress = 0;
     const loaderInterval = setInterval(() => {
@@ -785,18 +812,40 @@
       });
     }
 
-    // ── Hero Grid Hover Motion ──
-    gridItems.forEach((item) => {
-      item.addEventListener('mousemove', (e) => {
-        const rect = item.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        item.style.transform = `scale(1.02) perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+    // ── Hero Grid Hover Motion (desktop only — skip on touch devices) ──
+    const isTouchDevice = window.matchMedia('(hover: none)').matches;
+    if (!isTouchDevice) {
+      gridItems.forEach((item) => {
+        item.addEventListener('mousemove', (e) => {
+          const rect = item.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          item.style.transform = `scale(1.02) perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+        });
+        item.addEventListener('mouseleave', () => {
+          item.style.transform = '';
+        });
       });
-      item.addEventListener('mouseleave', () => {
-        item.style.transform = '';
-      });
-    });
+    }
+
+    // ── Lightbox Touch Swipe (mobile) ──
+    if (isTouchDevice) {
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      lightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      lightbox.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const swipeDist = touchEndX - touchStartX;
+        if (Math.abs(swipeDist) > 50) {
+          if (swipeDist < 0) nextLightbox();
+          else prevLightbox();
+        }
+      }, { passive: true });
+    }
   }
 
 })();
