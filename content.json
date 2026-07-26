@@ -152,11 +152,19 @@
   },
 
   "others": {
-    "subtitle": "比赛、社团、兴趣——那些让我成为\"我\"的事。",
-    "items": [
-      { "year": "2025", "title": "全国大学生广告艺术大赛 · 省级一等奖", "desc": "担任团队策略负责人，作品获得评委高度认可。" },
-      { "year": "2024", "title": "校市场营销协会 · 副会长", "desc": "统筹10+场校园活动，对外联络品牌合作累计赞助金额超10万元。" },
-      { "year": "2023", "title": "暑期支教 · 云南", "desc": "为山区孩子带去营销启蒙课，教会他们用镜头记录家乡的美。" }
+    "subtitle": "在工作之外，四年关注教育公平与青年成长。",
+    "organization": "成都市林荫公益服务中心",
+    "period": "2020.09 — 2024.07",
+    "intro": "Beyond my professional work, I have been involved in education-focused public welfare projects for four years, supporting students in under-resourced areas through teaching, project planning and media communication.",
+    "stats": [
+      { "value": "4", "label": "年公益参与经历" },
+      { "value": "2100+", "label": "学生受益" },
+      { "value": "500+", "label": "活动参与者" }
+    ],
+    "gallery": [
+      { "title": "公益训练营现场", "caption": "作为传媒方向导师参与公益训练营课程设计与授课，陪伴县域学生探索更多可能。", "src": "assets/images/welfare/welfare-1.jpg" },
+      { "title": "林荫公益网络班项目", "caption": "参与策划互联网公益教育项目，将优质课程资源连接至西南地区教育资源欠发达地区。", "src": "assets/images/welfare/welfare-2.jpg" },
+      { "title": "公益团队合影", "caption": "与来自不同高校的青年志愿者共同推动教育公益实践。", "src": "assets/images/welfare/welfare-3.jpg" }
     ]
   },
 

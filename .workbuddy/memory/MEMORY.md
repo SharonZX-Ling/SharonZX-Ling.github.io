@@ -21,8 +21,8 @@
 - **所有文案在 content.json 中，改文案只需编辑这一个文件**
 - Internship: Case Gallery accordion 展开式（4段实习，含 Feature Showcase）
 - 实习4段（叠纸/OPPO/芒果TV/代码效应）
-- 项目4个（视频/PDF/图片×2）
-- 其他经历3条（时间线）
+- 项目2个（《摆针》微电影 / 《香魂》纪录片，accordion 展开式）
+- Others: 公益经历 Editorial Gallery（成都市林荫公益服务中心，图片优先+交替排版）
 - 联系4种（邮箱/微信复制/小红书/B站）
 
 ## 技术栈

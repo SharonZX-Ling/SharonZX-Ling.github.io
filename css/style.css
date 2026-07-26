@@ -1126,19 +1126,17 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 /* ============================================
-   IMAGE LIGHTBOX
+   PREMIUM LIGHTBOX (Visual Gallery)
 ============================================ */
 .lightbox {
   position: fixed;
   inset: 0;
   z-index: 900;
-  background: rgba(0,0,0,0.95);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.4s ease;
 }
 
 .lightbox.open {
@@ -1146,126 +1144,475 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   pointer-events: auto;
 }
 
-.lightbox img {
-  max-width: 90vw;
-  max-height: 85vh;
-  object-fit: contain;
-  transform: scale(0.95);
-  transition: transform 0.35s var(--ease-out-expo);
+/* ── Backdrop ── */
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 8, 10, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  cursor: pointer;
 }
 
-.lightbox.open img { transform: scale(1); }
-
+/* ── Close button ── */
 .lightbox-close {
   position: fixed;
   top: 24px;
   right: 24px;
-  z-index: 910;
+  z-index: 920;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
   cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.15);
-  transition: all 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s var(--ease-out-expo);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .lightbox-close:hover {
-  background: rgba(255,255,255,0.2);
+  background: rgba(201, 169, 110, 0.2);
   border-color: var(--accent);
+  color: var(--accent);
+  transform: rotate(90deg);
 }
 
-.lightbox-nav {
+/* ── Counter ── */
+.lightbox-counter {
   position: fixed;
-  top: 50%;
-  z-index: 910;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  color: var(--text);
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 920;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+/* ── Stage (image + nav area) ── */
+.lightbox-stage {
+  position: relative;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  z-index: 910;
+  padding: 80px 80px 120px;
+}
+
+/* ── Nav buttons ── */
+.lightbox-nav {
+  position: relative;
+  z-index: 915;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.12);
-  transition: all 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s var(--ease-out-expo);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .lightbox-nav:hover {
-  background: rgba(255,255,255,0.16);
+  background: rgba(201, 169, 110, 0.15);
   border-color: var(--accent);
+  color: var(--accent);
 }
 
-.lightbox-prev { left: 24px; }
-.lightbox-next { right: 24px; }
+.lightbox-nav.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 
-.lightbox-caption {
-  position: fixed;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 910;
-  font-size: 13px;
-  color: var(--text-muted);
+.lightbox-prev { margin-right: 24px; }
+.lightbox-next { margin-left: 24px; }
+
+/* ── Image wrap ── */
+.lightbox-image-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  max-height: 100%;
+}
+
+.lightbox-image-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  max-height: calc(100% - 40px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.lightbox-image-inner.transitioning {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+  display: block;
+}
+
+.lightbox-placeholder {
+  width: 60vw;
+  max-width: 600px;
+  height: 50vh;
+  border-radius: 4px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-placeholder-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
   letter-spacing: 1px;
+  text-align: center;
+  padding: 0 24px;
+}
+
+/* ── Caption ── */
+.lightbox-caption {
+  margin-top: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1px;
+  text-align: center;
+  max-width: 600px;
+}
+
+/* ── Thumbnail strip ── */
+.lightbox-thumbs {
+  position: relative;
+  z-index: 910;
+  flex-shrink: 0;
+  padding: 12px 24px 20px;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.lightbox-thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.lightbox-thumbs-track {
+  display: flex;
+  gap: 10px;
+  padding: 4px;
+}
+
+.lightbox-thumb {
+  flex-shrink: 0;
+  width: 64px;
+  height: 48px;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  border: 2px solid transparent;
+  transition: all 0.3s var(--ease-out-expo);
+  opacity: 0.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lightbox-thumb-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.lightbox-thumb:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
+}
+
+.lightbox-thumb.active {
+  opacity: 1;
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(201, 169, 110, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ── Gallery zoom hint (on gallery items) ── */
+.film-gallery-zoom {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  transition: all 0.3s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.film-gallery-item:hover .film-gallery-zoom {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.film-gallery-item {
+  cursor: pointer;
 }
 
 /* Projects responsive rules moved to main RESPONSIVE section below */
 
 /* ============================================
-   TIMELINE (Others)
+   WELFARE STORY (Others — Editorial Gallery)
 ============================================ */
-.editorial-timeline {
+.welfare-story {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
-.tl-entry {
-  padding: 36px 0 36px 24px;
-  border-left: 2px solid var(--border);
+/* ── Header ── */
+.welfare-header {
+  margin-bottom: 24px;
+}
+
+.welfare-org {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.welfare-period {
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ── Intro ── */
+.welfare-intro {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 2vw, 20px);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--text-sub);
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+
+/* ── Stats ── */
+.welfare-stats {
+  display: flex;
+  gap: 0;
+  padding: 28px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 64px;
+}
+
+.welfare-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   position: relative;
 }
 
-.tl-entry::before {
+.welfare-stat:not(:last-child)::after {
   content: '';
   position: absolute;
-  left: -7px;
-  top: 40px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 2px solid var(--accent);
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 40px;
+  background: var(--border);
 }
 
-.tl-year {
-  font-size: 12px;
-  letter-spacing: 2px;
-  color: var(--accent);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.tl-title {
+.welfare-stat-value {
   font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  letter-spacing: -0.3px;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
 }
 
-.tl-desc {
+.welfare-stat-label {
+  font-size: 12px;
+  letter-spacing: 1.5px;
   color: var(--text-sub);
+  text-align: center;
+}
+
+/* ── Gallery ── */
+.welfare-gallery {
+  display: flex;
+  flex-direction: column;
+}
+
+.welfare-entry {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 48px;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.welfare-entry:last-child {
+  margin-bottom: 0;
+}
+
+/* Reverse layout (odd entries) */
+.welfare-entry-reverse {
+  grid-template-columns: 1fr 1.4fr;
+}
+
+.welfare-entry-reverse .welfare-entry-image {
+  order: 2;
+}
+
+/* Featured (first entry) — full width */
+.welfare-entry-featured {
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+.welfare-entry-featured .welfare-entry-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.welfare-entry-featured .welfare-entry-text {
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ── Image ── */
+.welfare-entry-image {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  background: var(--surface);
+  transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
+}
+
+.welfare-entry-image:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+}
+
+.welfare-entry-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.welfare-entry-image img.loaded {
+  opacity: 1;
+}
+
+/* Placeholder */
+.welfare-entry-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welfare-entry-ph-label {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 0 24px;
+}
+
+/* Subtle vignette on images */
+.welfare-entry-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.15) 100%);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* ── Caption text ── */
+.welfare-entry-text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.welfare-entry-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.5vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.welfare-entry-caption {
   font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-sub);
 }
 
 /* ============================================
@@ -1579,12 +1926,28 @@ a.contact-row:hover .contact-arrow {
   .film-achieve-grid { grid-template-columns: 1fr; gap: 8px; }
   .film-achieve-card { padding: 14px 18px; font-size: 13px; }
 
-  /* ── Timeline ── */
-  .tl-entry { padding: 28px 0 28px 20px; }
-  .tl-entry::before { top: 34px; width: 10px; height: 10px; left: -6px; }
-  .tl-year { font-size: 11px; letter-spacing: 1.5px; margin-bottom: 6px; }
-  .tl-title { font-size: 18px; margin-bottom: 6px; }
-  .tl-desc { font-size: 13px; line-height: 1.6; }
+  /* ── Welfare Story ── */
+  .welfare-org { font-size: clamp(22px, 6vw, 30px); }
+  .welfare-period { font-size: 10px; letter-spacing: 2px; }
+  .welfare-intro { font-size: 15px; line-height: 1.7; margin-bottom: 28px; }
+  .welfare-stats { padding: 20px 0; margin-bottom: 40px; }
+  .welfare-stat-value { font-size: clamp(26px, 7vw, 36px); }
+  .welfare-stat-label { font-size: 10px; letter-spacing: 1px; }
+  .welfare-stat:not(:last-child)::after { height: 28px; }
+
+  .welfare-entry {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .welfare-entry-reverse { grid-template-columns: 1fr; }
+  .welfare-entry-reverse .welfare-entry-image { order: 0; }
+  .welfare-entry-featured { gap: 16px; }
+  .welfare-entry-featured .welfare-entry-image { aspect-ratio: 3 / 2; }
+  .welfare-entry-featured .welfare-entry-text { text-align: left; margin: 0; }
+  .welfare-entry-image { aspect-ratio: 3 / 2; }
+  .welfare-entry-title { font-size: 18px; }
+  .welfare-entry-caption { font-size: 13px; line-height: 1.6; }
 
   /* ── Contact ── */
   .contact-row {
@@ -1600,12 +1963,18 @@ a.contact-row:hover .contact-arrow {
   .site-footer { margin-top: 48px; font-size: 11px; }
 
   /* ── Lightbox ── */
-  .lightbox-close { top: 16px; right: 16px; width: 40px; height: 40px; }
-  .lightbox-nav { width: 42px; height: 42px; }
-  .lightbox-prev { left: 12px; }
-  .lightbox-next { right: 12px; }
-  .lightbox-caption { bottom: 20px; font-size: 12px; padding: 0 20px; text-align: center; }
-  .lightbox img { max-width: 94vw; max-height: 78vh; }
+  .lightbox-close { top: 14px; right: 14px; width: 38px; height: 38px; }
+  .lightbox-counter { top: 22px; font-size: 10px; letter-spacing: 2px; }
+  .lightbox-stage { padding: 60px 16px 100px; }
+  .lightbox-nav { width: 40px; height: 40px; }
+  .lightbox-prev { margin-right: 8px; }
+  .lightbox-next { margin-left: 8px; }
+  .lightbox-image { max-height: 60vh; }
+  .lightbox-placeholder { width: 80vw; height: 40vh; }
+  .lightbox-caption { font-size: 12px; margin-top: 12px; }
+  .lightbox-thumb { width: 48px; height: 36px; }
+  .lightbox-thumbs { padding: 8px 16px 16px; }
+  .film-gallery-zoom { opacity: 0.6; }
 
   /* ── Detail Overlay ── */
   .detail-close { top: 16px; left: 16px; font-size: 13px; padding: 8px 16px; }
@@ -1642,6 +2011,10 @@ a.contact-row:hover .contact-arrow {
 
   .film-gallery-grid { grid-template-columns: 1fr; }
 
+  .welfare-stat-value { font-size: 24px; }
+  .welfare-stat-label { font-size: 9px; }
+  .welfare-entry-ph-label { font-size: 14px; }
+
   .contact-label { display: none; }
 }
 
@@ -1669,9 +2042,13 @@ a.contact-row:hover .contact-arrow {
   .film-case-header:hover .film-case-toggle { background: rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.15); }
   .film-contrib-card:hover { border-color: var(--border); color: var(--text-sub); background: transparent; }
   .film-gallery-item:hover { transform: none; box-shadow: none; }
+  .welfare-entry-image:hover { transform: none; box-shadow: none; }
   .contact-row:hover { background: transparent; padding-left: 0; padding-right: 0; }
   a.contact-row:hover .contact-arrow { color: var(--text-muted); transform: none; }
-  .lightbox-close:hover, .lightbox-nav:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); }
+  .lightbox-close:hover, .lightbox-nav:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); transform: none; }
+  .lightbox-close:hover { transform: none; }
+  .lightbox-thumb:hover { opacity: 1; transform: none; }
+  .film-gallery-zoom { display: none; }
   .nav-dot:hover { background: rgba(255,255,255,0.4); transform: none; }
 }
 

@@ -475,8 +475,21 @@
         item.gallery.forEach((g, gIdx) => {
           const gItem = document.createElement('div');
           gItem.className = 'film-gallery-item';
-          const palette = palettes[gIdx % palettes.length];
-          gItem.style.background = `linear-gradient(135deg, ${palette[0]} 0%, ${palette[1]} 100%)`;
+          gItem.dataset.index = gIdx;
+
+          if (g.src) {
+            // Real image
+            gItem.classList.add('film-gallery-item-img');
+            const img = document.createElement('img');
+            img.src = g.src;
+            img.alt = g.caption || '';
+            img.loading = 'lazy';
+            gItem.appendChild(img);
+          } else {
+            // Placeholder
+            const palette = palettes[gIdx % palettes.length];
+            gItem.style.background = `linear-gradient(135deg, ${palette[0]} 0%, ${palette[1]} 100%)`;
+          }
 
           const placeholder = document.createElement('div');
           placeholder.className = 'film-gallery-placeholder';
@@ -485,8 +498,20 @@
           caption.className = 'film-gallery-caption';
           caption.textContent = g.caption || '';
 
+          // Click hint
+          const zoomHint = document.createElement('div');
+          zoomHint.className = 'film-gallery-zoom';
+          zoomHint.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>';
+
           placeholder.appendChild(caption);
+          placeholder.appendChild(zoomHint);
           gItem.appendChild(placeholder);
+
+          // Store gallery data for lightbox
+          gItem._galleryItems = item.gallery;
+          gItem._galleryIndex = gIdx;
+          gItem._projectTitle = item.title;
+
           galleryGrid.appendChild(gItem);
         });
 
@@ -528,26 +553,123 @@
     });
   }
 
-  // ── Others (Timeline) ──
+  // ── Others (Public Welfare Editorial Gallery) ──
   function initOthers(others) {
     if (!others) return;
     const sectionSub = document.querySelector('#others .section-sub');
     if (sectionSub && others.subtitle) sectionSub.textContent = others.subtitle;
 
-    const timeline = document.querySelector('.editorial-timeline');
-    if (!timeline) return;
-    timeline.innerHTML = '';
+    const container = document.getElementById('welfareStory');
+    if (!container) return;
+    container.innerHTML = '';
 
-    others.items.forEach((item) => {
-      const entry = document.createElement('div');
-      entry.className = 'tl-entry reveal-item';
-      entry.innerHTML = `
-        <span class="tl-year">${item.year}</span>
-        <h3 class="tl-title">${item.title}</h3>
-        <p class="tl-desc">${item.desc}</p>
-      `;
-      timeline.appendChild(entry);
-    });
+    // Warm color palettes for placeholders
+    const welfarePalettes = [
+      ['#2A1F18', '#3D2B1F'],  // warm brown
+      ['#1F2A22', '#2B3D30'],  // warm green
+      ['#2A2418', '#3D3220'],  // warm gold-brown
+    ];
+
+    // ── Header: Organization + Period ──
+    const header = document.createElement('div');
+    header.className = 'welfare-header reveal-item';
+    header.innerHTML =
+      '<div class="welfare-org">' + (others.organization || '') + '</div>' +
+      '<div class="welfare-period">' + (others.period || '') + '</div>';
+    container.appendChild(header);
+
+    // ── Intro paragraph ──
+    if (others.intro) {
+      const intro = document.createElement('p');
+      intro.className = 'welfare-intro reveal-item';
+      intro.textContent = others.intro;
+      container.appendChild(intro);
+    }
+
+    // ── Stats row ──
+    if (others.stats && others.stats.length > 0) {
+      const stats = document.createElement('div');
+      stats.className = 'welfare-stats reveal-item';
+      others.stats.forEach((s) => {
+        const stat = document.createElement('div');
+        stat.className = 'welfare-stat';
+        stat.innerHTML =
+          '<span class="welfare-stat-value">' + s.value + '</span>' +
+          '<span class="welfare-stat-label">' + s.label + '</span>';
+        stats.appendChild(stat);
+      });
+      container.appendChild(stats);
+    }
+
+    // ── Gallery (editorial alternating layout) ──
+    if (others.gallery && others.gallery.length > 0) {
+      const gallery = document.createElement('div');
+      gallery.className = 'welfare-gallery';
+
+      // Prepare lightbox items
+      const lightboxItems = others.gallery.map((g) => ({
+        src: g.src || '',
+        caption: g.title + (g.caption ? ' — ' + g.caption : '')
+      }));
+
+      others.gallery.forEach((g, gIdx) => {
+        const entry = document.createElement('div');
+        entry.className = 'welfare-entry reveal-item';
+        if (gIdx === 0) entry.classList.add('welfare-entry-featured');
+        if (gIdx % 2 === 1) entry.classList.add('welfare-entry-reverse');
+
+        // Image container
+        const imgWrap = document.createElement('div');
+        imgWrap.className = 'welfare-entry-image';
+
+        if (g.src) {
+          // Try to load real image — fallback to placeholder on error
+          const img = document.createElement('img');
+          img.src = g.src;
+          img.alt = g.title || '';
+          img.loading = 'lazy';
+          img.addEventListener('error', () => {
+            imgWrap.classList.add('welfare-entry-placeholder');
+            img.remove();
+            const palette = welfarePalettes[gIdx % welfarePalettes.length];
+            imgWrap.style.background = 'linear-gradient(135deg, ' + palette[0] + ', ' + palette[1] + ')';
+            // Add placeholder label
+            const label = document.createElement('div');
+            label.className = 'welfare-entry-ph-label';
+            label.textContent = g.title || '';
+            imgWrap.appendChild(label);
+          });
+          imgWrap.appendChild(img);
+        } else {
+          // No src — show placeholder directly
+          imgWrap.classList.add('welfare-entry-placeholder');
+          const palette = welfarePalettes[gIdx % welfarePalettes.length];
+          imgWrap.style.background = 'linear-gradient(135deg, ' + palette[0] + ', ' + palette[1] + ')';
+          const label = document.createElement('div');
+          label.className = 'welfare-entry-ph-label';
+          label.textContent = g.title || '';
+          imgWrap.appendChild(label);
+        }
+
+        // Store lightbox data on the image element
+        imgWrap._galleryItems = lightboxItems;
+        imgWrap._galleryIndex = gIdx;
+        imgWrap._projectTitle = others.organization || '';
+
+        // Caption text
+        const textWrap = document.createElement('div');
+        textWrap.className = 'welfare-entry-text';
+        textWrap.innerHTML =
+          '<h3 class="welfare-entry-title">' + (g.title || '') + '</h3>' +
+          '<p class="welfare-entry-caption">' + (g.caption || '') + '</p>';
+
+        entry.appendChild(imgWrap);
+        entry.appendChild(textWrap);
+        gallery.appendChild(entry);
+      });
+
+      container.appendChild(gallery);
+    }
   }
 
   // ── Contact ──
@@ -725,73 +847,187 @@
     const allRevealItems = document.querySelectorAll('.reveal-item');
     allRevealItems.forEach((item) => revealObserver.observe(item));
 
-    // ── Image Gallery Lightbox ──
-    // Create lightbox element
+    // ── Premium Lightbox with Thumbnail Navigation ──
     const lightbox = document.createElement('div');
     lightbox.className = 'lightbox';
     lightbox.id = 'imageLightbox';
     lightbox.innerHTML = `
-      <button class="lightbox-close" id="lightboxClose">✕</button>
-      <button class="lightbox-nav lightbox-prev" id="lightboxPrev">←</button>
-      <button class="lightbox-nav lightbox-next" id="lightboxNext">→</button>
-      <div class="lightbox-caption" id="lightboxCaption"></div>
+      <div class="lightbox-backdrop"></div>
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="lightbox-counter" id="lightboxCounter"></div>
+      <div class="lightbox-stage">
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="lightbox-image-wrap" id="lightboxImageWrap">
+          <div class="lightbox-image-inner" id="lightboxImageInner">
+            <img class="lightbox-image" id="lightboxImage" alt="" />
+            <div class="lightbox-placeholder" id="lightboxPlaceholder"></div>
+          </div>
+          <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <div class="lightbox-thumbs" id="lightboxThumbs">
+        <div class="lightbox-thumbs-track" id="lightboxThumbsTrack"></div>
+      </div>
     `;
     document.body.appendChild(lightbox);
 
-    const lightboxImg = document.createElement('img');
-    lightbox.appendChild(lightboxImg);
+    const lightboxClose      = document.getElementById('lightboxClose');
+    const lightboxPrev       = document.getElementById('lightboxPrev');
+    const lightboxNext       = document.getElementById('lightboxNext');
+    const lightboxImage      = document.getElementById('lightboxImage');
+    const lightboxPlaceholder= document.getElementById('lightboxPlaceholder');
+    const lightboxCaption    = document.getElementById('lightboxCaption');
+    const lightboxCounter    = document.getElementById('lightboxCounter');
+    const lightboxThumbs     = document.getElementById('lightboxThumbs');
+    const lightboxThumbsTrack= document.getElementById('lightboxThumbsTrack');
+    const lightboxImageInner = document.getElementById('lightboxImageInner');
 
-    const lightboxClose = document.getElementById('lightboxClose');
-    const lightboxPrev = document.getElementById('lightboxPrev');
-    const lightboxNext = document.getElementById('lightboxNext');
-    const lightboxCaption = document.getElementById('lightboxCaption');
+    let lbItems = [];
+    let lbIndex = 0;
+    let lbProjectTitle = '';
 
-    let lightboxItems = [];
-    let lightboxIndex = 0;
+    // Color palettes for placeholder lightbox items
+    const lbPalettes = [
+      ['#1A1A2E', '#2D1B4E'],
+      ['#1A2E1A', '#2E1A1A'],
+      ['#2E2A1A', '#1A2E2A'],
+      ['#1E1A1A', '#2A1E2A'],
+      ['#1A2A3E', '#2D1B2E'],
+    ];
 
-    function openLightbox(items, index) {
-      lightboxItems = items;
-      lightboxIndex = index;
-      updateLightbox();
+    function openLightbox(items, index, projectTitle) {
+      lbItems = items;
+      lbIndex = index;
+      lbProjectTitle = projectTitle || '';
+      renderThumbs();
+      updateLightbox(true);
       lightbox.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
 
-    function updateLightbox() {
-      const item = lightboxItems[lightboxIndex];
+    function renderThumbs() {
+      lightboxThumbsTrack.innerHTML = '';
+      lbItems.forEach((item, idx) => {
+        const thumb = document.createElement('div');
+        thumb.className = 'lightbox-thumb';
+        thumb.dataset.index = idx;
+
+        if (item.src) {
+          const img = document.createElement('img');
+          img.src = item.src;
+          img.alt = item.caption || '';
+          thumb.appendChild(img);
+        } else {
+          const palette = lbPalettes[idx % lbPalettes.length];
+          thumb.style.background = `linear-gradient(135deg, ${palette[0]}, ${palette[1]})`;
+          const label = document.createElement('span');
+          label.className = 'lightbox-thumb-label';
+          label.textContent = (idx + 1).toString();
+          thumb.appendChild(label);
+        }
+
+        thumb.addEventListener('click', (e) => {
+          e.stopPropagation();
+          lbIndex = idx;
+          updateLightbox();
+        });
+
+        lightboxThumbsTrack.appendChild(thumb);
+      });
+    }
+
+    function updateLightbox(isOpen) {
+      const item = lbItems[lbIndex];
       if (!item) return;
-      lightboxImg.src = item.src;
-      lightboxCaption.textContent = item.caption || '';
-      lightboxPrev.style.display = lightboxIndex > 0 ? 'flex' : 'none';
-      lightboxNext.style.display = lightboxIndex < lightboxItems.length - 1 ? 'flex' : 'none';
+
+      // Animate image transition
+      lightboxImageInner.classList.add('transitioning');
+
+      setTimeout(() => {
+        if (item.src) {
+          lightboxImage.src = item.src;
+          lightboxImage.alt = item.caption || '';
+          lightboxImage.style.display = 'block';
+          lightboxPlaceholder.style.display = 'none';
+        } else {
+          // Show styled placeholder
+          lightboxImage.style.display = 'none';
+          lightboxPlaceholder.innerHTML = '';
+          const palette = lbPalettes[lbIndex % lbPalettes.length];
+          lightboxPlaceholder.style.background = `linear-gradient(135deg, ${palette[0]}, ${palette[1]})`;
+          const label = document.createElement('div');
+          label.className = 'lightbox-placeholder-text';
+          label.textContent = item.caption || '';
+          lightboxPlaceholder.appendChild(label);
+          lightboxPlaceholder.style.display = 'flex';
+        }
+
+        lightboxCaption.textContent = item.caption || '';
+        lightboxCounter.textContent = (lbIndex + 1) + ' / ' + lbItems.length;
+
+        // Nav button visibility
+        lightboxPrev.classList.toggle('hidden', lbIndex === 0);
+        lightboxNext.classList.toggle('hidden', lbIndex === lbItems.length - 1);
+
+        // Thumbnail active state
+        lightboxThumbsTrack.querySelectorAll('.lightbox-thumb').forEach((t, i) => {
+          t.classList.toggle('active', i === lbIndex);
+        });
+
+        // Scroll active thumbnail into view
+        const activeThumb = lightboxThumbsTrack.querySelector('.lightbox-thumb.active');
+        if (activeThumb) {
+          activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+
+        lightboxImageInner.classList.remove('transitioning');
+      }, isOpen ? 0 : 200);
     }
 
     function closeLightbox() {
       lightbox.classList.remove('open');
       document.body.style.overflow = '';
-      lightboxItems = [];
+      lbItems = [];
+      // Clear media after transition
+      setTimeout(() => {
+        lightboxImage.src = '';
+        lightboxThumbsTrack.innerHTML = '';
+      }, 400);
     }
 
     function nextLightbox() {
-      if (lightboxIndex < lightboxItems.length - 1) {
-        lightboxIndex++;
+      if (lbIndex < lbItems.length - 1) {
+        lbIndex++;
         updateLightbox();
       }
     }
 
     function prevLightbox() {
-      if (lightboxIndex > 0) {
-        lightboxIndex--;
+      if (lbIndex > 0) {
+        lbIndex--;
         updateLightbox();
       }
     }
 
+    // Event listeners
     lightboxClose.addEventListener('click', closeLightbox);
-    lightboxPrev.addEventListener('click', prevLightbox);
-    lightboxNext.addEventListener('click', nextLightbox);
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) closeLightbox();
+    lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); prevLightbox(); });
+    lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); nextLightbox(); });
+
+    // Click backdrop to close
+    lightbox.querySelector('.lightbox-backdrop').addEventListener('click', closeLightbox);
+    lightbox.querySelector('.lightbox-stage').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeLightbox();
     });
+
+    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('open')) return;
       if (e.key === 'Escape') closeLightbox();
@@ -799,25 +1035,47 @@
       if (e.key === 'ArrowLeft') prevLightbox();
     });
 
-    // ── Gallery image click binding ──
-    const galleryItems = document.querySelectorAll('.film-gallery-item');
-    galleryItems.forEach((item) => {
+    // ── Gallery item click → open lightbox ──
+    document.querySelectorAll('.film-gallery-item').forEach((item) => {
       item.addEventListener('click', () => {
-        const img = item.querySelector('img');
-        if (!img || !img.src) return;
-        const allItems = Array.from(item.closest('.film-gallery-grid').querySelectorAll('.film-gallery-item'))
-          .filter((gi) => {
-            const giImg = gi.querySelector('img');
-            return giImg && giImg.src;
-          })
-          .map((gi) => ({
-            src: gi.querySelector('img').src,
-            caption: (gi.querySelector('.film-gallery-caption') || {}).textContent || ''
-          }));
-        const idx = allItems.findIndex((gi) => gi.src === img.src);
-        if (idx >= 0) openLightbox(allItems, idx);
+        if (!item._galleryItems || item._galleryItems.length === 0) return;
+        openLightbox(item._galleryItems, item._galleryIndex, item._projectTitle);
       });
     });
+
+    // ── Welfare gallery image click → open lightbox ──
+    document.querySelectorAll('.welfare-entry-image').forEach((item) => {
+      item.addEventListener('click', () => {
+        if (!item._galleryItems || item._galleryItems.length === 0) return;
+        openLightbox(item._galleryItems, item._galleryIndex, item._projectTitle);
+      });
+    });
+
+    // ── Lightbox touch swipe (mobile) ──
+    const isTouchDevice2 = window.matchMedia('(hover: none)').matches;
+    if (isTouchDevice2) {
+      let touchStartX = 0;
+      let touchEndX = 0;
+      let touchStartY = 0;
+      let touchEndY = 0;
+
+      lightboxImageInner.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      lightboxImageInner.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        const swipeX = touchEndX - touchStartX;
+        const swipeY = touchEndY - touchStartY;
+        // Only horizontal swipes (not vertical scroll on thumbs)
+        if (Math.abs(swipeX) > 50 && Math.abs(swipeX) > Math.abs(swipeY)) {
+          if (swipeX < 0) nextLightbox();
+          else prevLightbox();
+        }
+      }, { passive: true });
+    }
 
     // ── Image lazy loading (now and future) ──
     const lazyObserver = new IntersectionObserver(
@@ -838,6 +1096,7 @@
       { rootMargin: '200px' }
     );
     document.querySelectorAll('.film-gallery-item').forEach((item) => lazyObserver.observe(item));
+    document.querySelectorAll('.welfare-entry-image').forEach((item) => lazyObserver.observe(item));
     document.querySelectorAll('.film-case-header').forEach((item) => {
       if (item.style.backgroundImage) lazyObserver.observe(item);
     });
@@ -880,25 +1139,6 @@
           item.style.transform = '';
         });
       });
-    }
-
-    // ── Lightbox Touch Swipe (mobile) ──
-    if (isTouchDevice) {
-      let touchStartX = 0;
-      let touchEndX = 0;
-
-      lightbox.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-      }, { passive: true });
-
-      lightbox.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        const swipeDist = touchEndX - touchStartX;
-        if (Math.abs(swipeDist) > 50) {
-          if (swipeDist < 0) nextLightbox();
-          else prevLightbox();
-        }
-      }, { passive: true });
     }
   }
 
