@@ -324,48 +324,136 @@
     const sectionSub = document.querySelector('#projects .section-sub');
     if (sectionSub && projects.subtitle) sectionSub.textContent = projects.subtitle;
 
-    const grid = document.querySelector('.project-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
+    const container = document.querySelector('#projects .project-grid');
+    if (!container) return;
+    // Change to film-portfolio container
+    container.className = 'film-portfolio';
+    container.innerHTML = '';
+
+    // Gallery color palettes for placeholders
+    const palettes = [
+      ['#1A1A2E', '#2D1B4E', '#16213E'],
+      ['#1A2E1A', '#2E1A1A', '#1A1A2E'],
+      ['#2E2A1A', '#1A2E2A', '#1E1A2E'],
+      ['#1E1A1A', '#2A1E2A', '#1A2A3E'],
+      ['#1A2A3E', '#2D1B2E', '#1A1A2E'],
+    ];
 
     projects.items.forEach((item) => {
-      const article = document.createElement('article');
-      article.className = 'project-item reveal-item';
-      article.dataset.type = item.type;
-      article.dataset.src = item.src;
-      article.dataset.title = item.title;
-      article.dataset.desc = item.desc;
+      const filmCase = document.createElement('div');
+      filmCase.className = 'film-case reveal-item';
 
-      const thumb = document.createElement('div');
-      const thumbClass = item.type === 'video' ? 'project-thumb video-thumb'
-        : item.type === 'pdf' ? 'project-thumb pdf-thumb'
-        : 'project-thumb image-thumb';
-      thumb.className = thumbClass;
-      thumb.style.background = item.thumbGradient;
-
-      if (item.type === 'video') {
-        const playDiv = document.createElement('div');
-        playDiv.className = 'thumb-play';
-        playDiv.textContent = '▶';
-        thumb.appendChild(playDiv);
-      } else if (item.type === 'pdf') {
-        const pdfDiv = document.createElement('div');
-        pdfDiv.className = 'thumb-pdf';
-        pdfDiv.textContent = 'PDF';
-        thumb.appendChild(pdfDiv);
+      // ── Hero ──
+      const hero = document.createElement('div');
+      if (item.heroImage) {
+        hero.className = 'film-hero';
+        hero.style.backgroundImage = `url('${item.heroImage}')`;
+      } else {
+        hero.className = 'film-hero film-hero-placeholder';
       }
 
-      const info = document.createElement('div');
-      info.className = 'project-info';
-      info.innerHTML = `
-        <span class="project-badge">${item.badge}</span>
-        <h3>${item.title}</h3>
-        <p>${item.desc}</p>
+      const mask = document.createElement('div');
+      mask.className = 'film-hero-mask';
+
+      const heroContent = document.createElement('div');
+      heroContent.className = 'film-hero-content';
+      heroContent.innerHTML = `
+        <div class="film-hero-type">${item.subtitle || ''}</div>
+        <h3 class="film-hero-title">${item.title}</h3>
+        <div class="film-hero-meta">
+          <div class="film-hero-detail"><span>Role</span><span>${item.role || ''}</span></div>
+          <div class="film-hero-detail"><span>Duration</span><span>${item.duration || ''}</span></div>
+        </div>
       `;
 
-      article.appendChild(thumb);
-      article.appendChild(info);
-      grid.appendChild(article);
+      hero.appendChild(mask);
+      hero.appendChild(heroContent);
+      filmCase.appendChild(hero);
+
+      // ── Body ──
+      const body = document.createElement('div');
+      body.className = 'film-body';
+
+      // Overview
+      if (item.intro) {
+        const ov = document.createElement('div');
+        ov.className = 'film-section';
+        ov.innerHTML = `
+          <div class="film-section-label">Overview</div>
+          <p>${item.intro}</p>
+        `;
+        body.appendChild(ov);
+      }
+
+      // My Contribution
+      if (item.contributions && item.contributions.length > 0) {
+        const contrib = document.createElement('div');
+        contrib.className = 'film-section';
+        const contribGrid = document.createElement('div');
+        contribGrid.className = 'film-contributions';
+        item.contributions.forEach((c) => {
+          const div = document.createElement('div');
+          div.className = 'film-contrib-item';
+          div.textContent = c;
+          contribGrid.appendChild(div);
+        });
+        contrib.innerHTML = '<div class="film-section-label">My Contribution</div>';
+        contrib.appendChild(contribGrid);
+        body.appendChild(contrib);
+      }
+
+      // Visual Gallery
+      if (item.gallery && item.gallery.length > 0) {
+        const gallerySection = document.createElement('div');
+        gallerySection.className = 'film-section film-gallery';
+        gallerySection.innerHTML = '<div class="film-section-label">Visual Gallery</div>';
+
+        const galleryGrid = document.createElement('div');
+        galleryGrid.className = 'film-gallery-grid';
+
+        item.gallery.forEach((g, gIdx) => {
+          const gItem = document.createElement('div');
+          gItem.className = 'film-gallery-item';
+
+          // Placeholder gradient
+          const palette = palettes[gIdx % palettes.length];
+          gItem.style.background = `linear-gradient(135deg, ${palette[0]} 0%, ${palette[1]} 100%)`;
+
+          const placeholder = document.createElement('div');
+          placeholder.className = 'film-gallery-placeholder';
+
+          const caption = document.createElement('span');
+          caption.className = 'film-gallery-caption';
+          caption.textContent = g.caption || '';
+
+          placeholder.appendChild(caption);
+          gItem.appendChild(placeholder);
+          galleryGrid.appendChild(gItem);
+        });
+
+        gallerySection.appendChild(galleryGrid);
+        body.appendChild(gallerySection);
+      }
+
+      // Achievements
+      if (item.achievements && item.achievements.length > 0) {
+        const achieveSection = document.createElement('div');
+        achieveSection.className = 'film-section';
+        const achieveGrid = document.createElement('div');
+        achieveGrid.className = 'film-achievements';
+        item.achievements.forEach((a) => {
+          const card = document.createElement('div');
+          card.className = 'film-achieve-card';
+          card.textContent = a;
+          achieveGrid.appendChild(card);
+        });
+        achieveSection.innerHTML = '<div class="film-section-label">Achievements</div>';
+        achieveSection.appendChild(achieveGrid);
+        body.appendChild(achieveSection);
+      }
+
+      filmCase.appendChild(body);
+      container.appendChild(filmCase);
     });
   }
 
@@ -443,9 +531,6 @@
     const heroOverlay  = document.getElementById('heroOverlay');
     const gridItems    = heroGrid ? heroGrid.querySelectorAll('.grid-item') : [];
     const navDots      = document.querySelectorAll('.nav-dot');
-    const detailOverlay = document.getElementById('detailOverlay');
-    const detailBody    = document.getElementById('detailBody');
-    const detailClose   = document.getElementById('detailClose');
     const heroScroll    = document.querySelector('.hero-scroll');
 
     // ── Loader & Hero Grid Entrance ──
@@ -542,60 +627,121 @@
     const allRevealItems = document.querySelectorAll('.reveal-item');
     allRevealItems.forEach((item) => revealObserver.observe(item));
 
-    // ── Project Detail Overlay ──
-    function openDetail(type, src) {
-      detailBody.innerHTML = '';
-      let el;
+    // ── Image Gallery Lightbox ──
+    // Create lightbox element
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.id = 'imageLightbox';
+    lightbox.innerHTML = `
+      <button class="lightbox-close" id="lightboxClose">✕</button>
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev">←</button>
+      <button class="lightbox-nav lightbox-next" id="lightboxNext">→</button>
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    `;
+    document.body.appendChild(lightbox);
 
-      if (type === 'video') {
-        if (/\.(mp4|webm|ogg)$/i.test(src)) {
-          el = document.createElement('video');
-          el.src = src;
-          el.controls = true;
-          el.autoplay = true;
-        } else {
-          el = document.createElement('iframe');
-          el.src = src;
-          el.allow = 'autoplay; encrypted-media';
-          el.allowFullscreen = true;
-        }
-      } else if (type === 'pdf') {
-        el = document.createElement('iframe');
-        el.src = src;
-      } else if (type === 'image') {
-        el = document.createElement('img');
-        el.src = src;
-        el.alt = 'Project preview';
-      }
+    const lightboxImg = document.createElement('img');
+    lightbox.appendChild(lightboxImg);
 
-      if (el) {
-        detailBody.appendChild(el);
-        detailOverlay.classList.add('open');
-        detailOverlay.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      }
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    const lightboxNext = document.getElementById('lightboxNext');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+
+    let lightboxItems = [];
+    let lightboxIndex = 0;
+
+    function openLightbox(items, index) {
+      lightboxItems = items;
+      lightboxIndex = index;
+      updateLightbox();
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
     }
 
-    function closeDetail() {
-      detailOverlay.classList.remove('open');
-      detailOverlay.setAttribute('aria-hidden', 'true');
-      detailBody.innerHTML = '';
+    function updateLightbox() {
+      const item = lightboxItems[lightboxIndex];
+      if (!item) return;
+      lightboxImg.src = item.src;
+      lightboxCaption.textContent = item.caption || '';
+      lightboxPrev.style.display = lightboxIndex > 0 ? 'flex' : 'none';
+      lightboxNext.style.display = lightboxIndex < lightboxItems.length - 1 ? 'flex' : 'none';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
       document.body.style.overflow = '';
+      lightboxItems = [];
     }
 
-    // Bind click to project items (after they're rendered)
-    const projectItems = document.querySelectorAll('.project-item');
-    projectItems.forEach((item) => {
+    function nextLightbox() {
+      if (lightboxIndex < lightboxItems.length - 1) {
+        lightboxIndex++;
+        updateLightbox();
+      }
+    }
+
+    function prevLightbox() {
+      if (lightboxIndex > 0) {
+        lightboxIndex--;
+        updateLightbox();
+      }
+    }
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxPrev.addEventListener('click', prevLightbox);
+    lightboxNext.addEventListener('click', nextLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextLightbox();
+      if (e.key === 'ArrowLeft') prevLightbox();
+    });
+
+    // ── Gallery image click binding ──
+    const galleryItems = document.querySelectorAll('.film-gallery-item');
+    galleryItems.forEach((item) => {
       item.addEventListener('click', () => {
-        const type = item.dataset.type;
-        const src  = item.dataset.src;
-        if (type && src) openDetail(type, src);
+        const img = item.querySelector('img');
+        if (!img || !img.src) return;
+        const allItems = Array.from(item.closest('.film-gallery-grid').querySelectorAll('.film-gallery-item'))
+          .filter((gi) => {
+            const giImg = gi.querySelector('img');
+            return giImg && giImg.src;
+          })
+          .map((gi) => ({
+            src: gi.querySelector('img').src,
+            caption: (gi.querySelector('.film-gallery-caption') || {}).textContent || ''
+          }));
+        const idx = allItems.findIndex((gi) => gi.src === img.src);
+        if (idx >= 0) openLightbox(allItems, idx);
       });
     });
 
-    if (detailClose) detailClose.addEventListener('click', closeDetail);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && detailOverlay.classList.contains('open')) closeDetail();
+    // ── Image lazy loading (now and future) ──
+    const lazyObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const imgs = entry.target.querySelectorAll('img');
+            imgs.forEach((img) => {
+              if (!img.classList.contains('loaded') && img.src) {
+                img.classList.add('loaded');
+              }
+            });
+            // Also observe child .film-gallery-item for lazy image loading
+            lazyObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '200px' }
+    );
+    document.querySelectorAll('.film-gallery-item').forEach((item) => lazyObserver.observe(item));
+    document.querySelectorAll('.film-hero').forEach((item) => {
+      if (item.style.backgroundImage) lazyObserver.observe(item);
     });
 
     // ── WeChat Copy ──

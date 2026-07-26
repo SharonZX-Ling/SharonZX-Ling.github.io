@@ -91,39 +91,60 @@
   },
 
   "projects": {
-    "subtitle": "从策略到执行，每一个项目的完整闭环。",
+    "subtitle": "影视作品 Portfolio",
     "items": [
       {
-        "type": "video",
-        "src": "https://player.bilibili.com/player.html?bvid=BVxxxxxxxxx",
-        "title": "X3 端午电影混池宣发短片",
-        "desc": "为X3项目量身打造的混池宣发创意短片，融合电影感与节日氛围。",
-        "badge": "Video",
-        "thumbGradient": "linear-gradient(135deg,#1A1A2E 0%,#16213E 50%,#0F3460 100%)"
+        "title": "《摆针》",
+        "subtitle": "微电影",
+        "role": "副导演 / 后期",
+        "duration": "2025.03 — 2025.06",
+        "intro": "参与微电影《摆针》从前期筹备到后期制作的完整流程，负责团队组建、现场统筹及后期剪辑包装，推动影片从创意构想到最终成片落地。",
+        "contributions": [
+          "前期剧本讨论与创作准备",
+          "制作团队组建与人员协调",
+          "拍摄现场统筹",
+          "后期剪辑与声音包装",
+          "创意表达落地"
+        ],
+        "gallery": [
+          { "caption": "前期创作讨论" },
+          { "caption": "制作团队组建" },
+          { "caption": "拍摄现场统筹" },
+          { "caption": "后期剪辑与声音包装" },
+          { "caption": "成片调色" }
+        ],
+        "achievements": [
+          "30+人制作团队",
+          "7天完成拍摄",
+          "入围重庆\"宿影交融 文旅新章\"影展",
+          "获得多个奖项"
+        ]
       },
       {
-        "type": "pdf",
-        "src": "assets/pdfs/x3-case.pdf",
-        "title": "X3 端午电影混池宣发方案",
-        "desc": "完整的营销策划案，包含洞察、策略、传播节奏与资源整合。",
-        "badge": "PDF",
-        "thumbGradient": "linear-gradient(135deg,#2D1B0E 0%,#3E2A18 50%,#C9A96E 100%)"
-      },
-      {
-        "type": "image",
-        "src": "assets/images/work-1.jpg",
-        "title": "品牌视觉设计",
-        "desc": "某新消费品牌从0到1的视觉体系搭建。",
-        "badge": "Image",
-        "thumbGradient": "linear-gradient(135deg,#0A2E36 0%,#134E5E 50%,#1A6B5A 100%)"
-      },
-      {
-        "type": "image",
-        "src": "assets/images/work-2.jpg",
-        "title": "社媒内容矩阵",
-        "desc": "小红书+公众号+视频号内容矩阵搭建与运营。",
-        "badge": "Image",
-        "thumbGradient": "linear-gradient(135deg,#1A0A2E 0%,#2D1858 50%,#3D2070 100%)"
+        "title": "《香魂》",
+        "subtitle": "纪录片",
+        "role": "中方制片人",
+        "duration": "2025.04",
+        "intro": "参与\u201c看中国\u00b7外国青年影像计划\u201d，与海外青年导演合作完成非遗主题纪录片制作，负责跨文化沟通、拍摄协调及后期协作，推动纪录片完成从创作到传播的全过程。",
+        "contributions": [
+          "中外团队沟通协调",
+          "拍摄流程管理",
+          "素材整理与对接",
+          "翻译与跨文化内容沟通",
+          "后期制作协作"
+        ],
+        "gallery": [
+          { "caption": "中外团队沟通" },
+          { "caption": "拍摄现场" },
+          { "caption": "非遗文化记录" },
+          { "caption": "后期协作" },
+          { "caption": "成片上线" }
+        ],
+        "achievements": [
+          "全英文完成跨文化合作",
+          "联动多部门完成项目推进",
+          "纪录片于海内外平台同步上线"
+        ]
       }
     ]
   },

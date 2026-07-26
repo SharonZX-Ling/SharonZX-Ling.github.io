@@ -749,89 +749,323 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 /* ============================================
-   PROJECTS
+   PROJECTS — Film Portfolio
 ============================================ */
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+.film-portfolio {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
 }
 
-.project-item {
-  cursor: pointer;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--surface);
-  transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s;
+/* ── Project Case ── */
+.film-case {
+  position: relative;
 }
 
-.project-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
-
-.project-thumb {
+/* ── Project Hero ── */
+.film-hero {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 21 / 9;
   background-size: cover;
   background-position: center;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 48px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+  min-height: 380px;
 }
 
-.thumb-play {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.9);
-  color: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  padding-left: 3px;
-  transition: transform 0.3s var(--ease-out-expo);
+/* Placeholder gradient when no hero image */
+.film-hero.film-hero-placeholder {
+  background: linear-gradient(135deg,
+    #0A0A14 0%, #121020 30%, #1A1625 60%, #0E0A18 100%);
 }
 
-.project-item:hover .thumb-play { transform: scale(1.15); }
-
-.thumb-pdf {
-  padding: 8px 16px;
-  background: rgba(255,255,255,0.9);
-  color: var(--bg);
-  border-radius: var(--radius);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
+.film-hero-mask {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.85) 0%,
+    rgba(0,0,0,0.4) 45%,
+    rgba(0,0,0,0.15) 100%
+  );
+  pointer-events: none;
 }
 
-.project-info {
-  padding: 20px 24px 24px;
+.film-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 48px;
+  width: 100%;
 }
 
-.project-badge {
-  display: inline-block;
+.film-hero-type {
   font-size: 11px;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  font-weight: 600;
 }
 
-.project-info h3 {
+.film-hero-title {
   font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  letter-spacing: -0.3px;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 20px;
 }
 
-.project-info p {
+.film-hero-meta {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.film-hero-detail {
+  font-size: 13px;
   color: var(--text-sub);
+  display: flex;
+  gap: 8px;
+}
+
+.film-hero-detail span:first-child {
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.film-hero-detail span:last-child {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ── Project Body ── */
+.film-body {
+  max-width: 720px;
+}
+
+.film-section {
+  margin-bottom: 52px;
+}
+
+.film-section:last-child { margin-bottom: 0; }
+
+.film-section-label {
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.film-section p {
+  color: var(--text-sub);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ── Contributions ── */
+.film-contributions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.film-contrib-item {
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.5;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.film-contrib-item:hover {
+  border-color: var(--accent-dim);
+  color: var(--text);
+}
+
+/* ── Visual Gallery ── */
+.film-gallery {
+  max-width: 100%;
+  margin-left: 0;
+}
+
+.film-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.film-gallery-item {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--surface);
+  transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s ease;
+}
+
+.film-gallery-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.film-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.film-gallery-item img.loaded { opacity: 1; }
+
+/* Placeholder gradient */
+.film-gallery-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+}
+
+.film-gallery-caption {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.4;
+}
+
+/* ── Achievements ── */
+.film-achievements {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-width: 100%;
+  margin-left: 0;
+}
+
+.film-achieve-card {
+  padding: 20px 24px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--accent);
   font-size: 14px;
+  color: var(--text);
   line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ============================================
+   IMAGE LIGHTBOX (gallery clicking)
+============================================ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.lightbox.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  transform: scale(0.95);
+  transition: transform 0.35s var(--ease-out-expo);
+}
+
+.lightbox.open img { transform: scale(1); }
+
+.lightbox-close {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 910;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.3s;
+}
+
+.lightbox-close:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: var(--accent);
+}
+
+.lightbox-nav {
+  position: fixed;
+  top: 50%;
+  z-index: 910;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: all 0.3s;
+}
+
+.lightbox-nav:hover {
+  background: rgba(255,255,255,0.16);
+  border-color: var(--accent);
+}
+
+.lightbox-prev { left: 24px; }
+.lightbox-next { right: 24px; }
+
+.lightbox-caption {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 910;
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .film-portfolio { gap: 64px; }
+  .film-hero { aspect-ratio: 16 / 9; min-height: 240px; }
+  .film-hero-content { padding: 28px; }
+  .film-hero-title { font-size: 28px; }
+  .film-hero-meta { gap: 16px; }
+  .film-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .film-achievements { grid-template-columns: 1fr; }
+  .film-contributions { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ============================================
@@ -1065,7 +1299,7 @@ a.contact-row:hover .contact-arrow {
 @media (max-width: 1024px) {
   .about-layout { grid-template-columns: 1fr; }
   .about-sidebar { padding-left: 0; border-left: none; border-top: 1px solid var(--border); padding-top: 24px; }
-  .project-grid { grid-template-columns: 1fr; }
+  .film-gallery-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
