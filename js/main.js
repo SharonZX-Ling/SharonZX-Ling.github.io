@@ -7,6 +7,25 @@
 (function () {
   'use strict';
 
+  // ── Accordion scroll positioning utility ──
+  // Smooth-scrolls so the element's top sits at a comfortable offset below the viewport top.
+  // On mobile, accounts for the fixed nav bar height.
+  function scrollToAccordionHeader(element, customOffset) {
+    var rect = element.getBoundingClientRect();
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var isMobile = window.innerWidth <= 768;
+    var offset = customOffset != null ? customOffset : (isMobile ? 72 : 28);
+    var targetY = scrollTop + rect.top - offset;
+    if (targetY < 0) targetY = 0;
+    // Only scroll if the header isn't already near the top of the viewport
+    if (rect.top < -50 || rect.top > offset + 20) {
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }
+  }
+
+  // Guard against rapid accordion clicks — prevents overlapping timers
+  var accordionAnimating = false;
+
   // ── Load content ──
   fetch('content.json')
     .then((r) => r.json())
@@ -353,18 +372,29 @@
 
       // ── Click to toggle ──
       header.addEventListener('click', function() {
+        if (accordionAnimating) return; // Ignore clicks during transition
         var isActive = article.classList.contains('active');
-        // Close all others — and clear their media to stop playback
+
+        // Close ALL items immediately — and clear their media to stop playback
         caseGallery.querySelectorAll('.case-item').forEach(function(c) {
           c.classList.remove('active');
           if (c._clearMedia) c._clearMedia();
           if (c._clearFeatures) c._clearFeatures();
         });
+
         if (!isActive) {
-          article.classList.add('active');
-          // Lazy render media on first expand
-          if (article._renderMedia) article._renderMedia();
-          if (article._renderFeatures) article._renderFeatures();
+          // Phase 1: let collapsing items settle (CSS transition ~0.6s with ease-out-expo,
+          //           ~80% complete at 200ms) so scroll position is accurate
+          accordionAnimating = true;
+          setTimeout(function() {
+            // Phase 2: open new item + lazy render media
+            article.classList.add('active');
+            if (article._renderMedia) article._renderMedia();
+            if (article._renderFeatures) article._renderFeatures();
+            // Phase 3: smooth scroll to bring header into view
+            scrollToAccordionHeader(header);
+            accordionAnimating = false;
+          }, 200);
         }
       });
 
@@ -542,11 +572,21 @@
 
       // ── Click to toggle ──
       header.addEventListener('click', () => {
+        if (accordionAnimating) return; // Ignore clicks during transition
         const isActive = filmCase.classList.contains('active');
-        // Close all others
+        // Close ALL items immediately
         container.querySelectorAll('.film-case').forEach((c) => c.classList.remove('active'));
-        // Open this one if it was closed
-        if (!isActive) filmCase.classList.add('active');
+        if (!isActive) {
+          // Phase 1: let collapsing items settle so scroll position is accurate
+          accordionAnimating = true;
+          setTimeout(() => {
+            // Phase 2: open new item
+            filmCase.classList.add('active');
+            // Phase 3: smooth scroll to bring header into view
+            scrollToAccordionHeader(header);
+            accordionAnimating = false;
+          }, 200);
+        }
       });
 
       container.appendChild(filmCase);
