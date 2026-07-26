@@ -18,7 +18,8 @@
 
 ## 内容结构
 - Hero → About → Internship → Projects → Others → Contact
-- 实习3段（官号跳转+策划案PDF链接）
+- Internship: Case Gallery accordion 展开式（数据驱动，internshipData 在 main.js）
+- 实习3段（overview + media + links，支持 YouTube/Bilibili/本地视频/图片）
 - 项目4个（视频/PDF/图片×2）
 - 其他经历3条（时间线）
 - 联系4种（邮箱/微信复制/小红书/B站）

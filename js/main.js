@@ -212,26 +212,19 @@
   // ── Data: add new items here ──
   const internshipData = [
     {
-      date: '2025.06 — 2025.09',
-      company: '某知名互联网公司 · 品牌营销实习生',
-      brief: '负责品牌Campaign全链路策划，主导X3端午电影混池宣发方案，沉淀出一套可复用的内容生产SOP。',
+      date: '2026.06 — 2026.09',
+      company: '叠纸 · 恋与深空 · 品牌营销策划实习生',
+      brief: '参与6月17日恋与深空【电影卡】版本的品牌营销，协助品牌联动、线下快闪、内容生态营销等多类型营销活动的创意策划与执行。',
       overview: {
-        background: '面向年轻消费群体的品牌焕新项目，需要在端午节点打造破圈声量。',
-        role: '品牌营销实习生，负责内容策划、Campaign执行与数据复盘。',
-        goal: '提升品牌在目标人群中的认知度与好感度，实现内容资产沉淀。'
+        background: '该版本主打浪漫与高雅的品牌调性，借助经典电影赋魅男主，面向泛三次元受众，在端午节点打造破圈声量。',
+        role: '品牌营销策划实习生，负责内容策划、Campaign执行与落地。',
+        goal: '提升品牌在目标人群中的认知度，塑造恋与深空"浪漫"的品牌调性。'
       },
       media: [
-        // Supported types: 'youtube', 'bilibili', 'video', 'image'
-        // For youtube/bilibili: provide embed URL
-        // For video/image: provide local file path
-        // { type: 'bilibili', src: 'https://player.bilibili.com/player.html?bvid=BVxxxxxxxxx', label: '宣发短片' },
-        // { type: 'image', src: 'assets/images/hero_1.jpg', label: 'Campaign主视觉' },
-        // { type: 'video', src: 'assets/videos/demo.mp4', label: '花絮' },
-        // { type: 'youtube', src: 'https://www.youtube.com/embed/xxxxxxxx', label: 'YouTube' },
+        { type: 'bilibili', src: '//player.bilibili.com/player.html?isOutside=true&aid=116752058944791&bvid=BV1T8JM6WEuh&cid=39127416968&p=1', label: '品牌宣传片' },
       ],
       links: [
-        { label: '官方账号 ↗', url: 'https://example.com/official-account', type: 'accent' },
-        { label: '策划案 PDF', url: 'assets/pdfs/x3-case.pdf', type: 'ghost' },
+        { label: '联动详情 ↗', url: 'https://www.xiaohongshu.com/discovery/item/6a2d4d9c000000001702d479?source=webshare&xhsshare=pc_web&xsec_token=AByDKNVDo2xEK_SgW9qQoWaFVXTVqNVkBwfMXWoeBFNEg=&xsec_source=pc_share', type: 'accent' },
       ]
     },
     {
@@ -356,6 +349,12 @@
             iframe.src = mediaItem.src;
             iframe.allow = 'autoplay; encrypted-media; fullscreen';
             iframe.allowFullscreen = true;
+            if (mediaItem.type === 'bilibili') {
+              iframe.setAttribute('scrolling', 'no');
+              iframe.setAttribute('frameborder', 'no');
+              iframe.setAttribute('framespacing', '0');
+              iframe.setAttribute('border', '0');
+            }
             main.appendChild(iframe);
           } else if (mediaItem.type === 'video') {
             const video = document.createElement('video');
