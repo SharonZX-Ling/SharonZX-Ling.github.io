@@ -876,8 +876,8 @@
 
         container.appendChild(gallery);
 
-        // ── Stats click handler: toggle gallery ──
-        stats.addEventListener('click', function() {
+        // ── Toggle handler: shared by stats + hint ──
+        function toggleGallery() {
           welfareExpanded = !welfareExpanded;
           if (welfareExpanded) {
             gallery.classList.remove('welfare-gallery-collapsed');
@@ -898,13 +898,25 @@
             // Stop carousel auto-play
             if (gallery._stopCarousel) gallery._stopCarousel();
           }
-        });
+        }
+
+        // Both stats and hint trigger the same toggle
+        stats.addEventListener('click', toggleGallery);
+        hint.addEventListener('click', toggleGallery);
 
         // Keyboard accessibility: Enter/Space to toggle
         stats.addEventListener('keydown', function(e) {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            stats.click();
+            toggleGallery();
+          }
+        });
+        hint.setAttribute('role', 'button');
+        hint.setAttribute('tabindex', '0');
+        hint.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleGallery();
           }
         });
       }

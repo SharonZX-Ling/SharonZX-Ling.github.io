@@ -1512,7 +1512,12 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   gap: 6px;
   padding: 12px 0 0;
   margin-bottom: 40px;
-  transition: margin-bottom 0.4s var(--ease-out-expo);
+  cursor: pointer;
+  transition: margin-bottom 0.4s var(--ease-out-expo), opacity 0.3s ease;
+}
+
+.welfare-stats-hint:hover {
+  opacity: 0.7;
 }
 
 .welfare-stats.expanded + .welfare-stats-hint {
@@ -2212,6 +2217,7 @@ a.contact-row:hover .contact-arrow {
   .film-gallery-item:hover { transform: none; box-shadow: none; }
   .welfare-entry-image:hover { transform: none; box-shadow: none; }
   .welfare-stats:hover { background: transparent; }
+  .welfare-stats-hint:hover { opacity: 1; }
   .welfare-carousel-nav { opacity: 0.6; }
   .welfare-carousel-nav:hover { background: rgba(0, 0, 0, 0.4); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
   .contact-row:hover { background: transparent; padding-left: 0; padding-right: 0; }
