@@ -626,10 +626,17 @@
       container.appendChild(intro);
     }
 
-    // ── Stats row ──
+    // ── State for fold/unfold & carousel auto-play ──
+    var welfareExpanded = false;
+    var carouselAutoTimer = null;
+    var carouselResumeTimer = null;
+
+    // ── Stats row (clickable toggle) ──
     if (others.stats && others.stats.length > 0) {
       const stats = document.createElement('div');
       stats.className = 'welfare-stats reveal-item';
+      stats.setAttribute('role', 'button');
+      stats.setAttribute('tabindex', '0');
       others.stats.forEach((s) => {
         const stat = document.createElement('div');
         stat.className = 'welfare-stat';
@@ -639,76 +646,268 @@
         stats.appendChild(stat);
       });
       container.appendChild(stats);
-    }
 
-    // ── Gallery (editorial alternating layout) ──
-    if (others.gallery && others.gallery.length > 0) {
-      const gallery = document.createElement('div');
-      gallery.className = 'welfare-gallery';
+      // ── Toggle hint ──
+      const hint = document.createElement('div');
+      hint.className = 'welfare-stats-hint reveal-item';
+      hint.innerHTML =
+        '<span class="welfare-stats-hint-text">点击展开</span>' +
+        '<svg class="welfare-stats-hint-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>';
+      container.appendChild(hint);
 
-      // Prepare lightbox items
-      const lightboxItems = others.gallery.map((g) => ({
-        src: g.src || '',
-        caption: g.title + (g.caption ? ' — ' + g.caption : '')
-      }));
+      // ── Gallery (initially collapsed) ──
+      if (others.gallery && others.gallery.length > 0) {
+        const gallery = document.createElement('div');
+        gallery.className = 'welfare-gallery welfare-gallery-collapsed';
 
-      others.gallery.forEach((g, gIdx) => {
-        const entry = document.createElement('div');
-        entry.className = 'welfare-entry reveal-item';
-        if (gIdx === 0) entry.classList.add('welfare-entry-featured');
-        if (gIdx % 2 === 1) entry.classList.add('welfare-entry-reverse');
+        // Prepare lightbox items (only for single-image entries)
+        var lightboxItems = [];
+        others.gallery.forEach(function(g) {
+          if (g.src) {
+            lightboxItems.push({ src: g.src, caption: g.title + (g.caption ? ' — ' + g.caption : '') });
+          } else if (g.images && g.images.length > 0) {
+            // Carousel entries: add first image for lightbox reference
+            lightboxItems.push({ src: g.images[0].src || '', caption: g.title + (g.caption ? ' — ' + g.caption : '') });
+          } else {
+            lightboxItems.push({ src: '', caption: g.title });
+          }
+        });
 
-        // Image container
-        const imgWrap = document.createElement('div');
-        imgWrap.className = 'welfare-entry-image';
+        others.gallery.forEach(function(g, gIdx) {
+          const entry = document.createElement('div');
+          entry.className = 'welfare-entry';
+          if (gIdx === 0) entry.classList.add('welfare-entry-featured');
+          if (gIdx % 2 === 1) entry.classList.add('welfare-entry-reverse');
 
-        if (g.src) {
-          // Try to load real image — fallback to placeholder on error
-          const img = document.createElement('img');
-          img.src = g.src;
-          img.alt = g.title || '';
-          img.loading = 'lazy';
-          img.addEventListener('error', () => {
-            imgWrap.classList.add('welfare-entry-placeholder');
-            img.remove();
-            const palette = welfarePalettes[gIdx % welfarePalettes.length];
-            imgWrap.style.background = 'linear-gradient(135deg, ' + palette[0] + ', ' + palette[1] + ')';
-            // Add placeholder label
-            const label = document.createElement('div');
-            label.className = 'welfare-entry-ph-label';
-            label.textContent = g.title || '';
-            imgWrap.appendChild(label);
-          });
-          imgWrap.appendChild(img);
-        } else {
-          // No src — show placeholder directly
-          imgWrap.classList.add('welfare-entry-placeholder');
-          const palette = welfarePalettes[gIdx % welfarePalettes.length];
-          imgWrap.style.background = 'linear-gradient(135deg, ' + palette[0] + ', ' + palette[1] + ')';
-          const label = document.createElement('div');
-          label.className = 'welfare-entry-ph-label';
-          label.textContent = g.title || '';
-          imgWrap.appendChild(label);
-        }
+          // ── Image container ──
+          const imgWrap = document.createElement('div');
+          imgWrap.className = 'welfare-entry-image';
 
-        // Store lightbox data on the image element
-        imgWrap._galleryItems = lightboxItems;
-        imgWrap._galleryIndex = gIdx;
-        imgWrap._projectTitle = others.organization || '';
+          // Check if this entry has multiple images → carousel
+          if (g.images && g.images.length > 1) {
+            // ── Carousel ──
+            var carouselEl = document.createElement('div');
+            carouselEl.className = 'welfare-carousel';
 
-        // Caption text
-        const textWrap = document.createElement('div');
-        textWrap.className = 'welfare-entry-text';
-        textWrap.innerHTML =
-          '<h3 class="welfare-entry-title">' + (g.title || '') + '</h3>' +
-          '<p class="welfare-entry-caption">' + (g.caption || '') + '</p>';
+            var track = document.createElement('div');
+            track.className = 'welfare-carousel-track';
 
-        entry.appendChild(imgWrap);
-        entry.appendChild(textWrap);
-        gallery.appendChild(entry);
-      });
+            var currentSlide = 0;
+            var totalSlides = g.images.length;
 
-      container.appendChild(gallery);
+            g.images.forEach(function(imgData, slideIdx) {
+              var slide = document.createElement('div');
+              slide.className = 'welfare-carousel-slide';
+
+              if (imgData.src) {
+                var img = document.createElement('img');
+                img.src = imgData.src;
+                img.alt = g.title || '';
+                img.loading = 'lazy';
+                img.addEventListener('error', function() {
+                  slide.classList.add('welfare-carousel-slide-ph');
+                  img.remove();
+                  var palette = welfarePalettes[slideIdx % welfarePalettes.length];
+                  slide.style.background = 'linear-gradient(135deg, ' + palette[0] + ', ' + palette[1] + ')';
+                  var label = document.createElement('div');
+                  label.className = 'welfare-carousel-slide-label';
+                  label.textContent = g.title || '';
+                  slide.appendChild(label);
+                });
+                slide.appendChild(img);
+              } else {
+                slide.classList.add('welfare-carousel-slide-ph');
+                var palette = welfarePalettes[slideIdx % welfarePalettes.length];
+                slide.style.background = 'linear-gradient(135deg, ' + palette[0] + ', ' + palette[1] + ')';
+                var label = document.createElement('div');
+                label.className = 'welfare-carousel-slide-label';
+                label.textContent = g.title || '';
+                slide.appendChild(label);
+              }
+
+              track.appendChild(slide);
+            });
+
+            carouselEl.appendChild(track);
+
+            // ── Prev / Next arrows ──
+            var prevBtn = document.createElement('button');
+            prevBtn.className = 'welfare-carousel-nav welfare-carousel-prev';
+            prevBtn.setAttribute('aria-label', 'Previous');
+            prevBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>';
+
+            var nextBtn = document.createElement('button');
+            nextBtn.className = 'welfare-carousel-nav welfare-carousel-next';
+            nextBtn.setAttribute('aria-label', 'Next');
+            nextBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>';
+
+            carouselEl.appendChild(prevBtn);
+            carouselEl.appendChild(nextBtn);
+
+            // ── Slide navigation ──
+            function goToSlide(idx) {
+              currentSlide = idx;
+              track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+              prevBtn.classList.toggle('hidden', currentSlide === 0);
+              nextBtn.classList.toggle('hidden', currentSlide === totalSlides - 1);
+            }
+
+            prevBtn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              if (currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+                pauseAutoPlay();
+              }
+            });
+
+            nextBtn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              if (currentSlide < totalSlides - 1) {
+                goToSlide(currentSlide + 1);
+                pauseAutoPlay();
+              }
+            });
+
+            // ── Auto-play ──
+            function startAutoPlay() {
+              if (carouselAutoTimer) clearInterval(carouselAutoTimer);
+              carouselAutoTimer = setInterval(function() {
+                if (currentSlide < totalSlides - 1) {
+                  goToSlide(currentSlide + 1);
+                } else {
+                  goToSlide(0);
+                }
+              }, 3000);
+            }
+
+            function pauseAutoPlay() {
+              if (carouselAutoTimer) clearInterval(carouselAutoTimer);
+              carouselAutoTimer = null;
+              if (carouselResumeTimer) clearTimeout(carouselResumeTimer);
+              carouselResumeTimer = setTimeout(function() {
+                if (welfareExpanded) startAutoPlay();
+              }, 5000);
+            }
+
+            function stopAutoPlay() {
+              if (carouselAutoTimer) clearInterval(carouselAutoTimer);
+              carouselAutoTimer = null;
+              if (carouselResumeTimer) clearTimeout(carouselResumeTimer);
+              carouselResumeTimer = null;
+            }
+
+            // ── Touch swipe ──
+            var isTouchDevice = window.matchMedia('(hover: none)').matches;
+            if (isTouchDevice) {
+              var touchStartX = 0;
+              carouselEl.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+              }, { passive: true });
+              carouselEl.addEventListener('touchend', function(e) {
+                var swipeX = e.changedTouches[0].screenX - touchStartX;
+                if (Math.abs(swipeX) > 50) {
+                  if (swipeX < 0 && currentSlide < totalSlides - 1) {
+                    goToSlide(currentSlide + 1);
+                  } else if (swipeX > 0 && currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                  }
+                  pauseAutoPlay();
+                }
+              }, { passive: true });
+            }
+
+            // Initialize first slide
+            goToSlide(0);
+
+            imgWrap.appendChild(carouselEl);
+            // No Lightbox for carousel — cursor default
+            imgWrap.style.cursor = 'default';
+
+            // Store auto-play control on the gallery for external access
+            gallery._startCarousel = startAutoPlay;
+            gallery._stopCarousel = stopAutoPlay;
+
+          } else {
+            // ── Single image (original behavior) ──
+            var imgSrc = g.src || (g.images && g.images.length === 1 ? g.images[0].src : '');
+            if (imgSrc) {
+              var img = document.createElement('img');
+              img.src = imgSrc;
+              img.alt = g.title || '';
+              img.loading = 'lazy';
+              img.addEventListener('error', function() {
+                imgWrap.classList.add('welfare-entry-placeholder');
+                img.remove();
+                var palette = welfarePalettes[gIdx % welfarePalettes.length];
+                imgWrap.style.background = 'linear-gradient(135deg, ' + palette[0] + ', ' + palette[1] + ')';
+                var label = document.createElement('div');
+                label.className = 'welfare-entry-ph-label';
+                label.textContent = g.title || '';
+                imgWrap.appendChild(label);
+              });
+              imgWrap.appendChild(img);
+            } else {
+              imgWrap.classList.add('welfare-entry-placeholder');
+              var palette = welfarePalettes[gIdx % welfarePalettes.length];
+              imgWrap.style.background = 'linear-gradient(135deg, ' + palette[0] + ', ' + palette[1] + ')';
+              var label = document.createElement('div');
+              label.className = 'welfare-entry-ph-label';
+              label.textContent = g.title || '';
+              imgWrap.appendChild(label);
+            }
+
+            // Lightbox data for single-image entries
+            imgWrap._galleryItems = lightboxItems;
+            imgWrap._galleryIndex = gIdx;
+            imgWrap._projectTitle = others.organization || '';
+          }
+
+          // ── Caption text ──
+          const textWrap = document.createElement('div');
+          textWrap.className = 'welfare-entry-text';
+          textWrap.innerHTML =
+            '<h3 class="welfare-entry-title">' + (g.title || '') + '</h3>' +
+            '<p class="welfare-entry-caption">' + (g.caption || '') + '</p>';
+
+          entry.appendChild(imgWrap);
+          entry.appendChild(textWrap);
+          gallery.appendChild(entry);
+        });
+
+        container.appendChild(gallery);
+
+        // ── Stats click handler: toggle gallery ──
+        stats.addEventListener('click', function() {
+          welfareExpanded = !welfareExpanded;
+          if (welfareExpanded) {
+            gallery.classList.remove('welfare-gallery-collapsed');
+            gallery.classList.add('welfare-gallery-expanded');
+            stats.classList.add('expanded');
+            hint.querySelector('.welfare-stats-hint-text').textContent = '点击收起';
+            hint.querySelector('.welfare-stats-hint-chevron').style.transform = 'rotate(180deg)';
+            // Start carousel auto-play
+            if (gallery._startCarousel) gallery._startCarousel();
+            // Scroll stats into view
+            scrollToAccordionHeader(stats);
+          } else {
+            gallery.classList.remove('welfare-gallery-expanded');
+            gallery.classList.add('welfare-gallery-collapsed');
+            stats.classList.remove('expanded');
+            hint.querySelector('.welfare-stats-hint-text').textContent = '点击展开';
+            hint.querySelector('.welfare-stats-hint-chevron').style.transform = 'rotate(0deg)';
+            // Stop carousel auto-play
+            if (gallery._stopCarousel) gallery._stopCarousel();
+          }
+        });
+
+        // Keyboard accessibility: Enter/Space to toggle
+        stats.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            stats.click();
+          }
+        });
+      }
     }
   }
 
