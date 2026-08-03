@@ -1870,11 +1870,18 @@ a.contact-row:hover .contact-arrow {
   padding: 3px 10px;
   border-radius: 999px;
   transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.contact-copy:hover .contact-copy-tip {
+  color: var(--accent);
+  border: 1px solid rgba(200, 168, 106, 0.3);
 }
 
 .contact-copy-tip.copied {
   background: var(--accent-dim);
   color: var(--accent);
+  border-color: transparent;
 }
 
 /* ============================================
@@ -2243,6 +2250,7 @@ a.contact-row:hover .contact-arrow {
   .welfare-carousel-nav:hover { background: rgba(0, 0, 0, 0.4); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
   .case-link-accent:hover, .case-link-ghost:hover { transform: none; }
   .contact-row:hover { background: transparent; padding-left: 0; padding-right: 0; }
+  .contact-copy:hover .contact-copy-tip { color: var(--text-muted); border-color: transparent; }
   a.contact-row:hover .contact-arrow { color: var(--text-muted); transform: none; }
   .lightbox-close:hover, .lightbox-nav:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); transform: none; }
   .lightbox-close:hover { transform: none; }

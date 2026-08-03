@@ -176,8 +176,8 @@
   "contact": {
     "subtitle": "期待你的联系。",
     "items": [
-      { "icon": "?", "label": "Email", "value": "lingzx.0239@foxmail.com", "url": "mailto:lingzx.0239@foxmail.com", "copy": false }
+      { "icon": "✉", "label": "Email", "value": "lingzx.0239@foxmail.com", "copy": true }
     ],
-    "footer": "? 2026 ZiXun Ling · Portfolio"
+    "footer": "© 2026 ZiXun Ling · Portfolio"
   }
 }

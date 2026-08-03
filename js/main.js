@@ -935,15 +935,15 @@
 
     contact.items.forEach((item) => {
       if (item.copy) {
-        // WeChat copy row
+        // Copy-to-clipboard row (e.g. Email)
         const row = document.createElement('div');
-        row.className = 'contact-row reveal-item';
-        row.id = 'copyWechat';
+        row.className = 'contact-row contact-copy reveal-item';
+        row.dataset.copyText = item.value;
         row.innerHTML = `
           <span class="contact-icon">${item.icon}</span>
           <span class="contact-label">${item.label}</span>
           <span class="contact-value">${item.value}</span>
-          <span class="contact-copy-tip">Click to copy</span>
+          <span class="contact-copy-tip">点击复制</span>
         `;
         list.appendChild(row);
       } else {
@@ -1352,28 +1352,39 @@
       if (item.style.backgroundImage) lazyObserver.observe(item);
     });
 
-    // ── WeChat Copy ──
-    const copyWechat = document.getElementById('copyWechat');
-    if (copyWechat) {
-      copyWechat.addEventListener('click', () => {
-        const text = copyWechat.querySelector('.contact-value').textContent.trim();
-        navigator.clipboard?.writeText(text).then(() => {
-          const tip = copyWechat.querySelector('.contact-copy-tip');
-          tip.textContent = '✓ Copied';
-          tip.classList.add('copied');
-          setTimeout(() => {
-            tip.textContent = 'Click to copy';
-            tip.classList.remove('copied');
-          }, 2000);
-        }).catch(() => {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          document.body.appendChild(ta);
-          ta.select();
-          try { document.execCommand('copy'); } catch (_) {}
-          document.body.removeChild(ta);
-        });
+    // ── Contact Copy-to-Clipboard ──
+    document.querySelectorAll('.contact-copy').forEach((row) => {
+      row.addEventListener('click', () => {
+        const text = row.dataset.copyText || row.querySelector('.contact-value').textContent.trim();
+        const tip = row.querySelector('.contact-copy-tip');
+        const done = () => {
+          if (tip) {
+            tip.textContent = '✓ 已复制邮箱';
+            tip.classList.add('copied');
+            setTimeout(() => {
+              tip.textContent = '点击复制';
+              tip.classList.remove('copied');
+            }, 2000);
+          }
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+        } else {
+          fallbackCopy(text, done);
+        }
       });
+    });
+
+    function fallbackCopy(text, cb) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      document.body.removeChild(ta);
+      if (cb) cb();
     }
 
     // ── Hero Grid Hover Motion (desktop only — skip on touch devices) ──
