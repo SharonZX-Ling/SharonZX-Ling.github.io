@@ -26,8 +26,8 @@
   // Guard against rapid accordion clicks — prevents overlapping timers
   var accordionAnimating = false;
 
-  // ── Load content ──
-  fetch('content.json')
+  // ── Load content (cache-bust to ensure fresh data) ──
+  fetch('content.json?v=' + Date.now())
     .then((r) => r.json())
     .then((content) => {
       initHeroText(content.hero);
