@@ -73,7 +73,7 @@
       {
         "date": "2025.09 — 2025.12",
         "company": "重庆代码效应有限公司 · 产品经理实习生",
-        "brief": "参与种子期游戏产品的用户增长与体验优化，负责模块的用户模块使用率达92.71%。",
+        "brief": "参与种子期游戏产品的用户增长与体验优化，负责模块的用户使用率达92.71%。",
         "overview": {
           "background": "针对新产品早期用户增长缓慢等问题，通过产品体验优化，提升用户转化与留存。",
           "role": "负责新用户引导、社交玩法及互动内容设计，填充产品内容，挖掘产品传播卖点。",
@@ -155,7 +155,7 @@
     "subtitle": "希望让每一位孩子未来可期",
     "organization": "成都市林荫公益服务中心",
     "period": "2020.09 — 2024.07",
-    "intro": "工作之外，是这些经历让我成为了我。四年间，我一直致力于教育公益，通过教学、项目策划和媒体传播，助力县域地区学生的成长",
+    "intro": "工作之外，我一直热衷于教育公益，期望通过教学、项目策划和媒体传播，助力县域地区学生的成长",
     "stats": [
       { "value": "4年", "label": "公益经历" },
       { "value": "500+", "label": "学生受益" },
@@ -176,10 +176,7 @@
   "contact": {
     "subtitle": "期待你的联系。",
     "items": [
-      { "icon": "?", "label": "Email", "value": "lingzx.0239@foxmail.com", "url": "mailto:lingzx.0239@foxmail.com", "copy": false },
-      { "icon": "W", "label": "WeChat", "value": "sharon_ling", "url": "", "copy": true },
-      { "icon": "R", "label": "小红书", "value": "@Sharon的市场笔记", "url": "https://www.xiaohongshu.com", "copy": false },
-      { "icon": "B", "label": "Bilibili", "value": "@SharonLing", "url": "https://space.bilibili.com", "copy": false }
+      { "icon": "?", "label": "Email", "value": "lingzx.0239@foxmail.com", "url": "mailto:lingzx.0239@foxmail.com", "copy": false }
     ],
     "footer": "? 2026 ZiXun Ling · Portfolio"
   }

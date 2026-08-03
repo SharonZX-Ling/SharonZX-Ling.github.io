@@ -717,9 +717,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 /* ── C. External Links ── */
 .case-links {
   display: flex;
-  gap: 24px;
+  gap: 16px;
   flex-wrap: wrap;
-  padding-top: 8px;
+  padding-top: 20px;
   border-top: 1px solid var(--border);
 }
 
@@ -729,16 +729,37 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   letter-spacing: 0.5px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 0;
-  transition: color 0.3s ease, gap 0.3s ease;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: all 0.3s var(--ease-out-expo);
 }
 
-.case-link-accent { color: var(--accent); }
-.case-link-accent:hover { color: var(--accent-hover); gap: 10px; }
+.case-link-accent {
+  color: var(--accent);
+  border-color: rgba(201, 169, 110, 0.35);
+  background: rgba(201, 169, 110, 0.06);
+}
+.case-link-accent:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+  background: rgba(201, 169, 110, 0.12);
+  gap: 12px;
+  transform: translateY(-1px);
+}
 
-.case-link-ghost { color: var(--text-muted); }
-.case-link-ghost:hover { color: var(--text); gap: 10px; }
+.case-link-ghost {
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+.case-link-ghost:hover {
+  color: var(--text);
+  border-color: var(--text-sub);
+  gap: 12px;
+  transform: translateY(-1px);
+}
 
 /* ── D. Feature Showcase (product demo — vertical phone ratio) ── */
 .case-features {
@@ -1441,7 +1462,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .welfare-intro {
   font-family: var(--font-display);
   font-size: clamp(16px, 2vw, 20px);
-  font-style: italic;
   font-weight: 400;
   line-height: 1.8;
   color: var(--text-sub);
@@ -2059,8 +2079,8 @@ a.contact-row:hover .contact-arrow {
   /* Media showcase */
   .case-media-main { border-radius: 8px; }
   .case-thumb { width: 80px; height: 50px; }
-  .case-links { gap: 16px; }
-  .case-link { font-size: 12px; padding: 8px 0; }
+  .case-links { gap: 12px; }
+  .case-link { font-size: 12px; padding: 8px 16px; }
 
   /* ── Projects Film Portfolio ── */
   .film-case-header {
@@ -2221,6 +2241,7 @@ a.contact-row:hover .contact-arrow {
   .welfare-stats-hint:hover { opacity: 1; }
   .welfare-carousel-nav { opacity: 0.6; }
   .welfare-carousel-nav:hover { background: rgba(0, 0, 0, 0.4); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+  .case-link-accent:hover, .case-link-ghost:hover { transform: none; }
   .contact-row:hover { background: transparent; padding-left: 0; padding-right: 0; }
   a.contact-row:hover .contact-arrow { color: var(--text-muted); transform: none; }
   .lightbox-close:hover, .lightbox-nav:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); transform: none; }
