@@ -108,11 +108,11 @@
           "创意表达落地"
         ],
         "gallery": [
-          { "caption": "前期创作讨论" },
-          { "caption": "制作团队组建" },
-          { "caption": "拍摄现场统筹" },
-          { "caption": "后期剪辑与声音包装" },
-          { "caption": "成片调色" }
+          { "src": "assets/images/projects/baizhen/gallery-1.jpg", "caption": "前期创作讨论" },
+          { "src": "assets/images/projects/baizhen/gallery-2.jpg", "caption": "制作团队组建" },
+          { "src": "assets/images/projects/baizhen/gallery-3.jpg", "caption": "拍摄现场统筹" },
+          { "src": "assets/images/projects/baizhen/gallery-4.jpg", "caption": "后期剪辑与声音包装" },
+          { "src": "assets/images/projects/baizhen/gallery-5.jpg", "caption": "成片调色" }
         ],
         "achievements": [
           "30+人制作团队",
@@ -136,11 +136,11 @@
           "后期制作协作"
         ],
         "gallery": [
-          { "caption": "中外团队沟通" },
-          { "caption": "拍摄现场" },
-          { "caption": "非遗文化记录" },
-          { "caption": "后期协作" },
-          { "caption": "成片上线" }
+          { "src": "assets/images/projects/xianghun/gallery-1.jpg", "caption": "中外团队沟通" },
+          { "src": "assets/images/projects/xianghun/gallery-2.jpg", "caption": "拍摄现场" },
+          { "src": "assets/images/projects/xianghun/gallery-3.jpg", "caption": "非遗文化记录" },
+          { "src": "assets/images/projects/xianghun/gallery-4.jpg", "caption": "后期协作" },
+          { "src": "assets/images/projects/xianghun/gallery-5.jpg", "caption": "成片上线" }
         ],
         "achievements": [
           "全英文完成跨文化合作",
