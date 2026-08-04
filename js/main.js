@@ -145,10 +145,11 @@
         const ov = document.createElement('div');
         ov.className = 'case-overview';
 
+        var goalLabel = (item.company === '叠纸' || item.company === '重庆代码效应有限公司') ? '项目成果' : '项目目标';
         const blocks = [
           { label: '项目背景', text: item.overview.background },
           { label: '我的职责', text: item.overview.role },
-          { label: '项目目标', text: item.overview.goal },
+          { label: goalLabel, text: item.overview.goal },
         ];
         blocks.forEach((b) => {
           const blk = document.createElement('div');
