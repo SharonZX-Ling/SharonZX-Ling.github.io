@@ -22,7 +22,7 @@
   --radius-lg: 12px;
 
   --font-display: 'Playfair Display', 'Georgia', serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1511,9 +1511,9 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 .welfare-stat-value {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: clamp(32px, 5vw, 48px);
-  font-weight: 900;
+  font-weight: 700;
   color: var(--accent);
   line-height: 1;
 }
