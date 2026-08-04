@@ -778,7 +778,7 @@
                 } else {
                   goToSlide(0);
                 }
-              }, 3000);
+              }, 2000);
             }
 
             function pauseAutoPlay() {
