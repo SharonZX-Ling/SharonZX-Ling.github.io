@@ -162,14 +162,11 @@
       { "value": "700+", "label": "活动参与者" }
     ],
     "gallery": [
-      { "title": "公益训练营现场", "caption": "作为传媒方向导师参与公益训练营课程设计与授课，陪伴县域学生探索更多可能。", "images": [
-        { "src": "assets/images/welfare/welfare-1.jpg" },
-        { "src": "assets/images/welfare/welfare-1b.jpg" },
-        { "src": "assets/images/welfare/welfare-1c.jpg" },
-        { "src": "assets/images/welfare/welfare-1d.jpg" }
-      ]},
+      { "title": "公益训练营现场", "caption": "作为传媒方向导师参与公益训练营课程设计与授课，陪伴县域学生探索更多可能。", "src": "assets/images/welfare/welfare-1.jpg" },
       { "title": "林荫公益网络班项目", "caption": "参与策划互联网公益教育项目，将优质课程资源连接至西南地区教育资源欠发达地区。", "src": "assets/images/welfare/welfare-2.jpg" },
-      { "title": "公益团队合影", "caption": "与来自不同高校的青年志愿者共同推动教育公益实践。", "src": "assets/images/welfare/welfare-3.jpg" }
+      { "title": "公益团队合影", "caption": "与来自不同高校的青年志愿者共同推动教育公益实践。", "src": "assets/images/welfare/welfare-3.jpg" },
+      { "caption": "课堂互动与教学", "src": "assets/images/welfare/welfare-4.jpg" },
+      { "caption": "公益活动现场", "src": "assets/images/welfare/welfare-5.jpg" }
     ]
   },
 

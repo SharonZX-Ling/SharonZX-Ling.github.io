@@ -1527,29 +1527,35 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 /* ── Stats toggle hint ── */
 .welfare-stats-hint {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 12px 0 0;
+  gap: 8px;
+  padding: 12px 24px;
   margin-bottom: 40px;
   cursor: pointer;
-  transition: margin-bottom 0.4s var(--ease-out-expo), opacity 0.3s ease;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  transition: all 0.35s var(--ease-out-expo);
 }
 
 .welfare-stats-hint:hover {
-  opacity: 0.7;
+  border-color: var(--accent);
+  background: rgba(201, 169, 110, 0.08);
+  transform: translateY(-1px);
 }
 
 .welfare-stats.expanded + .welfare-stats-hint {
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 }
 
 .welfare-stats-hint-text {
-  font-size: 11px;
-  letter-spacing: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-sub);
   transition: color 0.3s ease;
 }
 
@@ -1559,7 +1565,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 .welfare-stats-hint-chevron {
   transition: transform 0.4s var(--ease-out-expo);
-  color: var(--text-muted);
+  color: var(--text-sub);
 }
 
 .welfare-stats.expanded + .welfare-stats-hint .welfare-stats-hint-chevron {
@@ -2122,8 +2128,8 @@ a.contact-row:hover .contact-arrow {
   .welfare-stat-value { font-size: clamp(26px, 7vw, 36px); }
   .welfare-stat-label { font-size: 10px; letter-spacing: 1px; }
   .welfare-stat:not(:last-child)::after { height: 28px; }
-  .welfare-stats-hint { margin-bottom: 20px; padding: 8px 0 0; }
-  .welfare-stats-hint-text { font-size: 10px; letter-spacing: 1.5px; }
+  .welfare-stats-hint { margin-bottom: 20px; padding: 10px 20px; }
+  .welfare-stats-hint-text { font-size: 11px; letter-spacing: 1px; }
   .welfare-stats-hint-chevron { width: 12px; height: 12px; }
 
   .welfare-entry {
@@ -2213,7 +2219,7 @@ a.contact-row:hover .contact-arrow {
   .welfare-stat-value { font-size: 24px; }
   .welfare-stat-label { font-size: 9px; }
   .welfare-entry-ph-label { font-size: 14px; }
-  .welfare-stats-hint-text { font-size: 9px; }
+  .welfare-stats-hint-text { font-size: 10px; }
   .welfare-carousel-nav { width: 28px; height: 28px; }
 
   .contact-label { display: none; }
@@ -2245,7 +2251,7 @@ a.contact-row:hover .contact-arrow {
   .film-gallery-item:hover { transform: none; box-shadow: none; }
   .welfare-entry-image:hover { transform: none; box-shadow: none; }
   .welfare-stats:hover { background: transparent; }
-  .welfare-stats-hint:hover { opacity: 1; }
+  .welfare-stats-hint:hover { border-color: var(--border); background: var(--surface); transform: none; }
   .welfare-carousel-nav { opacity: 0.6; }
   .welfare-carousel-nav:hover { background: rgba(0, 0, 0, 0.4); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
   .case-link-accent:hover, .case-link-ghost:hover { transform: none; }
