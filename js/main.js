@@ -10,15 +10,16 @@
   // ── Accordion scroll positioning utility ──
   // Smooth-scrolls so the element's top sits at a comfortable offset below the viewport top.
   // On mobile, accounts for the fixed nav bar height.
-  function scrollToAccordionHeader(element, customOffset) {
+  // `force` skips the tolerance check and always scrolls (used when opening new content).
+  function scrollToAccordionHeader(element, customOffset, force) {
     var rect = element.getBoundingClientRect();
     var scrollTop = window.scrollY || document.documentElement.scrollTop;
     var isMobile = window.innerWidth <= 768;
     var offset = customOffset != null ? customOffset : (isMobile ? 72 : 28);
     var targetY = scrollTop + rect.top - offset;
     if (targetY < 0) targetY = 0;
-    // Only scroll if the header isn't already near the top of the viewport
-    if (rect.top < -50 || rect.top > offset + 20) {
+    // Only scroll if forced or the element isn't already near the top of the viewport
+    if (force || rect.top < -50 || rect.top > offset + 20) {
       window.scrollTo({ top: targetY, behavior: 'smooth' });
     }
   }
@@ -121,8 +122,13 @@
       brief.className = 'case-brief';
       brief.textContent = item.brief;
 
+      const expandHint = document.createElement('div');
+      expandHint.className = 'case-expand-hint';
+      expandHint.innerHTML = '<span>查看项目详情</span><span class="case-expand-arrow">↓</span>';
+
       summary.appendChild(company);
       summary.appendChild(brief);
+      summary.appendChild(expandHint);
 
       const toggle = document.createElement('div');
       toggle.className = 'case-toggle';
@@ -391,8 +397,8 @@
             article.classList.add('active');
             if (article._renderMedia) article._renderMedia();
             if (article._renderFeatures) article._renderFeatures();
-            // Phase 3: smooth scroll to bring header into view
-            scrollToAccordionHeader(header);
+            // Phase 3: smooth scroll to bring expanded content top into comfortable view
+            scrollToAccordionHeader(bodyInner, 80, true);
             accordionAnimating = false;
           }, 200);
         }
@@ -447,6 +453,7 @@
           <div class="film-case-meta-item"><span>Role</span><span>${item.role || ''}</span></div>
           <div class="film-case-meta-item"><span>Duration</span><span>${item.duration || ''}</span></div>
         </div>
+        <div class="film-case-expand-hint"><span>查看项目详情</span><span class="film-case-expand-arrow">↓</span></div>
       `;
 
       // Toggle button
@@ -582,8 +589,8 @@
           setTimeout(() => {
             // Phase 2: open new item
             filmCase.classList.add('active');
-            // Phase 3: smooth scroll to bring header into view
-            scrollToAccordionHeader(header);
+            // Phase 3: smooth scroll to bring expanded content top into comfortable view
+            scrollToAccordionHeader(bodyInner, 80, true);
             accordionAnimating = false;
           }, 200);
         }

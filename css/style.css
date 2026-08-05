@@ -546,7 +546,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 
 .case-item:hover .case-header {
-  background: rgba(201, 169, 110, 0.03);
+  background: rgba(201, 169, 110, 0.05);
 }
 
 .case-item.active .case-header {
@@ -596,6 +596,37 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 .case-item.active .case-toggle {
   transform: rotate(45deg);
   color: var(--accent);
+}
+
+/* ── Expand hint ── */
+.case-expand-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 10px;
+  transition: color 0.3s ease;
+}
+
+.case-expand-arrow {
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.case-item:hover .case-expand-hint,
+.case-item.active .case-expand-hint {
+  color: var(--accent);
+}
+
+.case-item:hover .case-expand-arrow {
+  transform: translateY(2px);
+}
+
+.case-item.active .case-expand-arrow {
+  transform: rotate(180deg);
 }
 
 /* ── Expandable Body ── */
@@ -892,6 +923,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   height: 320px;
   background-size: cover;
   background-position: center;
+  cursor: pointer;
   border-radius: var(--radius-lg);
   cursor: pointer;
   overflow: hidden;
@@ -1015,6 +1047,37 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   transform: rotate(45deg);
   border-color: var(--accent);
   color: var(--accent);
+}
+
+/* ── Expand hint ── */
+.film-case-expand-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-top: 14px;
+  transition: color 0.3s ease;
+}
+
+.film-case-expand-arrow {
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.film-case-header:hover .film-case-expand-hint,
+.film-case.active .film-case-expand-hint {
+  color: var(--accent);
+}
+
+.film-case-header:hover .film-case-expand-arrow {
+  transform: translateY(2px);
+}
+
+.film-case.active .film-case-expand-arrow {
+  transform: rotate(180deg);
 }
 
 /* ── Expandable Body ── */
@@ -2063,6 +2126,7 @@ a.contact-row:hover .contact-arrow {
   .case-company { font-size: 18px; line-height: 1.3; }
   .case-brief { font-size: 13px; line-height: 1.5; }
   .case-toggle { font-size: 18px; }
+  .case-expand-hint { font-size: 10px; margin-top: 8px; }
   .case-body-inner {
     padding: 20px 0 36px 0;
     gap: 28px;
@@ -2111,6 +2175,7 @@ a.contact-row:hover .contact-arrow {
   .film-case-meta { gap: 14px; }
   .film-case-meta-item { font-size: 11px; }
   .film-case-toggle { width: 34px; height: 34px; top: 14px; right: 14px; font-size: 16px; }
+  .film-case-expand-hint { font-size: 10px; margin-top: 10px; }
   .film-case-body-inner { padding: 0 18px 36px; gap: 32px; }
   .film-ov-label { font-size: 10px; margin-bottom: 10px; }
   .film-ov-intro { font-size: 14px; line-height: 1.7; }
@@ -2238,6 +2303,8 @@ a.contact-row:hover .contact-arrow {
   .about-tags span:hover { border-color: var(--border); color: var(--text-sub); background: transparent; }
   .case-item:hover .case-header { background: transparent; }
   .case-item:hover .case-company { color: inherit; }
+  .case-item:hover .case-expand-hint { color: var(--text-muted); }
+  .case-item:hover .case-expand-arrow { transform: none; }
   .case-thumb:hover { opacity: 0.5; }
   .case-feature-device:hover { transform: none; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
   .case-feature-device:hover .case-feature-overlay { background: rgba(0,0,0,0.25); }
@@ -2247,6 +2314,8 @@ a.contact-row:hover .contact-arrow {
   }
   .film-case-header:hover .film-case-title { color: inherit; }
   .film-case-header:hover .film-case-toggle { background: rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.15); }
+  .film-case-header:hover .film-case-expand-hint { color: rgba(255,255,255,0.55); }
+  .film-case-header:hover .film-case-expand-arrow { transform: none; }
   .film-contrib-card:hover { border-color: var(--border); color: var(--text-sub); background: transparent; }
   .film-gallery-item:hover { transform: none; box-shadow: none; }
   .welfare-entry-image:hover { transform: none; box-shadow: none; }
