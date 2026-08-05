@@ -124,7 +124,7 @@
 
       const expandHint = document.createElement('div');
       expandHint.className = 'case-expand-hint';
-      expandHint.innerHTML = '<span>查看项目详情</span><span class="case-expand-arrow">↓</span>';
+      expandHint.innerHTML = '<span>展开详情</span><span class="case-expand-arrow">↓</span>';
 
       summary.appendChild(company);
       summary.appendChild(brief);
@@ -453,7 +453,7 @@
           <div class="film-case-meta-item"><span>Role</span><span>${item.role || ''}</span></div>
           <div class="film-case-meta-item"><span>Duration</span><span>${item.duration || ''}</span></div>
         </div>
-        <div class="film-case-expand-hint"><span>查看项目详情</span><span class="film-case-expand-arrow">↓</span></div>
+        <div class="film-case-expand-hint"><span>展开详情</span><span class="film-case-expand-arrow">↓</span></div>
       `;
 
       // Toggle button
