@@ -500,6 +500,18 @@
         bodyInner.appendChild(contrib);
       }
 
+      // 2b. Video Embed
+      if (item.videoEmbed) {
+        const videoSection = document.createElement('div');
+        videoSection.className = 'film-video-section';
+        videoSection.innerHTML =
+          '<div class="film-ov-label">Video</div>' +
+          '<div class="film-video-wrapper">' +
+            '<iframe src="' + item.videoEmbed + '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>' +
+          '</div>';
+        bodyInner.appendChild(videoSection);
+      }
+
       // 3. Visual Gallery
       if (item.gallery && item.gallery.length > 0) {
         const gallerySection = document.createElement('div');
