@@ -146,6 +146,104 @@
       const bodyInner = document.createElement('div');
       bodyInner.className = 'case-body-inner';
 
+      // M. Custom Modules (sequential content blocks — alternative to A/B/C/D)
+      if (item.modules && item.modules.length > 0) {
+        var moduleRenderers = [];
+        var moduleClearers = [];
+
+        item.modules.forEach(function(mod, modIdx) {
+          if (mod.type === 'bilibili' || mod.type === 'youtube') {
+            // ── Video module — reuse case-media styling ──
+            var mediaWrap = document.createElement('div');
+            mediaWrap.className = 'case-media';
+            var main = document.createElement('div');
+            main.className = 'case-media-main';
+            mediaWrap.appendChild(main);
+            bodyInner.appendChild(mediaWrap);
+
+            var rendered = false;
+            moduleRenderers.push(function() {
+              if (rendered) return;
+              rendered = true;
+              var iframe = document.createElement('iframe');
+              var src = mod.src;
+              if (mod.type === 'bilibili') {
+                src += (src.indexOf('?') !== -1 ? '&' : '?') + 'autoplay=0';
+                iframe.setAttribute('scrolling', 'no');
+                iframe.setAttribute('frameborder', 'no');
+                iframe.setAttribute('framespacing', '0');
+                iframe.setAttribute('border', '0');
+              }
+              iframe.src = src;
+              iframe.allow = 'encrypted-media; fullscreen';
+              iframe.allowFullscreen = true;
+              main.appendChild(iframe);
+            });
+            moduleClearers.push(function() {
+              main.innerHTML = '';
+              rendered = false;
+            });
+          } else if (mod.type === 'image-link') {
+            // ── Image + text → clickable image opens URL ──
+            var linkEntry = document.createElement('div');
+            linkEntry.className = 'case-module-link';
+            // Alternate layout direction for editorial rhythm
+            if (modIdx % 2 === 1) {
+              linkEntry.classList.add('case-module-link-reverse');
+            }
+
+            var linkEl = document.createElement('a');
+            linkEl.className = 'case-module-link-image';
+            linkEl.href = mod.url;
+            linkEl.target = '_blank';
+            linkEl.rel = 'noopener';
+
+            if (mod.image && mod.image !== 'placeholder') {
+              var img = document.createElement('img');
+              img.src = mod.image;
+              img.alt = mod.title || '';
+              img.loading = 'lazy';
+              linkEl.appendChild(img);
+            } else {
+              linkEl.classList.add('case-module-link-placeholder');
+              var phLabel = document.createElement('div');
+              phLabel.className = 'case-module-link-ph-label';
+              phLabel.textContent = mod.title || '图片占位';
+              linkEl.appendChild(phLabel);
+            }
+
+            // Hover hint (external link icon)
+            var hintIcon = document.createElement('div');
+            hintIcon.className = 'case-module-link-hint';
+            hintIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+            linkEl.appendChild(hintIcon);
+
+            var textWrap = document.createElement('div');
+            textWrap.className = 'case-module-link-text';
+            var titleEl = document.createElement('h4');
+            titleEl.className = 'case-module-link-title';
+            titleEl.textContent = mod.title || '';
+            var captionEl = document.createElement('p');
+            captionEl.className = 'case-module-link-caption';
+            captionEl.textContent = mod.caption || '';
+            textWrap.appendChild(titleEl);
+            textWrap.appendChild(captionEl);
+
+            linkEntry.appendChild(linkEl);
+            linkEntry.appendChild(textWrap);
+            bodyInner.appendChild(linkEntry);
+          }
+        });
+
+        // Hook into accordion lazy load/clear
+        article._renderMedia = function() {
+          moduleRenderers.forEach(function(fn) { fn(); });
+        };
+        article._clearMedia = function() {
+          moduleClearers.forEach(function(fn) { fn(); });
+        };
+      }
+
       // A. Overview
       if (item.overview) {
         const ov = document.createElement('div');

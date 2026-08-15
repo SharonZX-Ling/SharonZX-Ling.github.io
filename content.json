@@ -27,17 +27,29 @@
         "date": "2026.06 — 2026.08",
         "company": "叠纸 · 恋与深空 · 品牌营销策划实习生",
         "brief": "参与6月17日恋与深空【电影卡】版本的品牌营销；参与【恋与深空·上海国际电影节】的品牌联动。",
-        "overview": {
-          "background": "【电影卡】版本主打浪漫高雅的品牌调性。为了增加宣发趣味性，拉近与玩家的距离，特地策划了【玩梗品牌小片】",
-          "role": "负责内容策划、Campaign执行与落地。",
-          "goal": "品牌小片全平台播放量500W+"
-        },
-        "media": [
-          { "type": "bilibili", "src": "//player.bilibili.com/player.html?isOutside=true&aid=116752058944791&bvid=BV1T8JM6WEuh&cid=39127416968&p=1", "label": "品牌宣传片" }
-        ],
-        "features": [],
-        "links": [
-          { "label": "【恋与深空·上海国际电影节】联动详情 ↗", "url": "https://www.xiaohongshu.com/discovery/item/6a2d4d9c000000001702d479?source=webshare&xhsshare=pc_web&xsec_token=AByDKNVDo2xEK_SgW9qQoWaFVXTVqNVkBwfMXWoeBFNEg=&xsec_source=pc_share", "type": "accent" }
+        "modules": [
+          {
+            "type": "bilibili",
+            "src": "//player.bilibili.com/player.html?isOutside=true&aid=117091277544371&bvid=BV13vgF61EMG&cid=40890403858&p=1"
+          },
+          {
+            "type": "image-link",
+            "image": "placeholder",
+            "title": "项目介绍占位",
+            "caption": "项目介绍占位文字，之后会自行修改。",
+            "url": "https://www.xiaohongshu.com/discovery/item/6a7ea5eb000000002202cd5a?source=webshare&xhsshare=pc_web&xsec_token=AB4ndqOQ_mG9iZt0QCb1z1XoKCKEmWViarb4lctB9X6UY=&xsec_source=pc_share"
+          },
+          {
+            "type": "image-link",
+            "image": "placeholder",
+            "title": "项目介绍占位",
+            "caption": "项目介绍占位文字，之后会自行修改。",
+            "url": "https://www.xiaohongshu.com/explore/6a2d4d9c000000001702d479?xsec_token=AByDKNVDo2xEK_SgW9qQoWaFVXTVqNVkBwfMXWoeBFNEg=&xsec_source=pc_share&source=webshare"
+          },
+          {
+            "type": "bilibili",
+            "src": "//player.bilibili.com/player.html?isOutside=true&aid=116752058944791&bvid=BV1T8JM6WEuh&cid=39127416968&p=1"
+          }
         ]
       },
       {
