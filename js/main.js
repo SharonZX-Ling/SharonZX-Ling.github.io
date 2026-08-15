@@ -153,13 +153,36 @@
 
         item.modules.forEach(function(mod, modIdx) {
           if (mod.type === 'bilibili' || mod.type === 'youtube') {
-            // ── Video module — reuse case-media styling ──
+            // ── Video module — title + caption + embedded video ──
+            var videoModule = document.createElement('div');
+            videoModule.className = 'case-module-video';
+
+            // Title + caption (reuse welfare-entry typography)
+            if (mod.title || mod.caption) {
+              var videoText = document.createElement('div');
+              videoText.className = 'case-module-video-text';
+              if (mod.title) {
+                var vTitle = document.createElement('h4');
+                vTitle.className = 'case-module-video-title';
+                vTitle.textContent = mod.title;
+                videoText.appendChild(vTitle);
+              }
+              if (mod.caption) {
+                var vCaption = document.createElement('p');
+                vCaption.className = 'case-module-video-caption';
+                vCaption.textContent = mod.caption;
+                videoText.appendChild(vCaption);
+              }
+              videoModule.appendChild(videoText);
+            }
+
             var mediaWrap = document.createElement('div');
             mediaWrap.className = 'case-media';
             var main = document.createElement('div');
             main.className = 'case-media-main';
             mediaWrap.appendChild(main);
-            bodyInner.appendChild(mediaWrap);
+            videoModule.appendChild(mediaWrap);
+            bodyInner.appendChild(videoModule);
 
             var rendered = false;
             moduleRenderers.push(function() {

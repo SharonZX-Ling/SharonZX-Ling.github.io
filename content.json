@@ -30,6 +30,8 @@
         "modules": [
           {
             "type": "bilibili",
+            "title": "恋与深空 · 电影卡版本品牌片",
+            "caption": "围绕【电影卡】版本浪漫高雅的品牌调性，策划玩梗品牌小片，负责内容策划与Campaign执行，全平台播放量500W+。",
             "src": "//player.bilibili.com/player.html?isOutside=true&aid=117091277544371&bvid=BV13vgF61EMG&cid=40890403858&p=1"
           },
           {
@@ -48,6 +50,8 @@
           },
           {
             "type": "bilibili",
+            "title": "恋与深空 · 上海国际电影节联动",
+            "caption": "参与【恋与深空·上海国际电影节】品牌联动，推动游戏IP与电影节跨界合作，拓展品牌曝光场景。",
             "src": "//player.bilibili.com/player.html?isOutside=true&aid=116752058944791&bvid=BV1T8JM6WEuh&cid=39127416968&p=1"
           }
         ]
