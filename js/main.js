@@ -124,7 +124,7 @@
 
       const expandHint = document.createElement('div');
       expandHint.className = 'case-expand-hint';
-      expandHint.innerHTML = '<span>展开详情</span><span class="case-expand-arrow">↓</span>';
+      expandHint.innerHTML = '<span>点击展开</span><span class="case-expand-arrow">↓</span>';
 
       summary.appendChild(company);
       summary.appendChild(brief);
@@ -161,6 +161,9 @@
             if (mod.title || mod.caption) {
               var videoText = document.createElement('div');
               videoText.className = 'case-module-video-text';
+              if (mod.centered) {
+                videoText.classList.add('case-module-video-text-center');
+              }
               if (mod.title) {
                 var vTitle = document.createElement('h4');
                 vTitle.className = 'case-module-video-title';

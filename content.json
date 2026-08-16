@@ -30,28 +30,30 @@
         "modules": [
           {
             "type": "bilibili",
-            "title": "恋与深空 · 电影卡版本品牌片",
-            "caption": "围绕【电影卡】版本浪漫高雅的品牌调性，策划玩梗品牌小片，负责内容策划与Campaign执行，全平台播放量500W+。",
+            "title": "新华网合作纪录片《国风寻迹》",
+            "caption": "参与新华网纪录片《国风寻踪》的选题、采访撰写、脚本及视频监修。短片上线当天，非遗联动产出2200W+人在看的小红书热点。",
+            "centered": true,
             "src": "//player.bilibili.com/player.html?isOutside=true&aid=117091277544371&bvid=BV13vgF61EMG&cid=40890403858&p=1"
           },
           {
             "type": "image-link",
-            "image": "placeholder",
-            "title": "项目介绍占位",
-            "caption": "项目介绍占位文字，之后会自行修改。",
+            "image": "assets/images/internship/diezhi/wushen-qijiangjun.jpg",
+            "title": "非遗合作短片《武神祁将军》",
+            "caption": "联合国家级非遗传承人策划非遗联名，创作非遗皮影戏短片《武神祁将军》，助力品牌建立正向口碑。",
             "url": "https://www.xiaohongshu.com/discovery/item/6a7ea5eb000000002202cd5a?source=webshare&xhsshare=pc_web&xsec_token=AB4ndqOQ_mG9iZt0QCb1z1XoKCKEmWViarb4lctB9X6UY=&xsec_source=pc_share"
           },
           {
             "type": "image-link",
-            "image": "placeholder",
-            "title": "项目介绍占位",
-            "caption": "项目介绍占位文字，之后会自行修改。",
+            "image": "assets/images/internship/diezhi/film-festival.jpg",
+            "title": "与【上海国际电影节】进行品牌联动",
+            "caption": "策划线下快闪及联动内容，参与联动片单、联名物料等策划与落地。",
             "url": "https://www.xiaohongshu.com/explore/6a2d4d9c000000001702d479?xsec_token=AByDKNVDo2xEK_SgW9qQoWaFVXTVqNVkBwfMXWoeBFNEg=&xsec_source=pc_share&source=webshare"
           },
           {
             "type": "bilibili",
-            "title": "恋与深空 · 上海国际电影节联动",
-            "caption": "参与【恋与深空·上海国际电影节】品牌联动，推动游戏IP与电影节跨界合作，拓展品牌曝光场景。",
+            "title": "玩梗品牌小片",
+            "caption": "回应玩家社区热梗，复刻游戏经典场景。玩梗小片全平台累计播放量500W+。",
+            "centered": true,
             "src": "//player.bilibili.com/player.html?isOutside=true&aid=116752058944791&bvid=BV1T8JM6WEuh&cid=39127416968&p=1"
           }
         ]

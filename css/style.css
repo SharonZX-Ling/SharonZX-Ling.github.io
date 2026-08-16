@@ -1050,6 +1050,15 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   color: var(--text-sub);
 }
 
+/* Centered variant for video modules */
+.case-module-video-text-center {
+  align-items: center;
+  text-align: center;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ============================================
    PROJECTS — Film Portfolio Accordion
 ============================================ */
