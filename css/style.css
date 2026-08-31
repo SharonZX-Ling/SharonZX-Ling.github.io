@@ -964,7 +964,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   padding: 0 24px;
 }
 
-/* External link hover hint */
+/* External link hint — always visible */
 .case-module-link-hint {
   position: absolute;
   top: 12px;
@@ -972,22 +972,22 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.7);
-  opacity: 0;
-  transition: opacity 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
+  color: rgba(255, 255, 255, 0.85);
+  opacity: 1;
+  transition: opacity 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo), background 0.3s ease;
   pointer-events: none;
   z-index: 2;
 }
 
 .case-module-link-image:hover .case-module-link-hint {
-  opacity: 1;
   transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.75);
 }
 
 /* Subtle vignette */
@@ -2355,7 +2355,7 @@ a.contact-row:hover .contact-arrow {
   .case-module-link-image { aspect-ratio: 3 / 2; }
   .case-module-link-title { font-size: 17px; }
   .case-module-link-caption { font-size: 13px; line-height: 1.6; }
-  .case-module-link-hint { opacity: 0.6; }
+  .case-module-link-hint { opacity: 1; }
   .case-module-link-ph-label { font-size: 14px; }
 
   /* Video module title/caption — match welfare-entry mobile */
@@ -2529,7 +2529,7 @@ a.contact-row:hover .contact-arrow {
   .case-link-accent:hover, .case-link-ghost:hover { transform: none; }
   .case-module-link-image:hover { transform: none; box-shadow: none; }
   .case-module-link-image:hover img { transform: none; filter: saturate(0.8) brightness(0.9); }
-  .case-module-link-image:hover .case-module-link-hint { opacity: 0.6; transform: none; }
+  .case-module-link-image:hover .case-module-link-hint { opacity: 1; transform: none; }
   .case-module-link-image:hover::after { opacity: 1; }
   .contact-row:hover { background: transparent; padding-left: 0; padding-right: 0; }
   .contact-copy:hover .contact-copy-tip { color: var(--text-muted); border-color: transparent; }
